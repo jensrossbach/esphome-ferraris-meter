@@ -53,10 +53,13 @@ ferraris:
 # numeric sensors
 sensor:
   - platform: ferraris
+    # sensor for current power consumption
     power_consumption:
       name: Momentanverbrauch
+    # sensor for energy meter reading
     energy_meter:
       name: Verbrauchszähler
+  # sensor for Wi-Fi signal strength
   - platform: wifi_signal
     name: Wi-Fi Signal
     update_interval: 60s
@@ -64,34 +67,57 @@ sensor:
 # binary sensors
 binary_sensor:
   - platform: ferraris
+    # sensor for indicating detected rotation during calibration mode
     rotation_indicator:
       name: Umdrehungsindikator
+  # sensor for wireless connection status
   - platform: status
     name: Status
 
 # text sensors
 text_sensor:
   - platform: wifi_info
+    # sensor providing the IP address of the ESP microcontroller
     ip_address:
       name: IP Adresse
 
 # number components
 number:
-  - platform: ferraris
-    energy_target_value:
-      name: Verbrauchszähler-Zielwert
+  # import entity holding last energy meter reading from Home Assistant
   - platform: homeassistant
     id: last_energy_value
     entity_id: input_number.stromzaehler_letzter_wert
+  # number used to manually overwrite the energy meter
+  - platform: template
+    id: target_energy_value
+    name: Manueller Zählerstand
+    icon: mdi:counter
+    unit_of_measurement: kWh
+    device_class: energy
+    entity_category: config
+    mode: box
+    optimistic: true
+    min_value: 0
+    max_value: 1000000
+    step: 0.01
 
 # switch components
 switch:
   - platform: ferraris
+    # switch used to activate or deactivate the calibration mode
     calibration_mode:
       name: Kalibrierungsmodus
 
 # button components
 button:
-  - platform: ferraris
-    set_energy_meter:
-      name: Verbrauchszähler überschreiben
+  # button used to trigger the manual overwriting of the energy meter
+  - platform: template
+    name: Verbrauchszähler überschreiben
+    icon: mdi:download
+    entity_category: config
+    on_press:
+      - ferraris.set_energy_meter:
+          id: ferraris_meter
+          value: !lambda |-
+            float val = id(target_energy_value).state;
+            return (val >= 0) ? val : 0;
