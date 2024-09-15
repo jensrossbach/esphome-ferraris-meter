@@ -50,11 +50,7 @@ namespace esphome::ferraris
 #ifdef USE_SWITCH
         , m_calibration_mode_switch(nullptr)
 #endif
-#ifdef USE_BUTTON
-        , m_energy_meter_set_button(nullptr)
-#endif
 #ifdef USE_NUMBER
-        , m_energy_target_value_number(nullptr)
         , m_energy_start_value_number(nullptr)
 #endif
         , m_rotations_per_kwh(rpkwh)
@@ -178,12 +174,6 @@ namespace esphome::ferraris
 #ifdef USE_SWITCH
         LOG_SWITCH("", "Calibration mode switch", m_calibration_mode_switch);
 #endif
-#ifdef USE_BUTTON
-        LOG_BUTTON("", "Energy meter set button", m_energy_meter_set_button);
-#endif
-#ifdef USE_NUMBER
-        LOG_NUMBER("", "Energy trget value number", m_energy_target_value_number);
-#endif
     }
 
     void FerrarisMeter::set_calibration_mode(bool mode)
@@ -200,17 +190,20 @@ namespace esphome::ferraris
 #endif
     }
 
-    void FerrarisMeter::set_energy_meter()
+    void FerrarisMeter::set_energy_meter(float value)
     {
-#ifdef USE_NUMBER
-        if (m_energy_target_value_number != nullptr)
-        {
-            m_rotation_counter = static_cast<uint64_t>(std::round(m_energy_target_value_number->state * m_rotations_per_kwh));
-            ESP_LOGD(TAG, "Set rotation counter:  %u rotations", m_rotation_counter);
+        m_rotation_counter = static_cast<uint64_t>(std::round(value * m_rotations_per_kwh));
+        ESP_LOGD(TAG, "Set energy meter:  %.2f kWh (%u rotations)", value, m_rotation_counter);
 
-            update_energy_counter();
-        }
-#endif
+        update_energy_counter();
+    }
+
+    void FerrarisMeter::set_rotation_counter(uint64_t value)
+    {
+        m_rotation_counter = value;
+        ESP_LOGD(TAG, "Set rotation counter:  %u rotations", m_rotation_counter);
+
+        update_energy_counter();
     }
 
     void FerrarisMeter::update_power_consumption(uint32_t rotation_time)

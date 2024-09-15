@@ -25,11 +25,12 @@ import esphome.codegen                         as cg
 import esphome.config_validation               as cv
 import esphome.components.homeassistant.number as ha_number
 
-from esphome             import pins
+from esphome             import automation, pins
 from esphome.cpp_helpers import gpio_pin_expression
 from esphome.const       import (
     CONF_ID,
-    CONF_PIN
+    CONF_PIN,
+    CONF_VALUE
 )
 
 
@@ -40,6 +41,8 @@ CONF_ENERGY_START_VALUE  = "energy_start_value"
 
 ferraris_ns = cg.esphome_ns.namespace("ferraris")
 FerrarisMeter = ferraris_ns.class_("FerrarisMeter", cg.Component)
+SetEnergyMeterAction = ferraris_ns.class_("SetEnergyMeterAction", automation.Action)
+SetRotationCounterAction = ferraris_ns.class_("SetRotationCounterAction", automation.Action)
 
 CODEOWNERS = ["@jens_rossbach"]
 
@@ -66,3 +69,37 @@ async def to_code(config):
     if CONF_ENERGY_START_VALUE in config:
         num = await cg.get_variable(config[CONF_ENERGY_START_VALUE])
         cg.add(cmp.set_energy_start_value_number(num))
+
+@automation.register_action(
+    "ferraris.set_energy_meter",
+    SetEnergyMeterAction,
+    cv.Schema(
+    {
+        cv.Required(CONF_ID): cv.use_id(FerrarisMeter),
+        cv.Required(CONF_VALUE): cv.templatable(cv.float_range(min = 0))
+    }))
+async def set_energy_meter_action_to_code(config, action_id, template_arg, args):
+    parent = await cg.get_variable(config[CONF_ID])
+    act = cg.new_Pvariable(action_id, template_arg, parent)
+
+    tmpl = await cg.templatable(config[CONF_VALUE], args, float)
+    cg.add(act.set_energy_meter_value(tmpl))
+
+    return act
+
+@automation.register_action(
+    "ferraris.set_rotation_counter",
+    SetRotationCounterAction,
+    cv.Schema(
+    {
+        cv.Required(CONF_ID): cv.use_id(FerrarisMeter),
+        cv.Required(CONF_VALUE): cv.templatable(cv.uint64_t)
+    }))
+async def set_rotation_counter_action_to_code(config, action_id, template_arg, args):
+    parent = await cg.get_variable(config[CONF_ID])
+    act = cg.new_Pvariable(action_id, template_arg, parent)
+
+    tmpl = await cg.templatable(config[CONF_VALUE], args, int)
+    cg.add(act.set_rotation_counter_value(tmpl))
+
+    return act

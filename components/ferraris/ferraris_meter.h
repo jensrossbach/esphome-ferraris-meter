@@ -36,9 +36,6 @@
 #ifdef USE_SWITCH
 #include "esphome/components/switch/switch.h"
 #endif
-#ifdef USE_BUTTON
-#include "esphome/components/button/button.h"
-#endif
 #ifdef USE_NUMBER
 #include "esphome/components/number/number.h"
 #endif
@@ -61,7 +58,9 @@ namespace esphome::ferraris
         void dump_config() override;
 
         void set_calibration_mode(bool mode);
-        void set_energy_meter();
+
+        void set_energy_meter(float value);
+        void set_rotation_counter(uint64_t value);
 
 #ifdef USE_SENSOR
         void set_power_consumption_sensor(sensor::Sensor *power_consumption_sensor)
@@ -89,19 +88,7 @@ namespace esphome::ferraris
         }
 #endif
 
-#ifdef USE_BUTTON
-        void set_energy_meter_set_button(button::Button* energy_meter_set_button)
-        {
-            m_energy_meter_set_button = energy_meter_set_button;
-        }
-#endif
-
 #ifdef USE_NUMBER
-        void set_energy_target_value_number(number::Number* energy_target_value_number)
-        {
-            m_energy_target_value_number = energy_target_value_number;
-        }
-
         void set_energy_start_value_number(number::Number* energy_start_value_number)
         {
             m_energy_start_value_number = energy_start_value_number;
@@ -140,11 +127,7 @@ namespace esphome::ferraris
 #ifdef USE_SWITCH
         switch_::Switch* m_calibration_mode_switch;
 #endif
-#ifdef USE_BUTTON
-        button::Button* m_energy_meter_set_button;
-#endif
 #ifdef USE_NUMBER
-        number::Number* m_energy_target_value_number;
         number::Number* m_energy_start_value_number;
 #endif
 
