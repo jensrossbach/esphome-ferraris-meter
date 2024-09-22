@@ -6,6 +6,9 @@
 esphome:
   name: ferraris-meter
   friendly_name: Stromzähler
+  project:
+    name: jensrossbach.ferraris_meter
+    version: 1.1.0
 
 # example ESP8266 firmware (can be replaced by appropriate configuration)
 esp8266:
