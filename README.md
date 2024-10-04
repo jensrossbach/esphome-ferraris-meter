@@ -4,6 +4,31 @@
 
 Ferraris Meter ist eine ESPHome-Komponente zur Erstellung einer ESP-Firmware, die mithilfe eines ESP-Mikrocontrollers und eines Infrarotsensors die Geschwindigkeit und die Umdrehungen der Drehscheibe eines analogen Ferraris-Stromzählers ermitteln und daraus den momentanen Stromverbrauch und den Zählerstand berechnen kann. Diese Werte können dann zur weiteren Verarbeitung an eine Hausautomatisierungs-Software wie beispielsweise Home Assistant geschickt werden.
 
+- [Haftungsausschluss](#haftungsausschluss)
+- [Lizenz](LICENSE)
+- [Hardware-Aufbau](#hardware-aufbau)
+- [Software-Konfiguration](#software-konfiguration)
+  - [Ferraris-Komponente](#ferraris-komponente)
+  - [API/MQTT-Komponente](#apimqtt-komponente)
+  - [WiFi-Komponente](#wifi-komponente)
+  - [Sensoren](#sensoren)
+    - [Primäre Sensoren](#primäre-sensoren)
+    - [Diagnostische Sensoren](#diagnostische-sensoren)
+  - [Aktionen](#aktionen)
+  - [Schalter](#schalter)
+- [Anwendungsbeispiele](#anwendungsbeispiele)
+  - [Kalibierungsmodus](#kalibierungsmodus)
+  - [Manuelles Überschreiben des Zählerstands](#manuelles-überschreiben-des-zählerstands)
+    - [Händisches Setzen des Zählerstands über das User-Interface](#händisches-setzen-des-zählerstands-über-das-user-interface)
+    - [Automatisiertes Setzen des Zählerstands](#automatisiertes-setzen-des-zählerstands)
+  - [Wiederherstellung des Zählerstands nach einem Neustart](#wiederherstellung-des-zählerstands-nach-einem-neustart)
+- [Hilfe/Unterstützung](SUPPORT.md)
+- [Mitwirkung](CONTRIBUTING.md)
+- [Bekannte Probleme](https://github.com/jensrossbach/esphome-ferraris-meter/issues?q=is%3Aissue+is%3Aopen+label%3A%22known+issue%22)
+
+## Haftungsausschluss
+**DIE SOFTWARE WIRD OHNE MÄNGELGEWÄHR UND OHNE JEGLICHE AUSDRÜCKLICHE ODER STILLSCHWEIGENDE GEWÄHRLEISTUNG, EINSCHLIEẞLICH, ABER NICHT BESCHRÄNKT AUF DIE GEWÄHRLEISTUNG DER MARKTGÄNGIGKEIT, DER EIGNUNG FÜR EINEN BESTIMMTEN ZWECK UND DER NICHTVERLETZUNG VON RECHTEN DRITTER, ZUR VERFÜGUNG GESTELLT. DIE AUTOREN ODER URHEBERRECHTSINHABER SIND IN KEINEM FALL HAFTBAR FÜR ANSPRÜCHE, SCHÄDEN ODER ANDERE VERPFLICHTUNGEN, OB IN EINER VERTRAGS- ODER HAFTUNGSKLAGE, EINER UNERLAUBTEN HANDLUNG ODER ANDERWEITIG, DIE SICH AUS ODER IN VERBINDUNG MIT DER SOFTWARE ODER DER NUTZUNG ODER ANDEREN GESCHÄFTEN MIT DER SOFTWARE ERGEBEN.**
+
 ## Hardware-Aufbau
 Hardware-seitig wird lediglich ein ESP-Mikrocontroller (z.B. ESP8266 oder ESP32, inkl. Spannungsversorgung) und ein Infrarotsensor (z.B. TCRT5000) benötigt. Für die reine Funktionalität des Ferraris Meters reicht ein ESP8266 als Mikrocontroller völlig aus. Für den Infrarotsensor gibt es fertige TCRT5000-basierte Breakout-Module mit 3,3V-5V Eingangsspannung, die auch über einen regelbaren Widerstand (Potentiometer) verfügen, um die Empfindlichkeit des Sensors einzustellen. Diese TCRT5000-Module haben 4 Pins - VCC und GND für die Stromversorgung des Sensor-Chips sowie einen digitalen Ausgang D0 und einen analogen Ausgang A0. Der analoge Ausgang wird nicht benötigt, die anderen Pins müssen mit den entsprechenden Pins des Mikrocontrollers verbunden werden. Für VCC sollte der 3,3V-Ausgang des ESPs verwendet werden und der digitale Ausgang D0 muss mit einem freien GPIO-Pin (z.B. GPIO4, entspricht dem Pin D2 auf dem D1 Mini) verbunden werden.
 
@@ -288,6 +313,31 @@ Damit dies funktioniert, müssen beispielsweise folgende Konfigurations-Schritte
 
 # ESPHome Ferraris Meter (English)
 Ferraris Meter is an ESPHome component for creating an ESP firmware that uses an ESP microcontroller and an infrared sensor to capture the number of rotations and the speed of the turntable of an analog Ferraris electricity meter and to calculate the current electricity consumption and meter reading. These values can then be sent to a home automation software such as Home Assistant for further processing.
+
+- [Disclaimer](#disclaimer)
+- [License](LICENSE)
+- [Hardware Setup](#hardware-setup)
+- [Software Setup](#software-setup)
+  - [Ferraris Component](#ferraris-component)
+  - [API/MQTT Component](#apimqtt-component)
+  - [WiFi Component](#wifi-component)
+  - [Sensors](#sensors)
+    - [Primary Sensors](#primary-sensors)
+    - [Diagnostic Sensors](#diagnostic-sensors)
+  - [Actions](#actions)
+  - [Switches](#switches)
+- [Usage Examples](#usage-examples)
+  - [Calibration Mode](#calibration-mode)
+  - [Explicit Meter Reading Replacement](#explicit-meter-reading-replacement)
+    - [Setting energy meter manually via the user interface](#setting-energy-meter-manually-via-the-user-interface)
+    - [Setting energy meter automatically](#setting-energy-meter-automatically)
+  - [Meter Reading Recovery after Restart](#meter-reading-recovery-after-restart)
+- [Help/Support](SUPPORT.md)
+- [Contributing](CONTRIBUTING.md)
+- [Known Issues](https://github.com/jensrossbach/esphome-ferraris-meter/issues?q=is%3Aissue+is%3Aopen+label%3A%22known+issue%22)
+
+## Disclaimer
+**THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.**
 
 ## Hardware Setup
 On the hardware side, only an ESP microcontroller (e.g. ESP8266 or ESP32, incl. power supply) and an infrared sensor (e.g. TCRT5000) are required. An ESP8266 microcontroller is completely sufficient for the pure functionality of the Ferraris Meter. For the infrared sensor, there are ready-made TCRT5000-based breakout modules with 3.3V-5V input voltage available, which also have an adjustable resistor (potentiometer) to set the sensitivity of the sensor. These TCRT5000 modules have 4 pins - VCC and GND for the power supply of the sensor chip as well as a digital output D0 and an analog output A0. The analog output is not required, the other pins must be connected to the corresponding pins of the microcontroller. The 3.3V output of the ESP should be used for VCC and the digital output D0 must be connected to a free GPIO pin (e.g. GPIO4, corresponding to pin D2 on the D1 Mini).
