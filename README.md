@@ -332,8 +332,8 @@ Ferraris Meter is an ESPHome component for creating an ESP firmware that uses an
     - [Setting energy meter manually via the user interface](#setting-energy-meter-manually-via-the-user-interface)
     - [Setting energy meter automatically](#setting-energy-meter-automatically)
   - [Meter Reading Recovery after Restart](#meter-reading-recovery-after-restart)
-- [Help/Support](SUPPORT.md)
-- [Contributing](CONTRIBUTING.md)
+- [Help/Support](SUPPORT.md#-getting-support-for-esphome-ferraris-meter)
+- [Contributing](CONTRIBUTING.md#contributing-to-esphome-ferraris-meter)
 - [Known Issues](https://github.com/jensrossbach/esphome-ferraris-meter/issues?q=is%3Aissue+is%3Aopen+label%3A%22known+issue%22)
 
 ## Disclaimer
