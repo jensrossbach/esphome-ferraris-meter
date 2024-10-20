@@ -16,7 +16,7 @@ esp8266:
 
 # include Ferraris component (mandatory)
 external_components:
-  - source: github://jensrossbach/esphome-ferraris-meter
+  - source: github://jensrossbach/esphome-ferraris-meter@v1.1.0
     components: [ferraris]
 
 # enable logging (optional)
