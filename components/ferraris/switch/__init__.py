@@ -36,6 +36,8 @@ from ..                 import (
 )
 
 
+CODEOWNERS = ["@jensrossbach"]
+
 CalibrationModeSwitch = ferraris_ns.class_("CalibrationModeSwitch", switch.Switch)
 
 CONF_CALIBRATION_MODE = "calibration_mode"

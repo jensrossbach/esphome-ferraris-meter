@@ -34,6 +34,8 @@ from esphome.const       import (
 )
 
 
+CODEOWNERS = ["@jensrossbach"]
+
 CONF_FERRARIS_ID         = "ferraris_id"
 CONF_ROTATIONS_PER_KWH   = "rotations_per_kwh"
 CONF_LOW_STATE_THRESHOLD = "low_state_threshold"
@@ -43,8 +45,6 @@ ferraris_ns = cg.esphome_ns.namespace("ferraris")
 FerrarisMeter = ferraris_ns.class_("FerrarisMeter", cg.Component)
 SetEnergyMeterAction = ferraris_ns.class_("SetEnergyMeterAction", automation.Action)
 SetRotationCounterAction = ferraris_ns.class_("SetRotationCounterAction", automation.Action)
-
-CODEOWNERS = ["@jens_rossbach"]
 
 CONFIG_SCHEMA = cv.Schema(
 {

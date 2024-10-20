@@ -34,7 +34,7 @@ from .                  import (
 )
 
 
-CODEOWNERS = ["@jens_rossbach"]
+CODEOWNERS = ["@jensrossbach"]
 
 CONF_ROTATION_INDICATOR = "rotation_indicator"
 

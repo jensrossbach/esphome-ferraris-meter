@@ -39,6 +39,8 @@ from .                  import (
 )
 
 
+CODEOWNERS = ["@jensrossbach"]
+
 CONF_POWER_CONSUMPTION = "power_consumption"
 CONF_ENERGY_METER      = "energy_meter"
 
