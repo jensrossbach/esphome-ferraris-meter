@@ -35,6 +35,7 @@ from esphome.const       import (
 
 
 CODEOWNERS = ["@jensrossbach"]
+MULTI_CONF = True
 
 CONF_FERRARIS_ID         = "ferraris_id"
 CONF_ROTATIONS_PER_KWH   = "rotations_per_kwh"

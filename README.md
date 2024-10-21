@@ -22,6 +22,7 @@ Ferraris Meter ist eine ESPHome-Komponente zur Erstellung einer ESP-Firmware, di
     - [Händisches Setzen des Zählerstands über das User-Interface](#händisches-setzen-des-zählerstands-über-das-user-interface)
     - [Automatisiertes Setzen des Zählerstands](#automatisiertes-setzen-des-zählerstands)
   - [Wiederherstellung des Zählerstands nach einem Neustart](#wiederherstellung-des-zählerstands-nach-einem-neustart)
+  - [Auslesen mehrerer Ferraris-Stromzähler](#auslesen-mehrerer-ferraris-stromzähler)
 - [Hilfe/Unterstützung](SUPPORT.md)
 - [Mitwirkung](CONTRIBUTING.md)
 - [Bekannte Probleme](https://github.com/jensrossbach/esphome-ferraris-meter/issues?q=is%3Aissue+is%3Aopen+label%3A%22known+issue%22)
@@ -309,6 +310,64 @@ Damit dies funktioniert, müssen beispielsweise folgende Konfigurations-Schritte
     ```
     Alternativ kann auch eine [Sensor-Automation](https://www.esphome.io/components/sensor/#sensor-automation) für den Sensor `energy_meter` in der YAML-Konfigurationsdatei angelegt werden, die die unter 2. angelegte Zahlen-Komponente direkt von ESPHome aus aktualisiert. Allerdings verlängert dies die Verarbeitungszeit pro Umdrehung im Mikrocontroller und kann u.U. dazu führen, dass bei sehr hohen Stromverbräuchen (und damit sehr hohen Drehgeschwindigkeiten) einzelne Umläufe der Drehscheibe nicht erfasst werden. Daher empfehle ich die Variante mit der Automation in Home Assistant.
 
+### Auslesen mehrerer Ferraris-Stromzähler
+Es ist auch möglich, mehr als einen Ferraris-Stromzähler mit einem einzigen ESP-Mikrocontroller auszulesen. Dazu benötigt man weitere Infrarotsensoren / TCRT5000-Module und zusätzliche freie GPIO-Pins am Mikrocontroller. Die TCRT5000-Module werden wie im Abschnitt [Hardware-Aufbau](#hardware-aufbau) beschrieben über VCC und GND an die Spannungsquelle des ESP-Mikrocontrollers angeschlossen und die D0-Ausgänge werden jeweils mit einem freien GPIO-Pin an dem ESP-Board verbunden.
+
+Der folgende Steckplatinen-Schaltplan zeigt ein Beispiel für einen Versuchsaufbau mit zwei TCRT5000-Modulen, die mit einem ESP8266 D1 Mini verbunden sind.
+
+![Steckplatinen-Schaltplan (2 TCRT5000-Module)](img/breadboard_schematic_2_sensors.png)
+
+Es ist aber zu bedenken, dass jeder weitere Infrarotsensor die Last auf dem Mikrocontroller erhöht und insbesondere bei sehr hohen Geschwindigkeiten der Drehscheiben die Hardware näher an ihre Grenzen bringt.
+
+Software-seitig müssen nun beispielsweise folgende Konfigurations-Schritte durchgeführt werden:
+1.  In der YAML-Konfigurationsdatei müssen mehrere Instanzen der Ferraris-Komponente konfiguriert werden (hier beispielhaft 2 Instanzen).
+    ```yaml
+    ferraris:
+      - id: ferraris_meter_1
+        pin: GPIO4
+        # ...
+      - id: ferraris_meter_2
+        pin: GPIO5
+        # ...
+    ```
+2.  Alle von der Ferraris-Komponente bereitgestellten Sensoren und Komponenten müssen, sofern benötigt, vervielfacht und den entsprechenden Instanzen der Ferraris-Komponente über den Eintrag `ferraris_id` zugewiesen werden.
+    ```yaml
+    sensor:
+      - platform: ferraris
+        ferraris_id: ferraris_meter_1
+        power_consumption:
+          name: Momentanverbrauch 1
+        energy_meter:
+          name: Verbrauchszähler 1
+      - platform: ferraris
+        ferraris_id: ferraris_meter_2
+        power_consumption:
+          name: Momentanverbrauch 2
+        energy_meter:
+          name: Verbrauchszähler 2
+
+    binary_sensor:
+      - platform: ferraris
+        ferraris_id: ferraris_meter_1
+        rotation_indicator:
+          name: Umdrehungsindikator 1
+      - platform: ferraris
+        ferraris_id: ferraris_meter_2
+        rotation_indicator:
+          name: Umdrehungsindikator 2
+
+    switch:
+      - platform: ferraris
+        ferraris_id: ferraris_meter_1
+        calibration_mode:
+          name: Kalibrierungsmodus 1
+      - platform: ferraris
+        ferraris_id: ferraris_meter_2
+        calibration_mode:
+          name: Kalibrierungsmodus 2
+    ```
+3.  Alle weiteren in der YAML-Konfigurationsdatei definierten Komponenten, die mit den Ferraris-Sensoren und -Komponenten interagieren, müssen eventuell vervielfacht und/oder angepasst werden.
+
 -----
 
 # ESPHome Ferraris Meter (English)
@@ -332,6 +391,7 @@ Ferraris Meter is an ESPHome component for creating an ESP firmware that uses an
     - [Setting energy meter manually via the user interface](#setting-energy-meter-manually-via-the-user-interface)
     - [Setting energy meter automatically](#setting-energy-meter-automatically)
   - [Meter Reading Recovery after Restart](#meter-reading-recovery-after-restart)
+  - [Reading multiple Ferraris electricity Meters](#reading-multiple-ferraris-electricity-meters)
 - [Help/Support](SUPPORT.md#-getting-support-for-esphome-ferraris-meter)
 - [Contributing](CONTRIBUTING.md#contributing-to-esphome-ferraris-meter)
 - [Known Issues](https://github.com/jensrossbach/esphome-ferraris-meter/issues?q=is%3Aissue+is%3Aopen+label%3A%22known+issue%22)
@@ -618,3 +678,61 @@ For this to work, the following configuration steps must be carried out:
       mode: single
     ```
     Alternatively, a [sensor automation](https://www.esphome.io/components/sensor/#sensor-automation) can be created for the sensor `energy_meter` in the YAML configuration file which updates the number component created under 2 directly from ESPHome. However, this leads to a longer processing time per rotation in the microcontroller and may result in individual rotations of the turntable not being detected in the event of very high power consumption (and hence, very high rotation speeds). Therefore, I recommend the variant with the automation in Home Assistant.
+
+### Reading multiple Ferraris electricity Meters
+It is also possible to read more than one Ferraris electricity meter with a single ESP microcontroller. This requires multiple infrared sensors / TCRT5000 modules and additional free GPIO pins on the microcontroller. The TCRT5000 modules have to be connected to the voltage source of the ESP microcontroller via VCC and GND as described in the section [Hardware Setup](#hardware-setup) and the D0 outputs have to be connected to free GPIO pins on the ESP board.
+
+The following breadboard schematic shows an example of an example test setup with two TCRT5000 modules connected to an ESP8266 D1 Mini.
+
+![Breadboard Schematic (two TCRT5000 modules)](img/breadboard_schematic_2_sensors.png)
+
+However, bear in mind that each additional infrared sensor increases the load on the microcontroller and brings the hardware closer to its limits, especially with very high rotation speeds of the turntables.
+
+On the software side, for instance, the following configuration steps must now be carried out:
+1. Multiple instances of the Ferraris component must be configured in the YAML configuration file (here 2 instances as an example).
+    ```yaml
+    ferraris:
+      - id: ferraris_meter_1
+        pin: GPIO4
+        # ...
+      - id: ferraris_meter_2
+        pin: GPIO5
+        # ...
+    ```
+2.  All needed sensors and components provided by the Ferraris component must be duplicated and assigned to the corresponding Ferraris component instances via the `ferraris_id` configuration entry.
+    ```yaml
+    sensor:
+      - platform: ferraris
+        ferraris_id: ferraris_meter_1
+        power_consumption:
+          name: Power consumption 1
+        energy_meter:
+          name: Meter reading 1
+      - platform: ferraris
+        ferraris_id: ferraris_meter_2
+        power_consumption:
+          name: Power consumption 2
+        energy_meter:
+          name: Meter reading 2
+
+    binary_sensor:
+      - platform: ferraris
+        ferraris_id: ferraris_meter_1
+        rotation_indicator:
+          name: Rotation indicator 1
+      - platform: ferraris
+        ferraris_id: ferraris_meter_2
+        rotation_indicator:
+          name: Rotation indicator 2
+
+    switch:
+      - platform: ferraris
+        ferraris_id: ferraris_meter_1
+        calibration_mode:
+          name: Calibration mode 1
+      - platform: ferraris
+        ferraris_id: ferraris_meter_2
+        calibration_mode:
+          name: Calibration mode 2
+    ```
+3.  All other components defined in the YAML configuration file that interact with the Ferraris sensors and components may need to be multiplied and/or adapted.
