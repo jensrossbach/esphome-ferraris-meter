@@ -8,7 +8,7 @@ esphome:
   friendly_name: Stromzähler
   project:
     name: jensrossbach.ferraris_meter
-    version: 1.1.0
+    version: 1.2.0
 
 # example ESP8266 firmware (can be replaced by appropriate configuration)
 esp8266:
@@ -16,7 +16,7 @@ esp8266:
 
 # include Ferraris component (mandatory)
 external_components:
-  - source: github://jensrossbach/esphome-ferraris-meter@v1.1.0
+  - source: github://jensrossbach/esphome-ferraris-meter@v1.2.0
     components: [ferraris]
 
 # enable logging (optional)
