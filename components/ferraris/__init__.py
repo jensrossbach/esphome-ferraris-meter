@@ -23,9 +23,9 @@
 
 import esphome.codegen                         as cg
 import esphome.config_validation               as cv
-import esphome.components.homeassistant.number as ha_number
 
 from esphome             import automation, pins
+from esphome.components  import number
 from esphome.cpp_helpers import gpio_pin_expression
 from esphome.const       import (
     CONF_ID,
@@ -53,7 +53,7 @@ CONFIG_SCHEMA = cv.Schema(
     cv.Required(CONF_PIN): pins.internal_gpio_input_pin_schema,
     cv.Optional(CONF_ROTATIONS_PER_KWH, default = 75): cv.int_range(min = 1),
     cv.Optional(CONF_LOW_STATE_THRESHOLD, default = 400): cv.int_range(min = 0),
-    cv.Optional(CONF_ENERGY_START_VALUE): cv.use_id(ha_number.HomeassistantNumber)
+    cv.Optional(CONF_ENERGY_START_VALUE): cv.use_id(number.Number)
 }).extend(cv.COMPONENT_SCHEMA)
 
 
