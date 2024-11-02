@@ -37,10 +37,11 @@ namespace esphome::ferraris
 
     static constexpr const char *const TAG = "ferraris";
 
-    FerrarisMeter::FerrarisMeter(InternalGPIOPin* pin, uint32_t rpkwh, uint32_t low_state_threshold)
+    FerrarisMeter::FerrarisMeter(uint32_t rpkwh, uint32_t low_state_threshold)
         : Component()
-        , m_pin(pin)
+        , m_pin(nullptr)
 #ifdef USE_SENSOR
+        , m_analog_input_sensor(nullptr)
         , m_power_consumption_sensor(nullptr)
         , m_energy_meter_sensor(nullptr)
 #endif
@@ -51,8 +52,10 @@ namespace esphome::ferraris
         , m_calibration_mode_switch(nullptr)
 #endif
 #ifdef USE_NUMBER
+        , m_analog_input_threshold_number(nullptr)
         , m_energy_start_value_number(nullptr)
 #endif
+        , m_analog_input_threshold(0.0f)
         , m_rotations_per_kwh(rpkwh)
         , m_low_state_threshold(low_state_threshold)
         , m_last_state(false)
@@ -66,16 +69,40 @@ namespace esphome::ferraris
 
     void FerrarisMeter::setup()
     {
+#ifdef USE_SENSOR
+        if (m_analog_input_sensor != nullptr)
+        {
+            m_analog_input_sensor->add_on_state_callback([this](float value)
+            {
+                handle_state(value > m_analog_input_threshold);
+            });
+        }
+
+        if (m_power_consumption_sensor != nullptr)
+        {
+            m_power_consumption_sensor->publish_state(0);
+        }
+#endif
+
 #ifdef USE_BINARY_SENSOR
         if (m_rotation_indicator_sensor != nullptr)
         {
             m_rotation_indicator_sensor->publish_state(false);
         }
 #endif
-#ifdef USE_SENSOR
-        if (m_power_consumption_sensor != nullptr)
+
+#ifdef USE_NUMBER
+        if (m_analog_input_threshold_number != nullptr)
         {
-            m_power_consumption_sensor->publish_state(0);
+            if (m_analog_input_threshold_number->has_state())
+            {
+                m_analog_input_threshold = m_analog_input_threshold_number->state;
+            }
+
+            m_analog_input_threshold_number->add_on_state_callback([this](float value)
+            {
+                m_analog_input_threshold = value;
+            });
         }
 
         if (m_energy_start_value_number != nullptr)
@@ -101,8 +128,45 @@ namespace esphome::ferraris
 
     void FerrarisMeter::loop()
     {
-        bool state = m_pin->digital_read();
+        if (m_pin != nullptr)
+        {
+            handle_state(m_pin->digital_read());
+        }
+    }
 
+    void FerrarisMeter::dump_config()
+    {
+        ESP_LOGCONFIG(TAG, "Ferraris Meter");
+        LOG_PIN("  Pin: ", m_pin);
+#ifdef USE_SENSOR
+#ifdef USE_NUMBER
+        if ((m_analog_input_sensor != nullptr) && (m_analog_input_threshold_number == nullptr))
+        {
+            ESP_LOGCONFIG(TAG, "  Fixed analog input threshold: %d", m_analog_input_threshold);
+        }
+#else
+        if (m_analog_input_sensor != nullptr)
+        {
+            ESP_LOGCONFIG(TAG, "  Fixed analog input threshold: %d", m_analog_input_threshold);
+        }
+#endif
+#endif
+        ESP_LOGCONFIG(TAG, "  Rotations per kWh: %d", m_rotations_per_kwh);
+        ESP_LOGCONFIG(TAG, "  Low state threshold: %d ms", m_low_state_threshold);
+#ifdef USE_SENSOR
+        LOG_SENSOR("", "Power consumption sensor", m_power_consumption_sensor);
+        LOG_SENSOR("", "Energy meter sensor", m_energy_meter_sensor);
+#endif
+#ifdef USE_BINARY_SENSOR
+        LOG_BINARY_SENSOR("", "Rotation indicator sensor", m_rotation_indicator_sensor);
+#endif
+#ifdef USE_SWITCH
+        LOG_SWITCH("", "Calibration mode switch", m_calibration_mode_switch);
+#endif
+    }
+
+    void FerrarisMeter::handle_state(bool state)
+    {
         if (state != m_last_state)
         {
             ESP_LOGD(TAG, "State change:  %d -> %d", m_last_state, state);
@@ -156,24 +220,6 @@ namespace esphome::ferraris
 
             m_last_state = state;
         }
-    }
-
-    void FerrarisMeter::dump_config()
-    {
-        ESP_LOGCONFIG(TAG, "Ferraris Meter");
-        LOG_PIN("  Pin: ", m_pin);
-        ESP_LOGCONFIG(TAG, "  Rotations per kWh: %d", m_rotations_per_kwh);
-        ESP_LOGCONFIG(TAG, "  Low state threshold: %d ms", m_low_state_threshold);
-#ifdef USE_SENSOR
-        LOG_SENSOR("", "Power consumption sensor", m_power_consumption_sensor);
-        LOG_SENSOR("", "Energy meter sensor", m_energy_meter_sensor);
-#endif
-#ifdef USE_BINARY_SENSOR
-        LOG_BINARY_SENSOR("", "Rotation indicator sensor", m_rotation_indicator_sensor);
-#endif
-#ifdef USE_SWITCH
-        LOG_SWITCH("", "Calibration mode switch", m_calibration_mode_switch);
-#endif
     }
 
     void FerrarisMeter::set_calibration_mode(bool mode)

@@ -49,13 +49,14 @@ namespace esphome::ferraris
     class FerrarisMeter : public Component
     {
     public:
-        FerrarisMeter(InternalGPIOPin *pin, uint32_t rpkwh, uint32_t low_state_threshold);
+        FerrarisMeter(uint32_t rpkwh, uint32_t low_state_threshold);
         virtual ~FerrarisMeter() = default;
 
         void setup() override;
         void loop() override;
-
         void dump_config() override;
+
+        void handle_state(bool state);
 
         void set_calibration_mode(bool mode);
         void restore_energy_meter(float value);
@@ -63,14 +64,33 @@ namespace esphome::ferraris
         void set_rotation_counter(uint64_t value);
 
 #ifdef USE_SENSOR
-        void set_power_consumption_sensor(sensor::Sensor *power_consumption_sensor)
+        void set_digital_input_pin(InternalGPIOPin *pin)
         {
-            m_power_consumption_sensor = power_consumption_sensor;
+            m_pin = pin;
         }
 
-        void set_energy_meter_sensor(sensor::Sensor *energy_meter_sensor)
+        void set_analog_input_sensor(sensor::Sensor *sensor, float threshold)
         {
-            m_energy_meter_sensor = energy_meter_sensor;
+            m_analog_input_sensor = sensor;
+            m_analog_input_threshold = threshold;
+        }
+
+#ifdef USE_NUMBER
+        void set_analog_input_sensor(sensor::Sensor *sensor, number::Number* threshold_number)
+        {
+            m_analog_input_sensor = sensor;
+            m_analog_input_threshold_number = threshold_number;
+        }
+#endif
+
+        void set_power_consumption_sensor(sensor::Sensor *sensor)
+        {
+            m_power_consumption_sensor = sensor;
+        }
+
+        void set_energy_meter_sensor(sensor::Sensor *sensor)
+        {
+            m_energy_meter_sensor = sensor;
         }
 #endif
 
@@ -118,6 +138,7 @@ namespace esphome::ferraris
     protected:
         InternalGPIOPin* m_pin;
 #ifdef USE_SENSOR
+        sensor::Sensor* m_analog_input_sensor;
         sensor::Sensor* m_power_consumption_sensor;
         sensor::Sensor* m_energy_meter_sensor;
 #endif
@@ -128,9 +149,11 @@ namespace esphome::ferraris
         switch_::Switch* m_calibration_mode_switch;
 #endif
 #ifdef USE_NUMBER
+        number::Number* m_analog_input_threshold_number;
         number::Number* m_energy_start_value_number;
 #endif
 
+        float m_analog_input_threshold;
         uint32_t m_rotations_per_kwh;
         uint32_t m_low_state_threshold;
 

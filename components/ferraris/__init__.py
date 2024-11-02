@@ -25,7 +25,7 @@ import esphome.codegen                         as cg
 import esphome.config_validation               as cv
 
 from esphome             import automation, pins
-from esphome.components  import number
+from esphome.components  import number, sensor
 from esphome.cpp_helpers import gpio_pin_expression
 from esphome.const       import (
     CONF_ID,
@@ -38,6 +38,8 @@ CODEOWNERS = ["@jensrossbach"]
 MULTI_CONF = True
 
 CONF_FERRARIS_ID         = "ferraris_id"
+CONF_ANALOG_INPUT        = "analog_input"
+CONF_ANALOG_THRESHOLD    = "analog_threshold"
 CONF_ROTATIONS_PER_KWH   = "rotations_per_kwh"
 CONF_LOW_STATE_THRESHOLD = "low_state_threshold"
 CONF_ENERGY_START_VALUE  = "energy_start_value"
@@ -47,25 +49,43 @@ FerrarisMeter = ferraris_ns.class_("FerrarisMeter", cg.Component)
 SetEnergyMeterAction = ferraris_ns.class_("SetEnergyMeterAction", automation.Action)
 SetRotationCounterAction = ferraris_ns.class_("SetRotationCounterAction", automation.Action)
 
-CONFIG_SCHEMA = cv.Schema(
-{
-    cv.GenerateID(): cv.declare_id(FerrarisMeter),
-    cv.Required(CONF_PIN): pins.internal_gpio_input_pin_schema,
-    cv.Optional(CONF_ROTATIONS_PER_KWH, default = 75): cv.int_range(min = 1),
-    cv.Optional(CONF_LOW_STATE_THRESHOLD, default = 400): cv.int_range(min = 0),
-    cv.Optional(CONF_ENERGY_START_VALUE): cv.use_id(number.Number)
-}).extend(cv.COMPONENT_SCHEMA)
+def ensure_pin_or_adc(value):
+    if CONF_PIN not in value and CONF_ANALOG_INPUT not in value:
+        raise cv.Invalid(f"One of '{CONF_PIN}' or '{CONF_ANALOG_INPUT}' must be specified.")
+    if CONF_PIN in value and CONF_ANALOG_INPUT in value:
+        raise cv.Invalid(f"Only one of '{CONF_PIN}' or '{CONF_ANALOG_INPUT}' can be specified, not both.")
+    return value
+
+CONFIG_SCHEMA = cv.All(
+    cv.Schema({
+        cv.GenerateID(): cv.declare_id(FerrarisMeter),
+        cv.Optional(CONF_PIN): pins.internal_gpio_input_pin_schema,
+        cv.Optional(CONF_ANALOG_INPUT): cv.use_id(sensor.Sensor),
+        cv.Optional(CONF_ANALOG_THRESHOLD, default = 500): cv.Any(cv.Coerce(float), cv.use_id(number.Number)),
+        cv.Optional(CONF_ROTATIONS_PER_KWH, default = 75): cv.int_range(min = 1),
+        cv.Optional(CONF_LOW_STATE_THRESHOLD, default = 400): cv.int_range(min = 0),
+        cv.Optional(CONF_ENERGY_START_VALUE): cv.use_id(number.Number)
+    }).extend(cv.COMPONENT_SCHEMA),
+    ensure_pin_or_adc)
 
 
 async def to_code(config):
-    pin = await gpio_pin_expression(config[CONF_PIN])
-
     cmp = cg.new_Pvariable(
                 config[CONF_ID],
-                pin,
                 config[CONF_ROTATIONS_PER_KWH],
                 config[CONF_LOW_STATE_THRESHOLD])
     await cg.register_component(cmp, config)
+
+    if CONF_PIN in config:
+        pin = await gpio_pin_expression(config[CONF_PIN])
+        cg.add(cmp.set_digital_input_pin(pin))
+    elif CONF_ANALOG_INPUT in config:
+        sens = await cg.get_variable(config[CONF_ANALOG_INPUT])
+        if isinstance(config[CONF_ANALOG_THRESHOLD], float):
+            cg.add(cmp.set_analog_input_sensor(sens, config[CONF_ANALOG_THRESHOLD]))
+        else:
+            num = await cg.get_variable(config[CONF_ANALOG_THRESHOLD])
+            cg.add(cmp.set_analog_input_sensor(sens, num))
 
     if CONF_ENERGY_START_VALUE in config:
         num = await cg.get_variable(config[CONF_ENERGY_START_VALUE])

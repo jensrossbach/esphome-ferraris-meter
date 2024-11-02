@@ -2,13 +2,16 @@
 # current power and overall energy consumption using a Ferraris electricity
 # meter
 
+# In this variant, the analog output A0 of the TCRT5000 module is used as
+# input for the rotation observation of the turntable.
+
 # generic configuration (to be adapted)
 esphome:
   name: ferraris-meter
   friendly_name: Stromzähler
   project:
     name: jensrossbach.ferraris_meter
-    version: 1.2.0
+    version: 1.3.0_pre
 
 # example ESP8266 firmware (can be replaced by appropriate configuration)
 esp8266:
@@ -16,7 +19,7 @@ esp8266:
 
 # include Ferraris component (mandatory)
 external_components:
-  - source: github://jensrossbach/esphome-ferraris-meter@v1.2.0
+  - source: github://jensrossbach/esphome-ferraris-meter
     components: [ferraris]
 
 # enable logging (optional)
@@ -49,7 +52,8 @@ captive_portal:
 # Ferraris component (mandatory)
 ferraris:
   id: ferraris_meter
-  pin: GPIO4
+  analog_input: adc_input
+  analog_threshold: adc_threshold
   energy_start_value: last_energy_value
 
 # numeric sensors
@@ -61,6 +65,14 @@ sensor:
     # sensor for energy meter reading
     energy_meter:
       name: Verbrauchszähler
+  # sensor for analog input signal
+  - platform: adc
+    id: adc_input
+    pin: GPIO17  # ADC pin of ESP8266
+    internal: true
+    raw: true
+    samples: 10
+    update_interval: 50ms
   # sensor for Wi-Fi signal strength
   - platform: wifi_signal
     name: Wi-Fi Signal
@@ -89,6 +101,18 @@ number:
   - platform: homeassistant
     id: last_energy_value
     entity_id: input_number.stromzaehler_letzter_wert
+  # number used to configure and calibrate the analog threshold
+  - platform: template
+    id: adc_threshold
+    name: ADC Schwellwert
+    icon: mdi:speedometer-slow
+    entity_category: config
+    mode: slider
+    optimistic: true
+    initial_value: 500
+    min_value: 0
+    max_value: 1000
+    step: 1
   # number used to manually overwrite the energy meter
   - platform: template
     id: target_energy_value
