@@ -1,6 +1,6 @@
 # This is an example configuration for an ESPHome firmware to measure the
-# current power and overall energy consumption using an analog Ferraris
-# electricity meter
+# current power and overall energy consumption using a Ferraris electricity
+# meter
 
 # generic configuration (to be adapted)
 esphome:
@@ -48,9 +48,8 @@ captive_portal:
 
 # Ferraris component (mandatory)
 ferraris:
+  id: ferraris_meter
   pin: GPIO4
-  rotations_per_kwh: 75
-  low_state_threshold: 400  # milliseconds
   energy_start_value: last_energy_value
 
 # numeric sensors
