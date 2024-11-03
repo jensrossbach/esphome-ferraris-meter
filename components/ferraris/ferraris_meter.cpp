@@ -80,17 +80,17 @@ namespace esphome::ferraris
 
         if (m_energy_start_value_number != nullptr)
         {
-            m_energy_start_value_number->add_on_state_callback([this](float value)
+            if (m_energy_start_value_number->has_state())
             {
-                if (!m_start_value_received)
+                restore_energy_meter(m_energy_start_value_number->state);
+            }
+            else
+            {
+                m_energy_start_value_number->add_on_state_callback([this](float value)
                 {
-                    m_rotation_counter = static_cast<uint64_t>(value / 1000 * m_rotations_per_kwh);
-                    ESP_LOGD(TAG, "Restored rotation counter:  %u rotations", m_rotation_counter);
-
-                    m_start_value_received = true;
-                    update_energy_counter();
-                }
-            });
+                    restore_energy_meter(value);
+                });
+            }
         }
         else
         {
@@ -188,6 +188,18 @@ namespace esphome::ferraris
                     mode ? m_last_state : false);
         }
 #endif
+    }
+
+    void FerrarisMeter::restore_energy_meter(float value)
+    {
+        if (!m_start_value_received)
+        {
+            m_rotation_counter = static_cast<uint64_t>(value / 1000 * m_rotations_per_kwh);
+            ESP_LOGD(TAG, "Restored rotation counter:  %u rotations", m_rotation_counter);
+
+            m_start_value_received = true;
+            update_energy_counter();
+        }
     }
 
     void FerrarisMeter::set_energy_meter(float value)

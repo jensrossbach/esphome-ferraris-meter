@@ -58,7 +58,7 @@ namespace esphome::ferraris
         void dump_config() override;
 
         void set_calibration_mode(bool mode);
-
+        void restore_energy_meter(float value);
         void set_energy_meter(float value);
         void set_rotation_counter(uint64_t value);
 
