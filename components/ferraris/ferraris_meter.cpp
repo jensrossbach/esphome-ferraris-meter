@@ -37,7 +37,7 @@ namespace esphome::ferraris
 
     static constexpr const char *const TAG = "ferraris";
 
-    FerrarisMeter::FerrarisMeter(uint32_t rpkwh, uint32_t low_state_threshold)
+    FerrarisMeter::FerrarisMeter(uint32_t rpkwh, uint32_t debounce_threshold)
         : Component()
         , m_pin(nullptr)
 #ifdef USE_SENSOR
@@ -57,7 +57,7 @@ namespace esphome::ferraris
 #endif
         , m_analog_input_threshold(0.0f)
         , m_rotations_per_kwh(rpkwh)
-        , m_low_state_threshold(low_state_threshold)
+        , m_debounce_threshold(debounce_threshold)
         , m_last_state(false)
         , m_last_time(-1)
         , m_last_rising_time(-1)
@@ -152,7 +152,7 @@ namespace esphome::ferraris
 #endif
 #endif
         ESP_LOGCONFIG(TAG, "  Rotations per kWh: %d", m_rotations_per_kwh);
-        ESP_LOGCONFIG(TAG, "  Low state threshold: %d ms", m_low_state_threshold);
+        ESP_LOGCONFIG(TAG, "  Debounce threshold: %d ms", m_debounce_threshold);
 #ifdef USE_SENSOR
         LOG_SENSOR("", "Power consumption sensor", m_power_consumption_sensor);
         LOG_SENSOR("", "Energy meter sensor", m_energy_meter_sensor);
@@ -192,11 +192,11 @@ namespace esphome::ferraris
                     }
                     else
                     {
-                        uint32_t low_state_duration = get_duration(m_last_time, now);
+                        uint32_t falling_to_rising_duration = get_duration(m_last_time, now);
 
-                        if (low_state_duration < m_low_state_threshold)
+                        if (falling_to_rising_duration < m_debounce_threshold)
                         {
-                            ESP_LOGD(TAG, "Ignoring low state duration below threshold:  %u ms", low_state_duration);
+                            ESP_LOGD(TAG, "Ignoring falling to rising duration below threshold:  %u ms", falling_to_rising_duration);
                         }
                         else
                         {

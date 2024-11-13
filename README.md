@@ -48,7 +48,7 @@ Die folgenden Abschnitte beschreiben die wichtigsten Komponenten, die in der Fir
 ### Ferraris-Komponente
 Die Komponente Ferraris ist unabdingbar und muss hinzugefügt werden, um ihre Sensoren zu verwenden.
 
-Da es sich um eine individuelle Komponente handelt, die nicht Teil von ESPHome ist, muss sie explizit importiert werden. Am einfachsten ist es, die Komponente direkt aus diesem Repository zu laden.
+Da es sich um eine benutzerdefinierte Komponente handelt, die nicht Teil von ESPHome ist, muss sie explizit importiert werden. Am einfachsten ist es, die Komponente direkt aus diesem Repository zu laden.
 
 ##### Beispiel
 
@@ -65,16 +65,18 @@ Die folgenden generischen Einstellungen können konfiguriert werden:
 | `id` | nein <sup>1</sup> | - | ID der Instanz der Ferraris-Komponente |
 | `pin` | ja <sup>2</sup> | - | ID des GPIO-Pins, mit dem der digitale Ausgang des TCRT5000-Moduls verbunden ist |
 | `analog_input` | ja <sup>2</sup> | - | ID eines [ADC-Sensors](https://www.esphome.io/components/sensor/adc.html), der den mit dem analogen Ausgang des TCRT5000-Moduls verbundenen Pin ausliest |
-| `analog_threshold` | nein | 500 | ID einer [Zahlen-Komponente](https://www.esphome.io/components/number), deren Wert als Schwellwert für die Erkennung einer Umdrehung über den analogen Eingang dient oder ein Schwellwert als feste Zahl |
+| `analog_threshold` | nein | 500 | ID einer [Zahlen-Komponente](https://www.esphome.io/components/number), deren Wert als Schwellwert für die Erkennung einer Umdrehung über den analogen Eingang dient oder ein Schwellwert als feste Zahl <sup>3</sup> |
 | `rotations_per_kwh` | nein | 75 | Anzahl der Umdrehungen der Drehscheibe pro kWh (der Wert ist i.d.R. auf dem Ferraris-Stromzähler vermerkt) |
-| `low_state_threshold` | nein | 400 | Minimale Zeit in Millisekunden zwischen fallender und darauffolgender steigender Flanke, damit die Umdrehung berücksichtigt wird <sup>3</sup> |
+| `debounce_threshold` | nein | 400 | Minimale Zeit in Millisekunden zwischen fallender und darauffolgender steigender Flanke, damit die Umdrehung berücksichtigt wird <sup>4</sup> |
 | `energy_start_value` | nein | - | ID einer [Zahlen-Komponente](https://www.esphome.io/components/number), deren Wert beim Booten als Startwert für den Verbrauchszähler verwendet wird |
 
 <sup>1</sup> Bestimmte Anwendungsfälle benötigen das Konfigurationselement `id`.
 
 <sup>2</sup> Nur eines der beiden Konfigurationselemente `pin` und `analog_input` wird benötigt, je nach Hardware-Aufbauvariante.
 
-<sup>3</sup> Der Übergang von nicht markiertem zu markiertem Bereich und umgekehrt auf der Drehscheibe kann zu einem schnellen Hin-und Herspringen des Erkennungszustands des Sensors führen, das vor allem bei langsamen Drehgeschwindigkeiten auftritt und nicht vollständig durch die Kalibierung unterdrückt werden kann. Diese schnellen Wechsel führen zu verfälschten Messwerten und um diese zu vermeiden, gibt es die Einstellung `low_state_threshold`, welche die minimale Zeit in Millisekunden zwischen fallender und darauffolgender steigender Flanke angibt. Nur wenn die gemessene Zeit zwischen den zwei Flanken über dem konfigurierten Wert liegt, wird die Sensorauslösung berücksichtigt.
+<sup>3</sup> Der Schwellwert steuert, wann das analoge Signal als "erkannt" (markierter Bereich der Drehscheibe) und wann als "nicht erkannt" (nicht markierter Bereich der Drehscheibe) behandelt wird. Ist der Wert aus dem ADC-Sensor größer als der Schwellwert, gilt die Markierung als erkannt, ist er kleiner, gilt sie als nicht erkannt.
+
+<sup>4</sup> Der Übergang von nicht markiertem zu markiertem Bereich und umgekehrt auf der Drehscheibe kann zu einem schnellen Hin-und Herspringen ("prellen") des Erkennungszustands des Sensors führen, das vor allem bei langsamen Drehgeschwindigkeiten auftritt und nicht vollständig durch die Kalibierung unterdrückt werden kann. Dieses Prellen führt zu verfälschten Messwerten und um diese zu vermeiden, gibt es die Einstellung `debounce_threshold` (Entprellungsschwellwert), welche die minimale Zeit in Millisekunden zwischen fallender und darauffolgender steigender Flanke angibt. Nur wenn die gemessene Zeit zwischen den zwei Flanken über dem konfigurierten Wert liegt, wird die Sensorauslösung berücksichtigt.
 
 ##### Beispiel
 ```yaml
@@ -82,7 +84,7 @@ ferraris:
   id: ferraris_meter
   pin: GPIO4
   rotations_per_kwh: 75
-  low_state_threshold: 400
+  debounce_threshold: 400
   energy_start_value: last_energy_value
 ```
 
@@ -529,16 +531,18 @@ The following generic configuration items can be configured:
 | `id` | no <sup>1</sup> | - | ID of the Ferraris component instance |
 | `pin` | yes <sup>2</sup> | - | ID of the GPIO pin to which the digital output of the TCRT5000 module is connected |
 | `analog_input` | yes <sup>2</sup> | - | ID of an [ADC sensor](https://www.esphome.io/components/sensor/adc.html) which reads out the pin connected to the analog output of the TCRT5000 module |
-| `analog_threshold` | no | 500 | ID of a [number component](https://www.esphome.io/components/number) whose value is used as threshold value for the detection of rotations via the analog input or a fixed number as threshold |
+| `analog_threshold` | no | 500 | ID of a [number component](https://www.esphome.io/components/number) whose value is used as threshold value for the detection of rotations via the analog input or a fixed number as threshold <sup>3</sup> |
 | `rotations_per_kwh` | no | 75 | Number of rotations of the turntable per kWh (that value is usually noted on the Ferraris electricity meter) |
-| `low_state_threshold` | no | 400 | Minimum time in milliseconds between falling and subsequent rising edge to take the rotation into account <sup>3</sup> |
+| `debounce_threshold` | no | 400 | Minimum time in milliseconds between falling and subsequent rising edge to take the rotation into account <sup>4</sup> |
 | `energy_start_value` | no | - | ID of a [number component](https://www.esphome.io/components/number), whose value will be used as starting value for the energy counter at boot time |
 
 <sup>1</sup> Some use cases require the configuration element `id`.
 
 <sup>2</sup> Only one of `pin` or `analog_input` is required, depending on the hardware setup variant.
 
-<sup>3</sup> The transition from unmarked to marked area and vice versa on the turntable can lead to a rapid back and forth jump in the detection state of the sensor, which occurs particularly at slow rotation speeds and cannot be completely suppressed by the calibration. These rapid changes lead to falsified measured values and to avoid this, there is the setting `low_state_threshold`, which specifies the minimum time in milliseconds between falling and subsequent rising edge. The trigger from the sensor is only taken into account if the measured time between the two edges is above the configured value.
+<sup>3</sup> The threshold value controls when the analog signal is treated as "detected" (marked area of the turntable) and when it is treated as "not detected" (unmarked area of the turntable). If the value from the ADC sensor is greater than the threshold value, the marking is considered detected; if it is smaller, it is considered not detected.
+
+<sup>4</sup> The transition from unmarked to marked area and vice versa on the turntable can lead to a rapid back and forth jump ("bouncing") in the detection state of the sensor, which occurs particularly at slow rotation speeds and cannot be completely suppressed by the calibration. This bouncing of the state leads to falsified measured values and to avoid this, there is the setting `debounce_threshold`, which specifies the minimum time in milliseconds between falling and subsequent rising edge. The trigger from the sensor is only taken into account if the measured time between the two edges is above the configured value.
 
 ##### Example
 ```yaml
@@ -546,7 +550,7 @@ ferraris:
   id: ferraris_meter
   pin: GPIO4
   rotations_per_kwh: 75
-  low_state_threshold: 400
+  debounce_threshold: 400
   energy_start_value: last_energy_value
 ```
 

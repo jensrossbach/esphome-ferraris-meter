@@ -49,7 +49,7 @@ namespace esphome::ferraris
     class FerrarisMeter : public Component
     {
     public:
-        FerrarisMeter(uint32_t rpkwh, uint32_t low_state_threshold);
+        FerrarisMeter(uint32_t rpkwh, uint32_t debounce_threshold);
         virtual ~FerrarisMeter() = default;
 
         void setup() override;
@@ -155,7 +155,7 @@ namespace esphome::ferraris
 
         float m_analog_input_threshold;
         uint32_t m_rotations_per_kwh;
-        uint32_t m_low_state_threshold;
+        uint32_t m_debounce_threshold;
 
         bool m_last_state;
         int64_t m_last_time;

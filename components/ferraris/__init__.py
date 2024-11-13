@@ -37,12 +37,12 @@ from esphome.const       import (
 CODEOWNERS = ["@jensrossbach"]
 MULTI_CONF = True
 
-CONF_FERRARIS_ID         = "ferraris_id"
-CONF_ANALOG_INPUT        = "analog_input"
-CONF_ANALOG_THRESHOLD    = "analog_threshold"
-CONF_ROTATIONS_PER_KWH   = "rotations_per_kwh"
-CONF_LOW_STATE_THRESHOLD = "low_state_threshold"
-CONF_ENERGY_START_VALUE  = "energy_start_value"
+CONF_FERRARIS_ID        = "ferraris_id"
+CONF_ANALOG_INPUT       = "analog_input"
+CONF_ANALOG_THRESHOLD   = "analog_threshold"
+CONF_ROTATIONS_PER_KWH  = "rotations_per_kwh"
+CONF_DEBOUNCE_THRESHOLD = "debounce_threshold"
+CONF_ENERGY_START_VALUE = "energy_start_value"
 
 ferraris_ns = cg.esphome_ns.namespace("ferraris")
 FerrarisMeter = ferraris_ns.class_("FerrarisMeter", cg.Component)
@@ -63,7 +63,7 @@ CONFIG_SCHEMA = cv.All(
         cv.Optional(CONF_ANALOG_INPUT): cv.use_id(sensor.Sensor),
         cv.Optional(CONF_ANALOG_THRESHOLD, default = 500): cv.Any(cv.Coerce(float), cv.use_id(number.Number)),
         cv.Optional(CONF_ROTATIONS_PER_KWH, default = 75): cv.int_range(min = 1),
-        cv.Optional(CONF_LOW_STATE_THRESHOLD, default = 400): cv.int_range(min = 0),
+        cv.Optional(CONF_DEBOUNCE_THRESHOLD, default = 400): cv.int_range(min = 0),
         cv.Optional(CONF_ENERGY_START_VALUE): cv.use_id(number.Number)
     }).extend(cv.COMPONENT_SCHEMA),
     ensure_pin_or_adc)
@@ -73,7 +73,7 @@ async def to_code(config):
     cmp = cg.new_Pvariable(
                 config[CONF_ID],
                 config[CONF_ROTATIONS_PER_KWH],
-                config[CONF_LOW_STATE_THRESHOLD])
+                config[CONF_DEBOUNCE_THRESHOLD])
     await cg.register_component(cmp, config)
 
     if CONF_PIN in config:
