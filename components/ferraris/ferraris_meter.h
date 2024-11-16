@@ -69,19 +69,10 @@ namespace esphome::ferraris
             m_pin = pin;
         }
 
-        void set_analog_input_sensor(sensor::Sensor *sensor, float threshold)
+        void set_analog_input_sensor(sensor::Sensor *sensor)
         {
             m_analog_input_sensor = sensor;
-            m_analog_input_threshold = threshold;
         }
-
-#ifdef USE_NUMBER
-        void set_analog_input_sensor(sensor::Sensor *sensor, number::Number* threshold_number)
-        {
-            m_analog_input_sensor = sensor;
-            m_analog_input_threshold_number = threshold_number;
-        }
-#endif
 
         void set_power_consumption_sensor(sensor::Sensor *sensor)
         {
@@ -109,11 +100,42 @@ namespace esphome::ferraris
 #endif
 
 #ifdef USE_NUMBER
+        void set_analog_input_threshold_number(number::Number* threshold_number)
+        {
+            m_analog_input_threshold_number = threshold_number;
+        }
+
+        void set_off_tolerance_number(number::Number* tolerance_number)
+        {
+            m_off_tolerance_number = tolerance_number;
+        }
+
+        void set_on_tolerance_number(number::Number* tolerance_number)
+        {
+            m_on_tolerance_number = tolerance_number;
+        }
+
         void set_energy_start_value_number(number::Number* energy_start_value_number)
         {
             m_energy_start_value_number = energy_start_value_number;
         }
 #endif
+
+        void set_analog_input_threshold(float threshold)
+        {
+            m_analog_input_threshold = threshold;
+        }
+
+        void set_off_tolerance(float tolerance)
+        {
+            m_off_tolerance = tolerance;
+        }
+
+        void set_on_tolerance(float tolerance)
+        {
+            m_on_tolerance = tolerance;
+        }
+
 
     private:
         void update_power_consumption(uint32_t rotation_time);
@@ -150,10 +172,14 @@ namespace esphome::ferraris
 #endif
 #ifdef USE_NUMBER
         number::Number* m_analog_input_threshold_number;
+        number::Number* m_off_tolerance_number;
+        number::Number* m_on_tolerance_number;
         number::Number* m_energy_start_value_number;
 #endif
 
         float m_analog_input_threshold;
+        float m_off_tolerance;
+        float m_on_tolerance;
         uint32_t m_rotations_per_kwh;
         uint32_t m_debounce_threshold;
 

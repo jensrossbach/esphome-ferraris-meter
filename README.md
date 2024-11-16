@@ -66,17 +66,27 @@ Die folgenden generischen Einstellungen können konfiguriert werden:
 | `pin` | ja <sup>2</sup> | - | ID des GPIO-Pins, mit dem der digitale Ausgang des TCRT5000-Moduls verbunden ist |
 | `analog_input` | ja <sup>2</sup> | - | ID eines [ADC-Sensors](https://www.esphome.io/components/sensor/adc.html), der den mit dem analogen Ausgang des TCRT5000-Moduls verbundenen Pin ausliest |
 | `analog_threshold` | nein | 50 | ID einer [Zahlen-Komponente](https://www.esphome.io/components/number), deren Wert als Schwellwert für die Erkennung einer Umdrehung über den analogen Eingang dient oder ein Schwellwert als feste Zahl <sup>3</sup> |
+| `off_tolerance` | nein | 0 | Negativer Versatz zum analogen Schwellwert für die fallende Flanke <sup>4</sup> |
+| `on_tolerance` | nein | 0 | Positiver Versatz zum analogen Schwellwert für die steigende Flanke <sup>4</sup> |
 | `rotations_per_kwh` | nein | 75 | Anzahl der Umdrehungen der Drehscheibe pro kWh (der Wert ist i.d.R. auf dem Ferraris-Stromzähler vermerkt) |
-| `debounce_threshold` | nein | 400 | Minimale Zeit in Millisekunden zwischen fallender und darauffolgender steigender Flanke, damit die Umdrehung berücksichtigt wird <sup>4</sup> |
+| `debounce_threshold` | nein | 400 | Minimale Zeit in Millisekunden zwischen fallender und darauffolgender steigender Flanke, damit die Umdrehung berücksichtigt wird <sup>5</sup> |
 | `energy_start_value` | nein | - | ID einer [Zahlen-Komponente](https://www.esphome.io/components/number), deren Wert beim Booten als Startwert für den Verbrauchszähler verwendet wird |
 
 <sup>1</sup> Bestimmte Anwendungsfälle benötigen das Konfigurationselement `id`.
 
 <sup>2</sup> Nur eines der beiden Konfigurationselemente `pin` und `analog_input` wird benötigt, je nach Hardware-Aufbauvariante.
 
-<sup>3</sup> Der Schwellwert steuert, wann das analoge Signal als "erkannt" (markierter Bereich der Drehscheibe) und wann als "nicht erkannt" (nicht markierter Bereich der Drehscheibe) behandelt wird. Ist der Wert aus dem ADC-Sensor größer als der Schwellwert, gilt die Markierung als erkannt, ist er kleiner, gilt sie als nicht erkannt.
+<sup>3</sup> Der Schwellwert `analog_threshold` steuert, wann das analoge Signal als "erkannt" (markierter Bereich der Drehscheibe) und wann als "nicht erkannt" (nicht markierter Bereich der Drehscheibe) behandelt wird. Ist der Wert des ADC-Sensors `analog_input` größer als der Schwellwert, gilt die Markierung als erkannt, ist er kleiner, gilt sie als nicht erkannt.
 
-<sup>4</sup> Der Übergang von nicht markiertem zu markiertem Bereich und umgekehrt auf der Drehscheibe kann zu einem schnellen Hin-und Herspringen ("prellen") des Erkennungszustands des Sensors führen, das vor allem bei langsamen Drehgeschwindigkeiten auftritt und nicht vollständig durch die Kalibierung unterdrückt werden kann. Dieses Prellen führt zu verfälschten Messwerten und um diese zu vermeiden, gibt es die Einstellung `debounce_threshold` (Entprellungsschwellwert), welche die minimale Zeit in Millisekunden zwischen fallender und darauffolgender steigender Flanke angibt. Nur wenn die gemessene Zeit zwischen den zwei Flanken über dem konfigurierten Wert liegt, wird die Sensorauslösung berücksichtigt.
+![Analoger Schwellwert](img/analog_threshold.png)
+
+<sup>4</sup> Die beiden Versatzwerte `off_tolerance` und `on_tolerance` können konfiguriert werden, um eine Hysterese-Kennlinie für die Erkennung des markiertes Bereichs auf der Drehscheibe über das analoge Signal zu verwenden.
+
+![Hysterese-Kennlinie](img/hysteresis.png)
+
+<sup>5</sup> Der Übergang von nicht markiertem zu markiertem Bereich und umgekehrt auf der Drehscheibe kann zu einem schnellen Hin-und Herspringen ("prellen") des Erkennungszustands des Sensors führen, das vor allem bei langsamen Drehgeschwindigkeiten auftritt und nicht vollständig durch die Kalibierung unterdrückt werden kann. Dieses Prellen führt zu verfälschten Messwerten und um diese zu vermeiden, gibt es die Einstellung `debounce_threshold` (Entprellungsschwellwert), welche die minimale Zeit in Millisekunden zwischen fallender und darauffolgender steigender Flanke angibt. Nur wenn die gemessene Zeit zwischen den zwei Flanken über dem konfigurierten Wert liegt, wird die Sensorauslösung berücksichtigt.
+
+![Entprellungsschwellwert](img/debounce_threshold.png)
 
 ##### Beispiel
 ```yaml
@@ -212,6 +222,9 @@ Der folgende Steckplatinen-Schaltplan zeigt ein Beispiel für einen Versuchsaufb
 
 Mithilfe eines Schraubenziehers muss anschließend die Empfindlichkeit an dem Potientiometer eingestellt werden. Dabei helfen die beiden grünen LEDs auf der Rückseite des Sensors. Die rechte LED leuchtet dauerhaft, wenn der Sensor mit Strom versorgt wird. Die linke LED leuchtet, solange kein "Hindernis" erkannt wurde und erlischt, wenn die Reflektion unterbrochen wurde. Letzteres ist der Zustand, wenn die Markierung auf der Drehscheibe des Ferraris-Stromzählers vor den Sensor wandert. Die Empfindlichkeit des Sensors sollte also so eingestellt werden, dass die linke LED gerade noch leuchtet, wenn die Markierung nicht im Bereich des Infrarot Sender/Empfänger-Paares ist und erlischt, sobald sich die Markierung davor schiebt. Dies ist nur ein sehr kleiner Bereich und es kann etwas schwierig werden, diese Einstellung zu finden. Zur zusätzlichen Unterstützung dieses Prozesses kann in der Ferraris Meter Firmware der [Kalibierungsmodus](#kalibierungsmodus) aktiviert werden, siehe weiter unten für Details.
 
+> [!TIP]
+> Sollte es nicht gelingen, eine passende und funktionierende Empfindlichkeit für den Sensor einzustellen, kann alternativ der analoge Ausgang des Infrarotsensors verwendet werden, siehe nächsten Abschnitt.
+
 Software-seitig muss für die Ferraris-Komponente in der YAML-Konfigurationsdatei der Pin konfiguriert werden, der mit dem digitalen Ausgang des TCRT5000-Moduls verbunden ist:
 ```yaml
 ferraris:
@@ -229,7 +242,7 @@ Der folgende Steckplatinen-Schaltplan zeigt ein Beispiel für einen Versuchsaufb
 
 ![Steckplatinen-Schaltplan (analoger Pin)](img/breadboard_schematic_analog.png)
 
-Eine Kalibrierung mittels des Potientiometer auf dem TCRT5000-Modul entfällt, stattdessen muss der software-seitige Schwellwert für den analogen Eingang konfiguriert werden (siehe weiter unten). Auch hier kann der [Kalibrierungsmodus](#kalibierungsmodus) der Ferraris-Komponente helfen.
+Eine Kalibrierung mittels des Potientiometers auf dem TCRT5000-Modul entfällt, stattdessen müssen software-seitig der Schwellwert für den analogen Eingang und optional die Versatzwerte für eine Hysterese-Kennlinie konfiguriert werden (siehe weiter unten). Auch hier kann der [Kalibrierungsmodus](#kalibierungsmodus) der Ferraris-Komponente helfen.
 
 Software-seitig müssen nun beispielsweise folgende Konfigurations-Schritte durchgeführt werden:
 1.  In der YAML-Konfigurationsdatei wird ein [ADC-Sensor](https://www.esphome.io/components/sensor/adc.html) konfiguriert, der einen mit dem analogen Ausgang des TCRT5000-Moduls verbundenen ADC-Pin ausliest.
@@ -273,6 +286,8 @@ Software-seitig müssen nun beispielsweise folgende Konfigurations-Schritte durc
       analog_threshold: 350
       # ...
     ```
+
+Die Konfiguration der Versatzwerte `off_tolerance` und `on_tolerance` ist sehr ähnlich zur Konfiguration von `analog_threshold` und wurde deshalb in obigem Beispiel nicht explizit gezeigt.
 
 **Beispiel-Konfiguration:** [ferraris_meter_analog.yaml](example_config/ferraris_meter_analog.yaml)
 
@@ -532,17 +547,27 @@ The following generic configuration items can be configured:
 | `pin` | yes <sup>2</sup> | - | ID of the GPIO pin to which the digital output of the TCRT5000 module is connected |
 | `analog_input` | yes <sup>2</sup> | - | ID of an [ADC sensor](https://www.esphome.io/components/sensor/adc.html) which reads out the pin connected to the analog output of the TCRT5000 module |
 | `analog_threshold` | no | 50 | ID of a [number component](https://www.esphome.io/components/number) whose value is used as threshold value for the detection of rotations via the analog input or a fixed number as threshold <sup>3</sup> |
+| `off_tolerance` | no | 0 | Negative offset to the analog threshold for the falling edge <sup>4</sup> |
+| `on_tolerance` | no | 0 | Positive offset to the analog threshold for the rising edge <sup>4</sup> |
 | `rotations_per_kwh` | no | 75 | Number of rotations of the turntable per kWh (that value is usually noted on the Ferraris electricity meter) |
-| `debounce_threshold` | no | 400 | Minimum time in milliseconds between falling and subsequent rising edge to take the rotation into account <sup>4</sup> |
+| `debounce_threshold` | no | 400 | Minimum time in milliseconds between falling and subsequent rising edge to take the rotation into account <sup>5</sup> |
 | `energy_start_value` | no | - | ID of a [number component](https://www.esphome.io/components/number), whose value will be used as starting value for the energy counter at boot time |
 
 <sup>1</sup> Some use cases require the configuration element `id`.
 
 <sup>2</sup> Only one of `pin` or `analog_input` is required, depending on the hardware setup variant.
 
-<sup>3</sup> The threshold value controls when the analog signal is treated as "detected" (marked area of the turntable) and when it is treated as "not detected" (unmarked area of the turntable). If the value from the ADC sensor is greater than the threshold value, the marking is considered detected; if it is smaller, it is considered not detected.
+<sup>3</sup> The threshold value `analog_threshold` controls when the analog signal is treated as "detected" (marked area of the turntable) and when it is treated as "not detected" (unmarked area of the turntable). If the value from the ADC sensor `analog_input` is greater than the threshold value, the marking is considered detected; if it is smaller, it is considered not detected.
 
-<sup>4</sup> The transition from unmarked to marked area and vice versa on the turntable can lead to a rapid back and forth jump ("bouncing") in the detection state of the sensor, which occurs particularly at slow rotation speeds and cannot be completely suppressed by the calibration. This bouncing of the state leads to falsified measured values and to avoid this, there is the setting `debounce_threshold`, which specifies the minimum time in milliseconds between falling and subsequent rising edge. The trigger from the sensor is only taken into account if the measured time between the two edges is above the configured value.
+![Analoger Threshold](img/analog_threshold.png)
+
+<sup>4</sup> The two offset values `off_tolerance` and `on_tolerance` can be configured to use a hysteresis curve for the detection of the marked area on the turntable via the analog signal.
+
+![Hysteresis Curve](img/hysteresis.png)
+
+<sup>5</sup> The transition from unmarked to marked area and vice versa on the turntable can lead to a rapid back and forth jump ("bouncing") in the detection state of the sensor, which occurs particularly at slow rotation speeds and cannot be completely suppressed by the calibration. This bouncing of the state leads to falsified measured values and to avoid this, there is the setting `debounce_threshold`, which specifies the minimum time in milliseconds between falling and subsequent rising edge. The trigger from the sensor is only taken into account if the measured time between the two edges is above the configured value.
+
+![Debounce Threshold](img/debounce_threshold.png)
 
 ##### Example
 ```yaml
@@ -678,6 +703,9 @@ The following breadboard schematic shows an example test setup using an ESP8266 
 
 The sensitivity of the potentiometer must then be adjusted using a screwdriver, the two green LEDs on the back of the sensor help with this. The right-hand LED lights up continuously when the sensor is supplied with power. The left-hand LED lights up as long as no “obstacle” has been detected and goes out when the reflection has been interrupted. The latter is the state when the mark on the Ferraris electricity meter's turntable moves in front of the sensor. The sensitivity of the sensor should therefore be set so that the left-hand LED just lights up when the marker is not in the range of the infrared transmitter/receiver pair and goes out as soon as the marker moves in front of it. This is only a very small range and it can be a little difficult to find this setting. To further assist with this process, the [calibration mode](#calibration-mode) can be enabled in the Ferraris Meter firmware, see further down for details.
 
+> [!TIP]
+> In case you are unable to find an appropriate and working sensitivity of the sensor, you can alternatively use the analog output of the infrared sensor, see next section.
+
 On the software side, the pin which is connected to the digital output of the TCRT5000 module has to be configured for the Ferraris component in the YAML configuration file:
 ```yaml
 ferraris:
@@ -695,7 +723,7 @@ The following breadboard schematic shows an example test setup using an ESP8266 
 
 ![Breadboard Schematic (analog Pin)](img/breadboard_schematic_analog.png)
 
-A calibration using the potentiometer on the TCRT5000 module is not needed. Instead, the threshold for the analog input must be configured on the software side (see further down). Also here, the [calibration mode](#calibration-mode) of the Ferraris component could be helpful.
+A calibration using the potentiometer on the TCRT5000 module is not needed. Instead, the threshold for the analog input and optionally the offset values for a hysteresis curve must be configured on the software side (see further down). Also here, the [calibration mode](#calibration-mode) of the Ferraris component could be helpful.
 
 On the software side, for instance, the following configuration steps must now be carried out:
 1.  An [ADC sensor](https://www.esphome.io/components/sensor/adc.html) is configured in the YAML configuration file, which reads out an ADC pin connected to the analog output of the TCRT5000 module.
@@ -739,6 +767,8 @@ On the software side, for instance, the following configuration steps must now b
       analog_threshold: 350
       # ...
     ```
+
+The configuration for the offset values `off_tolerance` and `on_tolerance` is very similar to the configuration of `analog_threshold` and therefore not explicitly shown in above example.
 
 **Example configuration file:** [ferraris_meter_analog.yaml](example_config/ferraris_meter_analog.yaml)
 

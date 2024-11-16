@@ -53,9 +53,13 @@ namespace esphome::ferraris
 #endif
 #ifdef USE_NUMBER
         , m_analog_input_threshold_number(nullptr)
+        , m_off_tolerance_number(nullptr)
+        , m_on_tolerance_number(nullptr)
         , m_energy_start_value_number(nullptr)
 #endif
         , m_analog_input_threshold(0.0f)
+        , m_off_tolerance(0.0f)
+        , m_on_tolerance(0.0f)
         , m_rotations_per_kwh(rpkwh)
         , m_debounce_threshold(debounce_threshold)
         , m_last_state(false)
@@ -74,7 +78,18 @@ namespace esphome::ferraris
         {
             m_analog_input_sensor->add_on_state_callback([this](float value)
             {
-                handle_state(value > m_analog_input_threshold);
+                bool state = false;
+
+                if (m_last_state)
+                {
+                    state = (value > m_analog_input_threshold - m_off_tolerance);
+                }
+                else
+                {
+                    state = (value > m_analog_input_threshold + m_on_tolerance);
+                }
+
+                handle_state(state);
             });
         }
 
@@ -102,6 +117,32 @@ namespace esphome::ferraris
             m_analog_input_threshold_number->add_on_state_callback([this](float value)
             {
                 m_analog_input_threshold = value;
+            });
+        }
+
+        if (m_off_tolerance_number != nullptr)
+        {
+            if (m_off_tolerance_number->has_state())
+            {
+                m_off_tolerance = m_off_tolerance_number->state;
+            }
+
+            m_off_tolerance_number->add_on_state_callback([this](float value)
+            {
+                m_off_tolerance = value;
+            });
+        }
+
+        if (m_on_tolerance_number != nullptr)
+        {
+            if (m_on_tolerance_number->has_state())
+            {
+                m_on_tolerance = m_on_tolerance_number->state;
+            }
+
+            m_on_tolerance_number->add_on_state_callback([this](float value)
+            {
+                m_on_tolerance = value;
             });
         }
 
@@ -142,12 +183,28 @@ namespace esphome::ferraris
 #ifdef USE_NUMBER
         if ((m_analog_input_sensor != nullptr) && (m_analog_input_threshold_number == nullptr))
         {
-            ESP_LOGCONFIG(TAG, "  Fixed analog input threshold: %d", m_analog_input_threshold);
+            ESP_LOGCONFIG(TAG, "  Static analog input threshold: %.2f", m_analog_input_threshold);
+        }
+        if ((m_analog_input_sensor != nullptr) && (m_off_tolerance_number == nullptr))
+        {
+            ESP_LOGCONFIG(TAG, "  Static OFF tolerance: %.2f", m_off_tolerance);
+        }
+        if ((m_analog_input_sensor != nullptr) && (m_on_tolerance_number == nullptr))
+        {
+            ESP_LOGCONFIG(TAG, "  Static ON tolerance: %.2f", m_on_tolerance);
         }
 #else
         if (m_analog_input_sensor != nullptr)
         {
-            ESP_LOGCONFIG(TAG, "  Fixed analog input threshold: %d", m_analog_input_threshold);
+            ESP_LOGCONFIG(TAG, "  Static analog input threshold: %.2f", m_analog_input_threshold);
+        }
+        if (m_analog_input_sensor != nullptr)
+        {
+            ESP_LOGCONFIG(TAG, "  Static OFF tolerance: %.2f", m_off_tolerance);
+        }
+        if (m_analog_input_sensor != nullptr)
+        {
+            ESP_LOGCONFIG(TAG, "  Static ON tolerance: %.2f", m_on_tolerance);
         }
 #endif
 #endif

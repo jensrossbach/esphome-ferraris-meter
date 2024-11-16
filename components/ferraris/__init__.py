@@ -40,6 +40,8 @@ MULTI_CONF = True
 CONF_FERRARIS_ID        = "ferraris_id"
 CONF_ANALOG_INPUT       = "analog_input"
 CONF_ANALOG_THRESHOLD   = "analog_threshold"
+CONF_OFF_TOLERANCE      = "off_tolerance"
+CONF_ON_TOLERANCE       = "on_tolerance"
 CONF_ROTATIONS_PER_KWH  = "rotations_per_kwh"
 CONF_DEBOUNCE_THRESHOLD = "debounce_threshold"
 CONF_ENERGY_START_VALUE = "energy_start_value"
@@ -62,6 +64,8 @@ CONFIG_SCHEMA = cv.All(
         cv.Optional(CONF_PIN): pins.internal_gpio_input_pin_schema,
         cv.Optional(CONF_ANALOG_INPUT): cv.use_id(sensor.Sensor),
         cv.Optional(CONF_ANALOG_THRESHOLD, default = 50): cv.Any(cv.Coerce(float), cv.use_id(number.Number)),
+        cv.Optional(CONF_OFF_TOLERANCE, default = 0): cv.Any(cv.Coerce(float), cv.use_id(number.Number)),
+        cv.Optional(CONF_ON_TOLERANCE, default = 0): cv.Any(cv.Coerce(float), cv.use_id(number.Number)),
         cv.Optional(CONF_ROTATIONS_PER_KWH, default = 75): cv.int_range(min = 1),
         cv.Optional(CONF_DEBOUNCE_THRESHOLD, default = 400): cv.int_range(min = 0),
         cv.Optional(CONF_ENERGY_START_VALUE): cv.use_id(number.Number)
@@ -81,11 +85,25 @@ async def to_code(config):
         cg.add(cmp.set_digital_input_pin(pin))
     elif CONF_ANALOG_INPUT in config:
         sens = await cg.get_variable(config[CONF_ANALOG_INPUT])
+        cg.add(cmp.set_analog_input_sensor(sens))
+
         if isinstance(config[CONF_ANALOG_THRESHOLD], float):
-            cg.add(cmp.set_analog_input_sensor(sens, config[CONF_ANALOG_THRESHOLD]))
+            cg.add(cmp.set_analog_input_threshold(config[CONF_ANALOG_THRESHOLD]))
         else:
             num = await cg.get_variable(config[CONF_ANALOG_THRESHOLD])
-            cg.add(cmp.set_analog_input_sensor(sens, num))
+            cg.add(cmp.set_analog_input_threshold_number(num))
+
+        if isinstance(config[CONF_OFF_TOLERANCE], float):
+            cg.add(cmp.set_off_tolerance(config[CONF_OFF_TOLERANCE]))
+        else:
+            num = await cg.get_variable(config[CONF_OFF_TOLERANCE])
+            cg.add(cmp.set_off_tolerance_number(num))
+
+        if isinstance(config[CONF_ON_TOLERANCE], float):
+            cg.add(cmp.set_on_tolerance(config[CONF_ON_TOLERANCE]))
+        else:
+            num = await cg.get_variable(config[CONF_ON_TOLERANCE])
+            cg.add(cmp.set_on_tolerance_number(num))
 
     if CONF_ENERGY_START_VALUE in config:
         num = await cg.get_variable(config[CONF_ENERGY_START_VALUE])
