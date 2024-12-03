@@ -61,7 +61,7 @@ CONFIG_SCHEMA = cv.All(
         cv.GenerateID(): cv.declare_id(FerrarisMeter),
         cv.Optional(CONF_PIN): pins.internal_gpio_input_pin_schema,
         cv.Optional(CONF_ANALOG_INPUT): cv.use_id(sensor.Sensor),
-        cv.Optional(CONF_ANALOG_THRESHOLD, default = 500): cv.Any(cv.Coerce(float), cv.use_id(number.Number)),
+        cv.Optional(CONF_ANALOG_THRESHOLD, default = 50): cv.Any(cv.Coerce(float), cv.use_id(number.Number)),
         cv.Optional(CONF_ROTATIONS_PER_KWH, default = 75): cv.int_range(min = 1),
         cv.Optional(CONF_DEBOUNCE_THRESHOLD, default = 400): cv.int_range(min = 0),
         cv.Optional(CONF_ENERGY_START_VALUE): cv.use_id(number.Number)

@@ -65,7 +65,7 @@ Die folgenden generischen Einstellungen können konfiguriert werden:
 | `id` | nein <sup>1</sup> | - | ID der Instanz der Ferraris-Komponente |
 | `pin` | ja <sup>2</sup> | - | ID des GPIO-Pins, mit dem der digitale Ausgang des TCRT5000-Moduls verbunden ist |
 | `analog_input` | ja <sup>2</sup> | - | ID eines [ADC-Sensors](https://www.esphome.io/components/sensor/adc.html), der den mit dem analogen Ausgang des TCRT5000-Moduls verbundenen Pin ausliest |
-| `analog_threshold` | nein | 500 | ID einer [Zahlen-Komponente](https://www.esphome.io/components/number), deren Wert als Schwellwert für die Erkennung einer Umdrehung über den analogen Eingang dient oder ein Schwellwert als feste Zahl <sup>3</sup> |
+| `analog_threshold` | nein | 50 | ID einer [Zahlen-Komponente](https://www.esphome.io/components/number), deren Wert als Schwellwert für die Erkennung einer Umdrehung über den analogen Eingang dient oder ein Schwellwert als feste Zahl <sup>3</sup> |
 | `rotations_per_kwh` | nein | 75 | Anzahl der Umdrehungen der Drehscheibe pro kWh (der Wert ist i.d.R. auf dem Ferraris-Stromzähler vermerkt) |
 | `debounce_threshold` | nein | 400 | Minimale Zeit in Millisekunden zwischen fallender und darauffolgender steigender Flanke, damit die Umdrehung berücksichtigt wird <sup>4</sup> |
 | `energy_start_value` | nein | - | ID einer [Zahlen-Komponente](https://www.esphome.io/components/number), deren Wert beim Booten als Startwert für den Verbrauchszähler verwendet wird |
@@ -253,7 +253,7 @@ Software-seitig müssen nun beispielsweise folgende Konfigurations-Schritte durc
         entity_category: config
         mode: slider
         optimistic: true
-        initial_value: 500
+        initial_value: 50
         min_value: 0
         max_value: 1000
         step: 1
@@ -531,7 +531,7 @@ The following generic configuration items can be configured:
 | `id` | no <sup>1</sup> | - | ID of the Ferraris component instance |
 | `pin` | yes <sup>2</sup> | - | ID of the GPIO pin to which the digital output of the TCRT5000 module is connected |
 | `analog_input` | yes <sup>2</sup> | - | ID of an [ADC sensor](https://www.esphome.io/components/sensor/adc.html) which reads out the pin connected to the analog output of the TCRT5000 module |
-| `analog_threshold` | no | 500 | ID of a [number component](https://www.esphome.io/components/number) whose value is used as threshold value for the detection of rotations via the analog input or a fixed number as threshold <sup>3</sup> |
+| `analog_threshold` | no | 50 | ID of a [number component](https://www.esphome.io/components/number) whose value is used as threshold value for the detection of rotations via the analog input or a fixed number as threshold <sup>3</sup> |
 | `rotations_per_kwh` | no | 75 | Number of rotations of the turntable per kWh (that value is usually noted on the Ferraris electricity meter) |
 | `debounce_threshold` | no | 400 | Minimum time in milliseconds between falling and subsequent rising edge to take the rotation into account <sup>4</sup> |
 | `energy_start_value` | no | - | ID of a [number component](https://www.esphome.io/components/number), whose value will be used as starting value for the energy counter at boot time |
@@ -719,7 +719,7 @@ On the software side, for instance, the following configuration steps must now b
         entity_category: config
         mode: slider
         optimistic: true
-        initial_value: 500
+        initial_value: 50
         min_value: 0
         max_value: 1000
         step: 1
