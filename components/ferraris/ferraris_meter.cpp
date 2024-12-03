@@ -37,7 +37,7 @@ namespace esphome::ferraris
 
     static constexpr const char *const TAG = "ferraris";
 
-    FerrarisMeter::FerrarisMeter(uint32_t rpkwh, uint32_t debounce_threshold)
+    FerrarisMeter::FerrarisMeter(uint32_t rpkwh)
         : Component()
         , m_pin(nullptr)
 #ifdef USE_SENSOR
@@ -61,7 +61,7 @@ namespace esphome::ferraris
         , m_off_tolerance(0.0f)
         , m_on_tolerance(0.0f)
         , m_rotations_per_kwh(rpkwh)
-        , m_debounce_threshold(debounce_threshold)
+        , m_debounce_threshold(0)
         , m_last_state(false)
         , m_last_time(-1)
         , m_last_rising_time(-1)
@@ -146,6 +146,19 @@ namespace esphome::ferraris
             });
         }
 
+        if (m_debounce_threshold_number != nullptr)
+        {
+            if (m_debounce_threshold_number->has_state())
+            {
+                m_debounce_threshold = m_debounce_threshold_number->state;
+            }
+
+            m_debounce_threshold_number->add_on_state_callback([this](float value)
+            {
+                m_debounce_threshold = value;
+            });
+        }
+
         if (m_energy_start_value_number != nullptr)
         {
             if (m_energy_start_value_number->has_state())
@@ -209,7 +222,14 @@ namespace esphome::ferraris
 #endif
 #endif
         ESP_LOGCONFIG(TAG, "  Rotations per kWh: %d", m_rotations_per_kwh);
-        ESP_LOGCONFIG(TAG, "  Debounce threshold: %d ms", m_debounce_threshold);
+#ifdef USE_NUMBER
+        if (m_debounce_threshold_number == nullptr)
+        {
+            ESP_LOGCONFIG(TAG, "  Static debounce threshold: %u ms", m_debounce_threshold);
+        }
+#else
+        ESP_LOGCONFIG(TAG, "  Static debounce threshold: %d ms", m_debounce_threshold);
+#endif
 #ifdef USE_SENSOR
         LOG_SENSOR("", "Power consumption sensor", m_power_consumption_sensor);
         LOG_SENSOR("", "Energy meter sensor", m_energy_meter_sensor);

@@ -67,7 +67,7 @@ CONFIG_SCHEMA = cv.All(
         cv.Optional(CONF_OFF_TOLERANCE, default = 0): cv.Any(cv.Coerce(float), cv.use_id(number.Number)),
         cv.Optional(CONF_ON_TOLERANCE, default = 0): cv.Any(cv.Coerce(float), cv.use_id(number.Number)),
         cv.Optional(CONF_ROTATIONS_PER_KWH, default = 75): cv.int_range(min = 1),
-        cv.Optional(CONF_DEBOUNCE_THRESHOLD, default = 400): cv.int_range(min = 0),
+        cv.Optional(CONF_DEBOUNCE_THRESHOLD, default = 400): cv.Any(cv.int_range(min = 0), cv.use_id(number.Number)),
         cv.Optional(CONF_ENERGY_START_VALUE): cv.use_id(number.Number)
     }).extend(cv.COMPONENT_SCHEMA),
     ensure_pin_or_adc)
@@ -76,8 +76,7 @@ CONFIG_SCHEMA = cv.All(
 async def to_code(config):
     cmp = cg.new_Pvariable(
                 config[CONF_ID],
-                config[CONF_ROTATIONS_PER_KWH],
-                config[CONF_DEBOUNCE_THRESHOLD])
+                config[CONF_ROTATIONS_PER_KWH])
     await cg.register_component(cmp, config)
 
     if CONF_PIN in config:
@@ -104,6 +103,12 @@ async def to_code(config):
         else:
             num = await cg.get_variable(config[CONF_ON_TOLERANCE])
             cg.add(cmp.set_on_tolerance_number(num))
+
+    if isinstance(config[CONF_DEBOUNCE_THRESHOLD], int):
+        cg.add(cmp.set_debounce_threshold(config[CONF_DEBOUNCE_THRESHOLD]))
+    else:
+        num = await cg.get_variable(config[CONF_DEBOUNCE_THRESHOLD])
+        cg.add(cmp.set_debounce_threshold_number(num))
 
     if CONF_ENERGY_START_VALUE in config:
         num = await cg.get_variable(config[CONF_ENERGY_START_VALUE])

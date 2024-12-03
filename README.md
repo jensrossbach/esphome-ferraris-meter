@@ -60,31 +60,36 @@ external_components:
 
 Die folgenden generischen Einstellungen können konfiguriert werden:
 
-| Option | Benötigt | Standardwert | Beschreibung |
-| ------ | --------- | ------------- |------------ |
-| `id` | nein <sup>1</sup> | - | ID der Instanz der Ferraris-Komponente |
-| `pin` | ja <sup>2</sup> | - | ID des GPIO-Pins, mit dem der digitale Ausgang des TCRT5000-Moduls verbunden ist |
-| `analog_input` | ja <sup>2</sup> | - | ID eines [ADC-Sensors](https://www.esphome.io/components/sensor/adc.html), der den mit dem analogen Ausgang des TCRT5000-Moduls verbundenen Pin ausliest |
-| `analog_threshold` | nein | 50 | ID einer [Zahlen-Komponente](https://www.esphome.io/components/number), deren Wert als Schwellwert für die Erkennung einer Umdrehung über den analogen Eingang dient oder ein Schwellwert als feste Zahl <sup>3</sup> |
-| `off_tolerance` | nein | 0 | Negativer Versatz zum analogen Schwellwert für die fallende Flanke <sup>4</sup> |
-| `on_tolerance` | nein | 0 | Positiver Versatz zum analogen Schwellwert für die steigende Flanke <sup>4</sup> |
-| `rotations_per_kwh` | nein | 75 | Anzahl der Umdrehungen der Drehscheibe pro kWh (der Wert ist i.d.R. auf dem Ferraris-Stromzähler vermerkt) |
-| `debounce_threshold` | nein | 400 | Minimale Zeit in Millisekunden zwischen fallender und darauffolgender steigender Flanke, damit die Umdrehung berücksichtigt wird <sup>5</sup> |
-| `energy_start_value` | nein | - | ID einer [Zahlen-Komponente](https://www.esphome.io/components/number), deren Wert beim Booten als Startwert für den Verbrauchszähler verwendet wird |
+| Option | Typ | Benötigt | Standard | Beschreibung |
+| ------ | --- | -------- | -------- | ------------ |
+| `id` | ID | nein <sup>1</sup> | - | Instanz der Ferraris-Komponente |
+| `pin` | ID | ja <sup>2</sup> | - | GPIO-Pin, mit dem der digitale Ausgang des TCRT5000-Moduls verbunden ist |
+| `analog_input` | ID | ja <sup>2</sup> | - | [ADC-Sensor](https://www.esphome.io/components/sensor/adc.html), der den mit dem analogen Ausgang des TCRT5000-Moduls verbundenen Pin ausliest |
+| `analog_threshold` | Zahl&nbsp;/ ID&nbsp;<sup>3</sup> | nein | 50 | Schwellwert für die Erkennung einer Umdrehung über den analogen Eingang, siehe Abschnitt [Analoger Schwellwert](#analoger-schwellwert) für Details |
+| `off_tolerance` | Zahl&nbsp;/ ID&nbsp;<sup>3</sup> | nein | 0 | Negativer Versatz zum analogen Schwellwert für die fallende Flanke, siehe Abschnitt [Hysterese](#hysterese) für Details |
+| `on_tolerance` | Zahl&nbsp;/ ID&nbsp;<sup>3</sup> | nein | 0 | Positiver Versatz zum analogen Schwellwert für die steigende Flanke, siehe Abschnitt [Hysterese](#hysterese) für Details |
+| `rotations_per_kwh` | Zahl | nein | 75 | Anzahl der Umdrehungen der Drehscheibe pro kWh (der Wert ist i.d.R. auf dem Ferraris-Stromzähler vermerkt) |
+| `debounce_threshold` | Zahl&nbsp;/ ID&nbsp;<sup>3</sup> | nein | 400 | Minimale Zeit in Millisekunden zwischen fallender und darauffolgender steigender Flanke, damit die Umdrehung berücksichtigt wird, siehe Abschnitt [Entprellungsschwellwert](#entprellungsschwellwert) für Details |
+| `energy_start_value` | ID | nein | - | [Zahlen-Komponente](https://www.esphome.io/components/number), deren Wert beim Booten als Startwert für den Verbrauchszähler verwendet wird |
 
 <sup>1</sup> Bestimmte Anwendungsfälle benötigen das Konfigurationselement `id`.
 
 <sup>2</sup> Nur eines der beiden Konfigurationselemente `pin` und `analog_input` wird benötigt, je nach Hardware-Aufbauvariante.
 
-<sup>3</sup> Der Schwellwert `analog_threshold` steuert, wann das analoge Signal als "erkannt" (markierter Bereich der Drehscheibe) und wann als "nicht erkannt" (nicht markierter Bereich der Drehscheibe) behandelt wird. Ist der Wert des ADC-Sensors `analog_input` größer als der Schwellwert, gilt die Markierung als erkannt, ist er kleiner, gilt sie als nicht erkannt.
+<sup>3</sup> Die Konfigurationselemente `analog_threshold`, `off_tolerance`, `on_tolerance` und `debounce_threshold` erwarten entweder eine feste Zahl oder die ID einer [Zahlen-Komponente](https://www.esphome.io/components/number). Letzteres ermöglicht das Konfigurieren des Wertes über das User-Interface (z.B. durch die Verwendung einer [Template-Zahlen-Komponente](https://www.esphome.io/components/number/template.html)).
+
+#### Analoger Schwellwert
+Der Schwellwert `analog_threshold` steuert, wann das analoge Signal als "erkannt" (markierter Bereich der Drehscheibe) und wann als "nicht erkannt" (nicht markierter Bereich der Drehscheibe) behandelt wird. Ist der Wert des ADC-Sensors `analog_input` größer als der Schwellwert, gilt die Markierung als erkannt, ist er kleiner oder gleich, gilt sie als nicht erkannt.
 
 ![Analoger Schwellwert](img/analog_threshold.png)
 
-<sup>4</sup> Die beiden Versatzwerte `off_tolerance` und `on_tolerance` können konfiguriert werden, um eine Hysterese-Kennlinie für die Erkennung des markiertes Bereichs auf der Drehscheibe über das analoge Signal zu verwenden.
+#### Hysterese
+Die beiden Versatzwerte `off_tolerance` und `on_tolerance` können konfiguriert werden, um eine Hysterese-Kennlinie für die Erkennung des markiertes Bereichs auf der Drehscheibe über das analoge Signal zu verwenden.
 
 ![Hysterese-Kennlinie](img/hysteresis.png)
 
-<sup>5</sup> Der Übergang von nicht markiertem zu markiertem Bereich und umgekehrt auf der Drehscheibe kann zu einem schnellen Hin-und Herspringen ("prellen") des Erkennungszustands des Sensors führen, das vor allem bei langsamen Drehgeschwindigkeiten auftritt und nicht vollständig durch die Kalibierung unterdrückt werden kann. Dieses Prellen führt zu verfälschten Messwerten und um diese zu vermeiden, gibt es die Einstellung `debounce_threshold` (Entprellungsschwellwert), welche die minimale Zeit in Millisekunden zwischen fallender und darauffolgender steigender Flanke angibt. Nur wenn die gemessene Zeit zwischen den zwei Flanken über dem konfigurierten Wert liegt, wird die Sensorauslösung berücksichtigt.
+#### Entprellungsschwellwert
+Der Übergang von nicht markiertem zu markiertem Bereich und umgekehrt auf der Drehscheibe kann zu einem schnellen Hin-und Herspringen ("prellen") des Erkennungszustands des Sensors führen, das vor allem bei langsamen Drehgeschwindigkeiten auftritt und nicht vollständig durch die Kalibierung unterdrückt werden kann. Dieses Prellen führt zu verfälschten Messwerten und um diese zu vermeiden, gibt es die Einstellung `debounce_threshold` (Entprellungsschwellwert), welche die minimale Zeit in Millisekunden zwischen fallender und darauffolgender steigender Flanke angibt. Nur wenn die gemessene Zeit zwischen den zwei Flanken über dem konfigurierten Wert liegt, wird die Sensorauslösung berücksichtigt.
 
 ![Entprellungsschwellwert](img/debounce_threshold.png)
 
@@ -292,7 +297,10 @@ Die Konfiguration der Versatzwerte `off_tolerance` und `on_tolerance` ist sehr �
 **Beispiel-Konfiguration:** [ferraris_meter_analog.yaml](example_config/ferraris_meter_analog.yaml)
 
 ### Auslesen mehrerer Stromzähler
-Es ist auch möglich, mehr als einen Ferraris-Stromzähler mit einem einzigen ESP-Mikrocontroller auszulesen. Dazu benötigt man weitere Infrarotsensoren / TCRT5000-Module und zusätzliche freie GPIO-Pins am Mikrocontroller. Die TCRT5000-Module werden wie schon vorher beschrieben über VCC und GND an die Spannungsquelle des ESP-Mikrocontrollers angeschlossen und die D0-Ausgänge werden jeweils mit einem freien GPIO-Pin an dem ESP-Board verbunden. Theoretisch kann auch die Variante mit dem analogen Ausgang des Infrarotsensors verwendet werden, allerdings sind die ADC-fähigen Pins auf dem Mikrocontroller (insbesondere beim ESP8266) stark limitiert.
+Es ist auch möglich, mehr als einen Ferraris-Stromzähler mit einem einzigen ESP-Mikrocontroller auszulesen. Dazu benötigt man weitere Infrarotsensoren / TCRT5000-Module und zusätzliche freie GPIO-Pins am Mikrocontroller. Die TCRT5000-Module werden wie schon vorher beschrieben über VCC und GND an die Spannungsquelle des ESP-Mikrocontrollers angeschlossen und die D0-Ausgänge werden jeweils mit einem freien GPIO-Pin an dem ESP-Board verbunden.
+
+> [!NOTE]
+> Theoretisch kann auch die Variante mit dem analogen Ausgang des Infrarotsensors verwendet werden, allerdings sind die ADC-fähigen Pins auf den ESP-Mikrocontrollern stärker limitiert. Insbesondere der ESP8266, der nur einen einzigen ADC hat, wäre für einen solchen Hardware-Aufbau ungeeignet.
 
 Der folgende Steckplatinen-Schaltplan zeigt ein Beispiel für einen Versuchsaufbau mit zwei TCRT5000-Modulen, die mit einem ESP8266 D1 Mini verbunden sind.
 
@@ -541,31 +549,36 @@ external_components:
 
 The following generic configuration items can be configured:
 
-| Option | Required | Default Value | Description |
-| ------ | --------- | ------------- |------------ |
-| `id` | no <sup>1</sup> | - | ID of the Ferraris component instance |
-| `pin` | yes <sup>2</sup> | - | ID of the GPIO pin to which the digital output of the TCRT5000 module is connected |
-| `analog_input` | yes <sup>2</sup> | - | ID of an [ADC sensor](https://www.esphome.io/components/sensor/adc.html) which reads out the pin connected to the analog output of the TCRT5000 module |
-| `analog_threshold` | no | 50 | ID of a [number component](https://www.esphome.io/components/number) whose value is used as threshold value for the detection of rotations via the analog input or a fixed number as threshold <sup>3</sup> |
-| `off_tolerance` | no | 0 | Negative offset to the analog threshold for the falling edge <sup>4</sup> |
-| `on_tolerance` | no | 0 | Positive offset to the analog threshold for the rising edge <sup>4</sup> |
-| `rotations_per_kwh` | no | 75 | Number of rotations of the turntable per kWh (that value is usually noted on the Ferraris electricity meter) |
-| `debounce_threshold` | no | 400 | Minimum time in milliseconds between falling and subsequent rising edge to take the rotation into account <sup>5</sup> |
-| `energy_start_value` | no | - | ID of a [number component](https://www.esphome.io/components/number), whose value will be used as starting value for the energy counter at boot time |
+| Option | Type | Required | Default | Description |
+| ------ | ---- | -------- | ------- | ----------- |
+| `id` | ID | no <sup>1</sup> | - | Ferraris component instance |
+| `pin` | ID | yes <sup>2</sup> | - | GPIO pin to which the digital output of the TCRT5000 module is connected |
+| `analog_input` | ID | yes <sup>2</sup> | - | [ADC sensor](https://www.esphome.io/components/sensor/adc.html) which reads out the pin connected to the analog output of the TCRT5000 module |
+| `analog_threshold` | Number&nbsp;/ ID&nbsp;<sup>3</sup> | no | 50 | Threshold value for the detection of rotations via the analog input, see section [Analog Threshold](#analog-threshold) for details |
+| `off_tolerance` | Number&nbsp;/ ID&nbsp;<sup>3</sup> | no | 0 | Negative offset to the analog threshold for the falling edge, see section [Hysteresis](#hysteresis) for details |
+| `on_tolerance` | Number&nbsp;/ ID&nbsp;<sup>3</sup> | no | 0 | Positive offset to the analog threshold for the rising edge, see section [Hysteresis](#analog-hysteresis) for details |
+| `rotations_per_kwh` | Number | no | 75 | Number of rotations of the turntable per kWh (that value is usually noted on the Ferraris electricity meter) |
+| `debounce_threshold` | Number&nbsp;/ ID&nbsp;<sup>3</sup> | no | 400 | Minimum time in milliseconds between falling and subsequent rising edge to take the rotation into account, see section [Debounce Threshold](#debounce-threshold) for details |
+| `energy_start_value` | ID | no | - | [Number component](https://www.esphome.io/components/number) whose value will be used as starting value for the energy counter at boot time |
 
 <sup>1</sup> Some use cases require the configuration element `id`.
 
 <sup>2</sup> Only one of `pin` or `analog_input` is required, depending on the hardware setup variant.
 
-<sup>3</sup> The threshold value `analog_threshold` controls when the analog signal is treated as "detected" (marked area of the turntable) and when it is treated as "not detected" (unmarked area of the turntable). If the value from the ADC sensor `analog_input` is greater than the threshold value, the marking is considered detected; if it is smaller, it is considered not detected.
+<sup>3</sup> The configuration elements `analog_threshold`, `off_tolerance`, `on_tolerance` and `debounce_threshold` expect either a static number or the ID on a [number component](https://www.esphome.io/components/number). The latter allows the configuration of the value via the user interface (e.g., by using a [template number](https://www.esphome.io/components/number/template.html)).
+
+#### Analog Threshold
+The threshold value `analog_threshold` controls when the analog signal is treated as "detected" (marked area of the turntable) and when it is treated as "not detected" (unmarked area of the turntable). If the value from the ADC sensor `analog_input` is greater than the threshold value, the marking is considered detected; if it is smaller than or equal to the threshold value, it is considered not detected.
 
 ![Analoger Threshold](img/analog_threshold.png)
 
-<sup>4</sup> The two offset values `off_tolerance` and `on_tolerance` can be configured to use a hysteresis curve for the detection of the marked area on the turntable via the analog signal.
+#### Hysteresis
+The two offset values `off_tolerance` and `on_tolerance` can be configured to use a hysteresis curve for the detection of the marked area on the turntable via the analog signal.
 
 ![Hysteresis Curve](img/hysteresis.png)
 
-<sup>5</sup> The transition from unmarked to marked area and vice versa on the turntable can lead to a rapid back and forth jump ("bouncing") in the detection state of the sensor, which occurs particularly at slow rotation speeds and cannot be completely suppressed by the calibration. This bouncing of the state leads to falsified measured values and to avoid this, there is the setting `debounce_threshold`, which specifies the minimum time in milliseconds between falling and subsequent rising edge. The trigger from the sensor is only taken into account if the measured time between the two edges is above the configured value.
+#### Debounce Threshold
+The transition from unmarked to marked area and vice versa on the turntable can lead to a rapid back and forth jump ("bouncing") in the detection state of the sensor, which occurs particularly at slow rotation speeds and cannot be completely suppressed by the calibration. This bouncing of the state leads to falsified measured values and to avoid this, there is the setting `debounce_threshold`, which specifies the minimum time in milliseconds between falling and subsequent rising edge. The trigger from the sensor is only taken into account if the measured time between the two edges is above the configured value.
 
 ![Debounce Threshold](img/debounce_threshold.png)
 
@@ -773,7 +786,10 @@ The configuration for the offset values `off_tolerance` and `on_tolerance` is ve
 **Example configuration file:** [ferraris_meter_analog.yaml](example_config/ferraris_meter_analog.yaml)
 
 ### Reading multiple electricity Meters
-It is also possible to read more than one Ferraris electricity meter with a single ESP microcontroller. This requires multiple infrared sensors / TCRT5000 modules and additional free GPIO pins on the microcontroller. The TCRT5000 modules have to be connected to the voltage source of the ESP microcontroller via VCC and GND as described in the section [Hardware Setup](#hardware-setup) and the D0 outputs have to be connected to free GPIO pins on the ESP board. Theoretically, the variant with the analog output of the infrared sensor can also be used, but the ADC-capable pins on the microcontroller (especially on the ESP8266) are fairly limited.
+It is also possible to read more than one Ferraris electricity meter with a single ESP microcontroller. This requires multiple infrared sensors / TCRT5000 modules and additional free GPIO pins on the microcontroller. The TCRT5000 modules have to be connected to the voltage source of the ESP microcontroller via VCC and GND as described in the section [Hardware Setup](#hardware-setup) and the D0 outputs have to be connected to free GPIO pins on the ESP board.
+
+> [!NOTE]
+> Theoretically, the variant with the analog output of the infrared sensor can also be used, but the ADC-capable pins on the ESP microcontrollers are stronger limited. Especially the ESP8266, which has a single ADC only, would not be suitable for such a hardware setup.
 
 The following breadboard schematic shows an example of an example test setup with two TCRT5000 modules connected to an ESP8266 D1 Mini.
 

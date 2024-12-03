@@ -49,7 +49,7 @@ namespace esphome::ferraris
     class FerrarisMeter : public Component
     {
     public:
-        FerrarisMeter(uint32_t rpkwh, uint32_t debounce_threshold);
+        FerrarisMeter(uint32_t rpkwh);
         virtual ~FerrarisMeter() = default;
 
         void setup() override;
@@ -115,6 +115,11 @@ namespace esphome::ferraris
             m_on_tolerance_number = tolerance_number;
         }
 
+        void set_debounce_threshold_number(number::Number* threshold_number)
+        {
+            m_debounce_threshold_number = threshold_number;
+        }
+
         void set_energy_start_value_number(number::Number* energy_start_value_number)
         {
             m_energy_start_value_number = energy_start_value_number;
@@ -134,6 +139,11 @@ namespace esphome::ferraris
         void set_on_tolerance(float tolerance)
         {
             m_on_tolerance = tolerance;
+        }
+
+        void set_debounce_threshold(uint32_t threshold)
+        {
+            m_debounce_threshold = threshold;
         }
 
 
@@ -174,6 +184,7 @@ namespace esphome::ferraris
         number::Number* m_analog_input_threshold_number;
         number::Number* m_off_tolerance_number;
         number::Number* m_on_tolerance_number;
+        number::Number* m_debounce_threshold_number;
         number::Number* m_energy_start_value_number;
 #endif
 
