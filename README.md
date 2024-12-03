@@ -251,7 +251,7 @@ Software-seitig müssen nun beispielsweise folgende Konfigurations-Schritte durc
         name: ADC Schwellwert
         icon: mdi:speedometer-slow
         entity_category: config
-        mode: slider
+        mode: box
         optimistic: true
         initial_value: 50
         min_value: 0
@@ -717,7 +717,7 @@ On the software side, for instance, the following configuration steps must now b
         name: ADC threshold
         icon: mdi:speedometer-slow
         entity_category: config
-        mode: slider
+        mode: box
         optimistic: true
         initial_value: 50
         min_value: 0

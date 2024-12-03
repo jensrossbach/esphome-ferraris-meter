@@ -107,7 +107,7 @@ number:
     name: ADC Schwellwert
     icon: mdi:speedometer-slow
     entity_category: config
-    mode: slider
+    mode: box
     optimistic: true
     initial_value: 50
     min_value: 0
