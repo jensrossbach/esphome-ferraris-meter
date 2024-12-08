@@ -39,7 +39,7 @@ namespace esphome::ferraris
 
     FerrarisMeter::FerrarisMeter(uint32_t rpkwh)
         : Component()
-        , m_pin(nullptr)
+        , m_digital_input_pin(nullptr)
 #ifdef USE_SENSOR
         , m_analog_input_sensor(nullptr)
         , m_power_consumption_sensor(nullptr)
@@ -201,16 +201,16 @@ namespace esphome::ferraris
 
     void FerrarisMeter::loop()
     {
-        if (m_pin != nullptr)
+        if (m_digital_input_pin != nullptr)
         {
-            handle_state(m_pin->digital_read());
+            handle_state(m_digital_input_pin->digital_read());
         }
     }
 
     void FerrarisMeter::dump_config()
     {
         ESP_LOGCONFIG(TAG, "Ferraris Meter");
-        LOG_PIN("  Pin: ", m_pin);
+        LOG_PIN("  Digital input pin: ", m_digital_input_pin);
 #ifdef USE_SENSOR
 #ifdef USE_NUMBER
         if ((m_analog_input_sensor != nullptr) && (m_analog_input_threshold_number == nullptr))

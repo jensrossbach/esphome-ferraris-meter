@@ -52,7 +52,7 @@ captive_portal:
 # Ferraris component (mandatory)
 ferraris:
   id: ferraris_meter
-  pin: GPIO4
+  digital_input: GPIO4
   energy_start_value: last_energy_value
 
 # numeric sensors

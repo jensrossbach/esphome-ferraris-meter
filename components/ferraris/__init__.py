@@ -21,15 +21,14 @@
 # SOFTWARE.
 
 
-import esphome.codegen                         as cg
-import esphome.config_validation               as cv
+import esphome.codegen           as cg
+import esphome.config_validation as cv
 
 from esphome             import automation, pins
 from esphome.components  import number, sensor
 from esphome.cpp_helpers import gpio_pin_expression
 from esphome.const       import (
     CONF_ID,
-    CONF_PIN,
     CONF_VALUE
 )
 
@@ -38,6 +37,7 @@ CODEOWNERS = ["@jensrossbach"]
 MULTI_CONF = True
 
 CONF_FERRARIS_ID        = "ferraris_id"
+CONF_DIGITAL_INPUT      = "digital_input"
 CONF_ANALOG_INPUT       = "analog_input"
 CONF_ANALOG_THRESHOLD   = "analog_threshold"
 CONF_OFF_TOLERANCE      = "off_tolerance"
@@ -51,17 +51,17 @@ FerrarisMeter = ferraris_ns.class_("FerrarisMeter", cg.Component)
 SetEnergyMeterAction = ferraris_ns.class_("SetEnergyMeterAction", automation.Action)
 SetRotationCounterAction = ferraris_ns.class_("SetRotationCounterAction", automation.Action)
 
-def ensure_pin_or_adc(value):
-    if CONF_PIN not in value and CONF_ANALOG_INPUT not in value:
-        raise cv.Invalid(f"One of '{CONF_PIN}' or '{CONF_ANALOG_INPUT}' must be specified.")
-    if CONF_PIN in value and CONF_ANALOG_INPUT in value:
-        raise cv.Invalid(f"Only one of '{CONF_PIN}' or '{CONF_ANALOG_INPUT}' can be specified, not both.")
+def ensure_gpio_or_adc(value):
+    if CONF_DIGITAL_INPUT not in value and CONF_ANALOG_INPUT not in value:
+        raise cv.Invalid(f"One of '{CONF_DIGITAL_INPUT}' or '{CONF_ANALOG_INPUT}' must be specified.")
+    if CONF_DIGITAL_INPUT in value and CONF_ANALOG_INPUT in value:
+        raise cv.Invalid(f"Only one of '{CONF_DIGITAL_INPUT}' or '{CONF_ANALOG_INPUT}' can be specified, not both.")
     return value
 
 CONFIG_SCHEMA = cv.All(
     cv.Schema({
         cv.GenerateID(): cv.declare_id(FerrarisMeter),
-        cv.Optional(CONF_PIN): pins.internal_gpio_input_pin_schema,
+        cv.Optional(CONF_DIGITAL_INPUT): pins.internal_gpio_input_pin_schema,
         cv.Optional(CONF_ANALOG_INPUT): cv.use_id(sensor.Sensor),
         cv.Optional(CONF_ANALOG_THRESHOLD, default = 50): cv.Any(cv.Coerce(float), cv.use_id(number.Number)),
         cv.Optional(CONF_OFF_TOLERANCE, default = 0): cv.Any(cv.All(cv.positive_float, cv.Coerce(float)), cv.use_id(number.Number)),
@@ -70,7 +70,7 @@ CONFIG_SCHEMA = cv.All(
         cv.Optional(CONF_DEBOUNCE_THRESHOLD, default = 400): cv.Any(cv.int_range(min = 0), cv.use_id(number.Number)),
         cv.Optional(CONF_ENERGY_START_VALUE): cv.use_id(number.Number)
     }).extend(cv.COMPONENT_SCHEMA),
-    ensure_pin_or_adc)
+    ensure_gpio_or_adc)
 
 
 async def to_code(config):
@@ -79,8 +79,8 @@ async def to_code(config):
                 config[CONF_ROTATIONS_PER_KWH])
     await cg.register_component(cmp, config)
 
-    if CONF_PIN in config:
-        pin = await gpio_pin_expression(config[CONF_PIN])
+    if CONF_DIGITAL_INPUT in config:
+        pin = await gpio_pin_expression(config[CONF_DIGITAL_INPUT])
         cg.add(cmp.set_digital_input_pin(pin))
     elif CONF_ANALOG_INPUT in config:
         sens = await cg.get_variable(config[CONF_ANALOG_INPUT])

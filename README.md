@@ -62,19 +62,19 @@ Die folgenden generischen Einstellungen können konfiguriert werden:
 
 | Option | Typ | Benötigt | Standard | Beschreibung |
 | ------ | --- | -------- | -------- | ------------ |
-| `id` | ID | nein <sup>1</sup> | - | Instanz der Ferraris-Komponente |
-| `pin` | ID | ja <sup>2</sup> | - | GPIO-Pin, mit dem der digitale Ausgang des TCRT5000-Moduls verbunden ist |
-| `analog_input` | ID | ja <sup>2</sup> | - | [ADC-Sensor](https://www.esphome.io/components/sensor/adc.html), der den mit dem analogen Ausgang des TCRT5000-Moduls verbundenen Pin ausliest |
-| `analog_threshold` | Zahl&nbsp;/ ID&nbsp;<sup>3</sup> | nein | 50 | Schwellwert für die Erkennung einer Umdrehung über den analogen Eingang, siehe Abschnitt [Analoger Schwellwert](#analoger-schwellwert) für Details |
-| `off_tolerance` | Zahl&nbsp;/ ID&nbsp;<sup>3</sup> | nein | 0 | Negativer Versatz zum analogen Schwellwert für die fallende Flanke, siehe Abschnitt [Hysterese](#hysterese) für Details |
-| `on_tolerance` | Zahl&nbsp;/ ID&nbsp;<sup>3</sup> | nein | 0 | Positiver Versatz zum analogen Schwellwert für die steigende Flanke, siehe Abschnitt [Hysterese](#hysterese) für Details |
+| `id` | [ID](https://www.esphome.io/guides/configuration-types#config-id) | nein <sup>1</sup> | - | Instanz der Ferraris-Komponente |
+| `digital_input` | [Pin](https://www.esphome.io/guides/configuration-types#pin) | ja <sup>2</sup> | - | GPIO-Pin, mit dem der digitale Ausgang des TCRT5000-Moduls verbunden ist |
+| `analog_input` | [ID](https://www.esphome.io/guides/configuration-types#config-id) | ja <sup>2</sup> | - | [ADC-Sensor](https://www.esphome.io/components/sensor/adc.html), der den mit dem analogen Ausgang des TCRT5000-Moduls verbundenen Pin ausliest |
+| `analog_threshold` | Zahl&nbsp;/ [ID](https://www.esphome.io/guides/configuration-types#config-id)&nbsp;<sup>3</sup> | nein | 50 | Schwellwert für die Erkennung einer Umdrehung über den analogen Eingang, siehe Abschnitt [Analoger Schwellwert](#analoger-schwellwert) für Details |
+| `off_tolerance` | Zahl&nbsp;/ [ID](https://www.esphome.io/guides/configuration-types#config-id)&nbsp;<sup>3</sup> | nein | 0 | Negativer Versatz zum analogen Schwellwert für die fallende Flanke, siehe Abschnitt [Hysterese](#hysterese) für Details |
+| `on_tolerance` | Zahl&nbsp;/ [ID](https://www.esphome.io/guides/configuration-types#config-id)&nbsp;<sup>3</sup> | nein | 0 | Positiver Versatz zum analogen Schwellwert für die steigende Flanke, siehe Abschnitt [Hysterese](#hysterese) für Details |
 | `rotations_per_kwh` | Zahl | nein | 75 | Anzahl der Umdrehungen der Drehscheibe pro kWh (der Wert ist i.d.R. auf dem Ferraris-Stromzähler vermerkt) |
-| `debounce_threshold` | Zahl&nbsp;/ ID&nbsp;<sup>3</sup> | nein | 400 | Minimale Zeit in Millisekunden zwischen fallender und darauffolgender steigender Flanke, damit die Umdrehung berücksichtigt wird, siehe Abschnitt [Entprellungsschwellwert](#entprellungsschwellwert) für Details |
-| `energy_start_value` | ID | nein | - | [Zahlen-Komponente](https://www.esphome.io/components/number), deren Wert beim Booten als Startwert für den Verbrauchszähler verwendet wird |
+| `debounce_threshold` | Zahl&nbsp;/ [ID](https://www.esphome.io/guides/configuration-types#config-id)&nbsp;<sup>3</sup> | nein | 400 | Minimale Zeit in Millisekunden zwischen fallender und darauffolgender steigender Flanke, damit die Umdrehung berücksichtigt wird, siehe Abschnitt [Entprellungsschwellwert](#entprellungsschwellwert) für Details |
+| `energy_start_value` | [ID](https://www.esphome.io/guides/configuration-types#config-id) | nein | - | [Zahlen-Komponente](https://www.esphome.io/components/number), deren Wert beim Booten als Startwert für den Verbrauchszähler verwendet wird |
 
 <sup>1</sup> Bestimmte Anwendungsfälle benötigen das Konfigurationselement `id`.
 
-<sup>2</sup> Nur eines der beiden Konfigurationselemente `pin` und `analog_input` wird benötigt, je nach Hardware-Aufbauvariante.
+<sup>2</sup> Nur eines der beiden Konfigurationselemente `digital_input` und `analog_input` wird benötigt, je nach Hardware-Aufbauvariante.
 
 <sup>3</sup> Die Konfigurationselemente `analog_threshold`, `off_tolerance`, `on_tolerance` und `debounce_threshold` erwarten entweder eine feste Zahl oder die ID einer [Zahlen-Komponente](https://www.esphome.io/components/number). Letzteres ermöglicht das Konfigurieren des Wertes über das User-Interface (z.B. durch die Verwendung einer [Template-Zahlen-Komponente](https://www.esphome.io/components/number/template.html)).
 
@@ -97,7 +97,7 @@ Der Übergang von nicht markiertem zu markiertem Bereich und umgekehrt auf der D
 ```yaml
 ferraris:
   id: ferraris_meter
-  pin: GPIO4
+  digital_input: GPIO4
   rotations_per_kwh: 75
   debounce_threshold: 400
   energy_start_value: last_energy_value
@@ -234,7 +234,7 @@ Software-seitig muss für die Ferraris-Komponente in der YAML-Konfigurationsdate
 ```yaml
 ferraris:
   id: ferraris_meter
-  pin: GPIO4
+  digital_input: GPIO4
   # ...
 ```
 
@@ -313,10 +313,10 @@ Software-seitig müssen nun beispielsweise folgende Konfigurations-Schritte durc
     ```yaml
     ferraris:
       - id: ferraris_meter_1
-        pin: GPIO4
+        digital_input: GPIO4
         # ...
       - id: ferraris_meter_2
-        pin: GPIO5
+        digital_input: GPIO5
         # ...
     ```
 2.  Alle von der Ferraris-Komponente bereitgestellten Sensoren und Komponenten müssen, sofern benötigt, vervielfacht und den entsprechenden Instanzen der Ferraris-Komponente über den Eintrag `ferraris_id` zugewiesen werden.
@@ -551,19 +551,19 @@ The following generic configuration items can be configured:
 
 | Option | Type | Required | Default | Description |
 | ------ | ---- | -------- | ------- | ----------- |
-| `id` | ID | no <sup>1</sup> | - | Ferraris component instance |
-| `pin` | ID | yes <sup>2</sup> | - | GPIO pin to which the digital output of the TCRT5000 module is connected |
-| `analog_input` | ID | yes <sup>2</sup> | - | [ADC sensor](https://www.esphome.io/components/sensor/adc.html) which reads out the pin connected to the analog output of the TCRT5000 module |
-| `analog_threshold` | Number&nbsp;/ ID&nbsp;<sup>3</sup> | no | 50 | Threshold value for the detection of rotations via the analog input, see section [Analog Threshold](#analog-threshold) for details |
-| `off_tolerance` | Number&nbsp;/ ID&nbsp;<sup>3</sup> | no | 0 | Negative offset to the analog threshold for the falling edge, see section [Hysteresis](#hysteresis) for details |
-| `on_tolerance` | Number&nbsp;/ ID&nbsp;<sup>3</sup> | no | 0 | Positive offset to the analog threshold for the rising edge, see section [Hysteresis](#analog-hysteresis) for details |
+| `id` | [ID](https://www.esphome.io/guides/configuration-types#config-id) | no <sup>1</sup> | - | Ferraris component instance |
+| `digital_input` | [Pin](https://www.esphome.io/guides/configuration-types#pin) | yes <sup>2</sup> | - | GPIO pin to which the digital output of the TCRT5000 module is connected |
+| `analog_input` | [ID](https://www.esphome.io/guides/configuration-types#config-id) | yes <sup>2</sup> | - | [ADC sensor](https://www.esphome.io/components/sensor/adc.html) which reads out the pin connected to the analog output of the TCRT5000 module |
+| `analog_threshold` | Number&nbsp;/ [ID](https://www.esphome.io/guides/configuration-types#config-id)&nbsp;<sup>3</sup> | no | 50 | Threshold value for the detection of rotations via the analog input, see section [Analog Threshold](#analog-threshold) for details |
+| `off_tolerance` | Number&nbsp;/ [ID](https://www.esphome.io/guides/configuration-types#config-id)&nbsp;<sup>3</sup> | no | 0 | Negative offset to the analog threshold for the falling edge, see section [Hysteresis](#hysteresis) for details |
+| `on_tolerance` | Number&nbsp;/ [ID](https://www.esphome.io/guides/configuration-types#config-id)&nbsp;<sup>3</sup> | no | 0 | Positive offset to the analog threshold for the rising edge, see section [Hysteresis](#analog-hysteresis) for details |
 | `rotations_per_kwh` | Number | no | 75 | Number of rotations of the turntable per kWh (that value is usually noted on the Ferraris electricity meter) |
-| `debounce_threshold` | Number&nbsp;/ ID&nbsp;<sup>3</sup> | no | 400 | Minimum time in milliseconds between falling and subsequent rising edge to take the rotation into account, see section [Debounce Threshold](#debounce-threshold) for details |
-| `energy_start_value` | ID | no | - | [Number component](https://www.esphome.io/components/number) whose value will be used as starting value for the energy counter at boot time |
+| `debounce_threshold` | Number&nbsp;/ [ID](https://www.esphome.io/guides/configuration-types#config-id)&nbsp;<sup>3</sup> | no | 400 | Minimum time in milliseconds between falling and subsequent rising edge to take the rotation into account, see section [Debounce Threshold](#debounce-threshold) for details |
+| `energy_start_value` | [ID](https://www.esphome.io/guides/configuration-types#config-id) | no | - | [Number component](https://www.esphome.io/components/number) whose value will be used as starting value for the energy counter at boot time |
 
 <sup>1</sup> Some use cases require the configuration element `id`.
 
-<sup>2</sup> Only one of `pin` or `analog_input` is required, depending on the hardware setup variant.
+<sup>2</sup> Only one of `digital_input` or `analog_input` is required, depending on the hardware setup variant.
 
 <sup>3</sup> The configuration elements `analog_threshold`, `off_tolerance`, `on_tolerance` and `debounce_threshold` expect either a static number or the ID on a [number component](https://www.esphome.io/components/number). The latter allows the configuration of the value via the user interface (e.g., by using a [template number](https://www.esphome.io/components/number/template.html)).
 
@@ -586,7 +586,7 @@ The transition from unmarked to marked area and vice versa on the turntable can 
 ```yaml
 ferraris:
   id: ferraris_meter
-  pin: GPIO4
+  digital_input: GPIO4
   rotations_per_kwh: 75
   debounce_threshold: 400
   energy_start_value: last_energy_value
@@ -723,7 +723,7 @@ On the software side, the pin which is connected to the digital output of the TC
 ```yaml
 ferraris:
   id: ferraris_meter
-  pin: GPIO4
+  digital_input: GPIO4
   # ...
 ```
 
@@ -802,10 +802,10 @@ On the software side, for instance, the following configuration steps must now b
     ```yaml
     ferraris:
       - id: ferraris_meter_1
-        pin: GPIO4
+        digital_input: GPIO4
         # ...
       - id: ferraris_meter_2
-        pin: GPIO5
+        digital_input: GPIO5
         # ...
     ```
 2.  All needed sensors and components provided by the Ferraris component must be duplicated and assigned to the corresponding Ferraris component instances via the `ferraris_id` configuration entry.
