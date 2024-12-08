@@ -66,7 +66,7 @@ namespace esphome::ferraris
 #ifdef USE_SENSOR
         void set_digital_input_pin(InternalGPIOPin *pin)
         {
-            m_pin = pin;
+            m_digital_input_pin = pin;
         }
 
         void set_analog_input_sensor(sensor::Sensor *sensor)
@@ -168,7 +168,7 @@ namespace esphome::ferraris
         }
 
     protected:
-        InternalGPIOPin* m_pin;
+        InternalGPIOPin* m_digital_input_pin;
 #ifdef USE_SENSOR
         sensor::Sensor* m_analog_input_sensor;
         sensor::Sensor* m_power_consumption_sensor;
