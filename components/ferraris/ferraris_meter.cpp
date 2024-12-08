@@ -32,8 +32,8 @@
 namespace esphome::ferraris
 {
     static constexpr const uint32_t WATTS_PER_KW = 1000;
-    static constexpr const uint32_t MS_PER_HOUR = 60 * 60 * 1000;
-    static constexpr const uint32_t KWH_TO_WMS = WATTS_PER_KW * MS_PER_HOUR;
+    static constexpr const uint32_t MS_PER_HOUR  = 60 * 60 * 1000;
+    static constexpr const uint32_t KWH_TO_WMS   = WATTS_PER_KW * MS_PER_HOUR;
 
     static constexpr const char *const TAG = "ferraris";
 
@@ -178,6 +178,25 @@ namespace esphome::ferraris
             update_energy_counter();
         }
 #endif
+
+#ifdef USE_SWITCH
+        if (m_calibration_mode_switch != nullptr)
+        {
+            optional<bool> initial_state = m_calibration_mode_switch->get_initial_state_with_restore_mode();
+
+            if (initial_state.has_value())
+            {
+                if (initial_state.value())
+                {
+                    m_calibration_mode_switch->turn_on();
+                }
+                else
+                {
+                    m_calibration_mode_switch->turn_off();
+                }
+            }
+        }
+#endif
     }
 
     void FerrarisMeter::loop()
@@ -303,12 +322,25 @@ namespace esphome::ferraris
     {
         m_calibration_mode = mode;
 
+        if (m_calibration_mode)
+        {
+            m_last_time = -1;
+            m_last_rising_time = -1;
+
+#ifdef USE_SENSOR
+            if (m_power_consumption_sensor != nullptr)
+            {
+                m_power_consumption_sensor->publish_state(0.0);
+            }
+#endif
+        }
+
 #ifdef USE_BINARY_SENSOR
         if (m_rotation_indicator_sensor != nullptr)
         {
             m_rotation_indicator_sensor->
                 publish_state(
-                    mode ? m_last_state : false);
+                    m_calibration_mode ? m_last_state : false);
         }
 #endif
     }
