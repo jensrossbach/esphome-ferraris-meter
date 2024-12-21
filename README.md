@@ -38,11 +38,14 @@ Ferraris Meter ist eine ESPHome-Komponente zur Erstellung einer ESP-Firmware, di
 **DIE SOFTWARE (EINSCHLIEßLICH DER DOKUMENTATION MIT HARDWARE BEISPIEL-AUFBAUTEN) WIRD OHNE MÄNGELGEWÄHR UND OHNE JEGLICHE AUSDRÜCKLICHE ODER STILLSCHWEIGENDE GEWÄHRLEISTUNG, EINSCHLIEẞLICH, ABER NICHT BESCHRÄNKT AUF DIE GEWÄHRLEISTUNG DER MARKTGÄNGIGKEIT, DER EIGNUNG FÜR EINEN BESTIMMTEN ZWECK UND DER NICHTVERLETZUNG VON RECHTEN DRITTER, ZUR VERFÜGUNG GESTELLT. DIE AUTOREN ODER URHEBERRECHTSINHABER SIND IN KEINEM FALL HAFTBAR FÜR ANSPRÜCHE, SCHÄDEN ODER ANDERE VERPFLICHTUNGEN, OB IN EINER VERTRAGS- ODER HAFTUNGSKLAGE, EINER UNERLAUBTEN HANDLUNG ODER ANDERWEITIG, DIE SICH AUS ODER IN VERBINDUNG MIT DER SOFTWARE ODER DER NUTZUNG ODER ANDEREN GESCHÄFTEN MIT DER SOFTWARE ERGEBEN.**
 
 ## Hardware-Aufbau
-Hardware-seitig wird lediglich ein ESP-Mikrocontroller (z.B. ESP8266 oder ESP32, inkl. Spannungsversorgung) und ein Infrarotsensor (z.B. TCRT5000) benötigt. Für die reine Funktionalität des Ferraris Meters reicht ein ESP8266 als Mikrocontroller völlig aus. Für den Infrarotsensor gibt es fertige TCRT5000-basierte Breakout-Module mit 3,3V-5V Eingangsspannung, die auch über einen regelbaren Widerstand (Potentiometer) verfügen, um die Empfindlichkeit des Sensors einzustellen. Diese TCRT5000-Module haben 4 Pins - VCC und GND für die Stromversorgung des Sensor-Chips sowie einen digitalen Ausgang D0 und einen analogen Ausgang A0.
+Hardware-seitig wird lediglich ein ESP-Mikrocontroller (z.B. ESP8266 oder ESP32, inkl. Spannungsversorgung) und ein Infrarotsensor (z.B. TCRT5000) benötigt. Für die reine Funktionalität des Ferraris Meters reicht ein ESP8266 als Mikrocontroller völlig aus. Für den Infrarotsensor gibt es fertige TCRT5000-basierte Breakout-Module mit 3,3V-5V Eingangsspannung, die auch über einen regelbaren Widerstand (Potentiometer) verfügen, um den digitalen Ausgang zu kalibrieren. Diese TCRT5000-Module haben 4 Pins - VCC und GND für die Stromversorgung des Sensor-Chips sowie einen digitalen Ausgang D0 und einen analogen Ausgang A0.
 
 Beim Platzieren des Sensors auf der Abdeckplatte des Ferraris-Stromzählers ist ein wenig Geschick und Präzisionsarbeit gefragt. Das Infrarot Sender/Empfänger-Paar des Sensors muss mittig millimetergenau über der Drehscheibe ausgerichtet werden und geradlinig auf die Drehscheibe zeigen.
 
-Weitere Details zu mögliche Aufbauvarianten sind in den Abschnitten [Auslesen des Stromzählers über den digitalen Ausgang des Infrarotsensors](#auslesen-des-stromzählers-über-den-digitalen-ausgang-des-infrarotsensors), [Auslesen des Stromzählers über den analogen Ausgang des Infrarotsensors](#auslesen-des-stromzählers-über-den-analogen-ausgang-des-infrarotsensors) und [Auslesen mehrerer Stromzähler](#auslesen-mehrerer-stromzähler) beschrieben.
+Die Ferraris Meter Komponente unterstützt prinzipiell folgende Aufbauvarianten:
+- [Verwendung eines einzelnen Infrarotsensors über den digitalen Ausgang](#auslesen-des-stromzählers-über-den-digitalen-ausgang-des-infrarotsensors)
+- [Verwendung eines einzelnen Infrarotsensors über den analogen Ausgang](#auslesen-des-stromzählers-über-den-analogen-ausgang-des-infrarotsensors)
+- [Verwendung mehrerer Infrarotsensoren](#auslesen-mehrerer-stromzähler)
 
 ## Software-Konfiguration
 Um eine ESPHome-Firmware zu erstellen, muss eine YAML-basierte Konfigurationsdatei erstellt werden. Du kannst eine der in diesem Repository bereitgestellten Beispielkonfigurationsdateien als Ausgangspunkt verwenden und sie an deine Bedürfnisse anpassen. Weitere Informationen zum Schreiben von ESPHome-Firmware-Konfigurationsdateien findest du in der [ESPHome-Dokumentation](https://www.esphome.io).
@@ -61,6 +64,9 @@ external_components:
   - source: github://jensrossbach/esphome-ferraris-meter
     components: [ferraris]
 ```
+
+> [!TIP]
+> Im obigen Beispiel wird der neueste Stand der Komponente aus dem `main` Branch des Repositories geladen. Ich empfehle aber, mittels Versionsnummer auf einen freigegebenen Stand zu verweisen, um mehr Kontrolle darüber zu haben, welcher Software-Stand verwendet wird und um besser auf "breaking changes" reagieren zu können. Siehe Beispielkonfiguration, wie das gemacht werden kann.
 
 Die folgenden generischen Einstellungen können konfiguriert werden:
 
@@ -214,10 +220,10 @@ Der folgende Steckplatinen-Schaltplan zeigt ein Beispiel für einen Versuchsaufb
 
 ![Steckplatinen-Schaltplan (digitaler Pin)](img/breadboard_schematic.png)
 
-Mithilfe eines Schraubenziehers muss anschließend die Empfindlichkeit an dem Potientiometer eingestellt werden. Dabei helfen die beiden grünen LEDs auf der Rückseite des Sensors. Die rechte LED leuchtet dauerhaft, wenn der Sensor mit Strom versorgt wird. Die linke LED leuchtet, solange kein "Hindernis" erkannt wurde und erlischt, wenn die Reflektion unterbrochen wurde. Letzteres ist der Zustand, wenn die Markierung auf der Drehscheibe des Ferraris-Stromzählers vor den Sensor wandert. Die Empfindlichkeit des Sensors sollte also so eingestellt werden, dass die linke LED gerade noch leuchtet, wenn die Markierung nicht im Bereich des Infrarot Sender/Empfänger-Paares ist und erlischt, sobald sich die Markierung davor schiebt. Dies ist nur ein sehr kleiner Bereich und es kann etwas schwierig werden, diese Einstellung zu finden. Zur zusätzlichen Unterstützung dieses Prozesses kann in der Ferraris Meter Firmware der Kalibierungsmodus aktiviert werden, siehe Abschnitt [Kalibierung](#kalibrierung) für Details.
+Mithilfe eines Schraubenziehers muss anschließend über das Potientiometer das digitale Ausgangssignal kalibriert werden. Dabei helfen die beiden grünen LEDs auf der Rückseite des Sensors. Die rechte LED leuchtet dauerhaft, wenn der Sensor mit Strom versorgt wird. Die linke LED leuchtet, solange kein "Hindernis" erkannt wurde und erlischt, wenn die Reflektion unterbrochen wurde. Letzteres ist der Zustand, wenn die Markierung auf der Drehscheibe des Ferraris-Stromzählers vor den Sensor wandert. Das Potentiometer sollte also so eingestellt werden, dass die linke LED gerade noch leuchtet, wenn die Markierung nicht im Bereich des Infrarot Sender/Empfänger-Paares ist und erlischt, sobald sich die Markierung davor schiebt. Dies ist nur ein sehr kleiner Bereich und es kann etwas schwierig werden, diese Einstellung zu finden. Zur zusätzlichen Unterstützung dieses Prozesses kann in der Ferraris Meter Firmware der Kalibierungsmodus aktiviert werden, siehe Abschnitt [Kalibierung](#kalibrierung) für Details.
 
 > [!TIP]
-> Sollte es nicht gelingen, eine passende und funktionierende Empfindlichkeit für den Sensor einzustellen, kann alternativ der analoge Ausgang des Infrarotsensors verwendet werden, siehe nächsten Abschnitt.
+> Sollte es nicht gelingen, eine passende und funktionierende Einstellung für das Potentiometer zu finden, kann alternativ der analoge Ausgang des Infrarotsensors verwendet werden, siehe nächsten Abschnitt.
 
 Software-seitig muss für die Ferraris-Komponente in der YAML-Konfigurationsdatei der Pin konfiguriert werden, der mit dem digitalen Ausgang des TCRT5000-Moduls verbunden ist:
 ```yaml
@@ -293,7 +299,7 @@ Die Konfiguration der Versatzwerte `off_tolerance` und `on_tolerance` ist sehr �
 Es ist auch möglich, mehr als einen Ferraris-Stromzähler mit einem einzigen ESP-Mikrocontroller auszulesen. Dazu benötigt man weitere Infrarotsensoren / TCRT5000-Module und zusätzliche freie GPIO-Pins am Mikrocontroller. Die TCRT5000-Module werden wie schon vorher beschrieben über VCC und GND an die Spannungsquelle des ESP-Mikrocontrollers angeschlossen und die D0-Ausgänge werden jeweils mit einem freien GPIO-Pin an dem ESP-Board verbunden.
 
 > [!NOTE]
-> Theoretisch kann auch die Variante mit dem analogen Ausgang des Infrarotsensors verwendet werden, allerdings sind die ADC-fähigen Pins auf den ESP-Mikrocontrollern stärker limitiert. Insbesondere der ESP8266, der nur einen einzigen ADC hat, wäre für einen solchen Hardware-Aufbau ungeeignet.
+> Theoretisch kann auch die Variante mit dem analogen Ausgang des Infrarotsensors verwendet werden, allerdings sind die ADC-fähigen Pins auf den ESP-Mikrocontrollern stärker limitiert als die rein digitalen Pins. Insbesondere der ESP8266, der nur einen einzigen ADC hat, wäre daher ungeeignet, mehrere Infrarotsensoren über deren analoge Ausgänge zu unterstützen.
 
 Der folgende Steckplatinen-Schaltplan zeigt ein Beispiel für einen Versuchsaufbau mit zwei TCRT5000-Modulen, die mit einem ESP8266 D1 Mini verbunden sind.
 
@@ -353,7 +359,7 @@ Software-seitig müssen nun beispielsweise folgende Konfigurations-Schritte durc
 **Beispiel-Konfiguration:** [ferraris_meter_multi.yaml](example_config/ferraris_meter_multi.yaml)
 
 ### Kalibrierung
-Während der Positionierung und Ausrichtung des Infrarotsensors sowie der Einstellung der Sensorempfindlichkeit oder des analogen Schwellwerts ist es wenig sinnvoll, die Umdrehungen der Drehscheibe des Ferraris-Stromzählers zu messen und die Verbräuche zu berechnen, da die Zustandsänderungen des Sensors nicht der tatsächlichen Erkennung der Markierung auf der Drehscheibe entsprechen. Deshalb gibt es die Möglichkeit, die Ferraris-Komponente in den Kalibrierungsmodus zu versetzen, indem man den Schalter für den Kalibrierungsmodus (siehe [Aktoren](#aktoren)) einschaltet. Solange der Kalibrierungsmodus aktiviert ist, wird keine Berechnung der Verbrauchsdaten durchgeführt und die entsprechenden Sensoren (siehe [Primäre Sensoren](#primäre-sensoren)) werden nicht verändert. Stattdessen ist der diagnostische Sensor für die Umdrehungsindikation (siehe [Diagnostische Sensoren](#diagnostische-sensoren)) aktiv und kann zusätzlich verwendet werden, um bei der korrekten Ausrichtung zu unterstützen. Der Sensor geht in den Zustand `on` wenn sich die Markierung auf der Drehscheibe vor dem Infrarotsensor befindet und auf `off` wenn sich diese wieder aus dem Bereich des Sensors entfernt.
+Während der Positionierung und Ausrichtung des Infrarotsensors sowie der Einstellung des Potentiometers oder des analogen Schwellwerts ist es wenig sinnvoll, die Umdrehungen der Drehscheibe des Ferraris-Stromzählers zu messen und die Verbräuche zu berechnen, da die Zustandsänderungen des Sensors nicht der tatsächlichen Erkennung der Markierung auf der Drehscheibe entsprechen. Deshalb gibt es die Möglichkeit, die Ferraris-Komponente in den Kalibrierungsmodus zu versetzen, indem man den Schalter für den Kalibrierungsmodus (siehe [Aktoren](#aktoren)) einschaltet. Solange der Kalibrierungsmodus aktiviert ist, wird keine Berechnung der Verbrauchsdaten durchgeführt und die entsprechenden Sensoren (siehe [Primäre Sensoren](#primäre-sensoren)) werden nicht verändert. Stattdessen ist der diagnostische Sensor für die Umdrehungsindikation (siehe [Diagnostische Sensoren](#diagnostische-sensoren)) aktiv und kann zusätzlich verwendet werden, um bei der korrekten Ausrichtung zu unterstützen. Der Sensor befindet sich in dem Zustand `on` wenn die Markierung auf der Drehscheibe erkannt wurde und `off` wenn keine Markierung erkannt wurde.
 
 Um den Kalibierungsmodus nutzen zu können, müssen die Komponenten `calibration_mode` und `rotation_indicator` in der YAML-Datei konfiguriert sein:
 ```yaml
@@ -536,11 +542,14 @@ Ferraris Meter is an ESPHome component for creating an ESP firmware that uses an
 **THE SOFTWARE (INCLUDING THE DOCUMENTATION WITH THE EXAMPLE HARDWARE SETUP) IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.**
 
 ## Hardware Setup
-On the hardware side, only an ESP microcontroller (e.g. ESP8266 or ESP32, incl. power supply) and an infrared sensor (e.g. TCRT5000) are required. An ESP8266 microcontroller is completely sufficient for the pure functionality of the Ferraris Meter. For the infrared sensor, there are ready-made TCRT5000-based breakout modules with 3.3V-5V input voltage available, which also have an adjustable resistor (potentiometer) to set the sensitivity of the sensor. These TCRT5000 modules have 4 pins - VCC and GND for the power supply of the sensor chip as well as a digital output D0 and an analog output A0.
+On the hardware side, only an ESP microcontroller (e.g. ESP8266 or ESP32, incl. power supply) and an infrared sensor (e.g. TCRT5000) are required. An ESP8266 microcontroller is completely sufficient for the pure functionality of the Ferraris Meter. For the infrared sensor, there are ready-made TCRT5000-based breakout modules with 3.3V-5V input voltage available, which also have an adjustable resistor (potentiometer) to calibrate the digital output of the sensor. These TCRT5000 modules have 4 pins - VCC and GND for the power supply of the sensor chip as well as a digital output D0 and an analog output A0.
 
 Placing the sensor on the cover plate of the Ferraris electricity meter requires a little skill and precision work. The infrared transmitter/receiver pair of the sensor must be aligned centrally above the turntable with millimeter precision and point in a straight line to the turntable.
 
-Further details to possible setup variants are described in the sections [Reading the electricity Meter via the digital Output of the infrared Sensor](#reading-the-electricity-meter-via-the-digital-output-of-the-infrared-sensor), [Reading the electricity Meter via the analog Output of the infrared Sensor](#reading-the-electricity-meter-via-the-analog-output-of-the-infrared-sensor) and [Reading multiple electricity Meters](#reading-multiple-electricity-meters).
+The Ferraris Meter component basically supports the following setup variants:
+- [Use of a single infrared sensor via the digital output](#reading-the-electricity-meter-via-the-digital-output-of-the-infrared-sensor)
+- [Use of a single infrared sensor via the analog output](#reading-the-electricity-meter-via-the-analog-output-of-the-infrared-sensor)
+- [Use of multiple infrared sensors](#reading-multiple-electricity-meters)
 
 ## Software Setup
 To build an ESPHome firmware, you have to create a YAML based configuration file. You can use one of the example configuration files provided in this repository as a starting point and adapt it to your needs. For more information about writing ESPHome firmware configuration files, please refer to the [ESPHome documentation](https://www.esphome.io).
@@ -559,6 +568,9 @@ external_components:
   - source: github://jensrossbach/esphome-ferraris-meter
     components: [ferraris]
 ```
+
+> [!TIP]
+> In the above example, the newest version of the component from the `main` branch of the repository is loaded. However, I recommend using a version number to refer to a released version in order to have more control over which software version is used and to be able to react better to "breaking changes". See the example configuration for how this can be done.
 
 The following generic configuration items can be configured:
 
@@ -712,10 +724,10 @@ The following breadboard schematic shows an example test setup using an ESP8266 
 
 ![Breadboard Schematic (digital Pin)](img/breadboard_schematic.png)
 
-The sensitivity of the potentiometer must then be adjusted using a screwdriver, the two green LEDs on the back of the sensor help with this. The right-hand LED lights up continuously when the sensor is supplied with power. The left-hand LED lights up as long as no “obstacle” has been detected and goes out when the reflection has been interrupted. The latter is the state when the mark on the Ferraris electricity meter's turntable moves in front of the sensor. The sensitivity of the sensor should therefore be set so that the left-hand LED just lights up when the marker is not in the range of the infrared transmitter/receiver pair and goes out as soon as the marker moves in front of it. This is only a very small range and it can be a little difficult to find this setting. To further assist with this process, the calibration mode can be enabled in the Ferraris Meter firmware, see section [calibration](#calibration) for details.
+The digital output signal of the infrared sensor must be calibrated via the potentiometer using a screwdriver; the two green LEDs on the back of the sensor help with this. The right-hand LED lights up continuously when the sensor is supplied with power. The left-hand LED lights up as long as no "obstacle" has been detected and goes out when the reflection has been interrupted. The latter is the state when the mark on the Ferraris electricity meter's turntable moves in front of the sensor. The adjustment of the potentiometer should therefore be set so that the left-hand LED just lights up when the marker is not in the range of the infrared transmitter/receiver pair and goes out as soon as the marker moves in front of it. This is only a very small range and it can be a little difficult to find this setting. To further assist with this process, the calibration mode can be enabled in the Ferraris Meter firmware, see section [calibration](#calibration) for details.
 
 > [!TIP]
-> In case you are unable to find an appropriate and working sensitivity of the sensor, you can alternatively use the analog output of the infrared sensor, see next section.
+> In case you are unable to find an appropriate and working adjustment of the potentiometer, you can alternatively use the analog output of the infrared sensor, see next section.
 
 On the software side, the pin which is connected to the digital output of the TCRT5000 module has to be configured for the Ferraris component in the YAML configuration file:
 ```yaml
@@ -791,7 +803,7 @@ The configuration for the offset values `off_tolerance` and `on_tolerance` is ve
 It is also possible to read more than one Ferraris electricity meter with a single ESP microcontroller. This requires multiple infrared sensors / TCRT5000 modules and additional free GPIO pins on the microcontroller. The TCRT5000 modules have to be connected to the voltage source of the ESP microcontroller via VCC and GND as described in the section [Hardware Setup](#hardware-setup) and the D0 outputs have to be connected to free GPIO pins on the ESP board.
 
 > [!NOTE]
-> Theoretically, the variant with the analog output of the infrared sensor can also be used, but the ADC-capable pins on the ESP microcontrollers are stronger limited. Especially the ESP8266, which has a single ADC only, would not be suitable for such a hardware setup.
+> Theoretically, the variant with the analog output of the infrared sensor can also be used, but the ADC-capable pins on the ESP microcontrollers are stronger limited than the pure digital pins. Especially the ESP8266, which has a single ADC only, would therefore not be suitable to support multiple infrared sensors via their analog outputs.
 
 The following breadboard schematic shows an example of an example test setup with two TCRT5000 modules connected to an ESP8266 D1 Mini.
 
@@ -851,7 +863,7 @@ On the software side, for instance, the following configuration steps must now b
 **Example configuration file:** [ferraris_meter_multi.yaml](example_config/ferraris_meter_multi.yaml)
 
 ### Calibration
-During the positioning and alignment of the infrared sensor as well as the adjustment of the sensor sensitivity or the analog threshold, it makes little sense to measure the rotations of the Ferraris electricity meter's turntable and calculate the consumption values, as the changes in state of the sensor do not correspond to the actual detection of the mark on the turntable. It is therefore possible to set the Ferraris component to calibration mode by turning on the calibration mode switch (see [Actors](#actors)). As long as the calibration mode is activated, no calculation of the consumption data is performed and the corresponding sensors (see [Primary Sensors](#primary-sensors)) are not changed. Instead, the diagnostic sensor for the rotation indication (see [Diagnostic Sensors](#diagnostic-sensors)) is active and can additionally be used to assist with correct alignment. The sensor switches to the `on` state when the marker on the turntable is in front of the infrared sensor and to `off` when it moves out of the sensor's range again.
+During the positioning and alignment of the infrared sensor as well as the adjustment of the potentiometer or the analog threshold, it makes little sense to measure the rotations of the Ferraris electricity meter's turntable and calculate the consumption values, as the changes in state of the sensor do not correspond to the actual detection of the mark on the turntable. It is therefore possible to set the Ferraris component to calibration mode by turning on the calibration mode switch (see [Actors](#actors)). As long as the calibration mode is activated, no calculation of the consumption data is performed and the corresponding sensors (see [Primary Sensors](#primary-sensors)) are not changed. Instead, the diagnostic sensor for the rotation indication (see [Diagnostic Sensors](#diagnostic-sensors)) is active and can additionally be used to assist with correct alignment. The sensor has the `on` state when the marker on the turntable is detected and the `off` state when it is not detected.
 
 To be able to use the calibration mode, the components `calibration_mode` and `rotation_indicator` must be configured in the YAML file:
 ```yaml
