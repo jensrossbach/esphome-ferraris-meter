@@ -48,7 +48,17 @@ Die Ferraris Meter Komponente unterstützt prinzipiell folgende Aufbauvarianten:
 - [Verwendung mehrerer Infrarotsensoren](#auslesen-mehrerer-stromzähler)
 
 ## Software-Konfiguration
-Um eine ESPHome-Firmware zu erstellen, muss eine YAML-basierte Konfigurationsdatei erstellt werden. Du kannst eine der in diesem Repository bereitgestellten Beispielkonfigurationsdateien als Ausgangspunkt verwenden und sie an deine Bedürfnisse anpassen. Weitere Informationen zum Schreiben von ESPHome-Firmware-Konfigurationsdateien findest du in der [ESPHome-Dokumentation](https://www.esphome.io).
+Um eine ESPHome-Firmware zu erstellen, muss eine YAML-basierte Konfigurationsdatei erstellt werden. Du kannst eine der in diesem Repository bereitgestellten [Beispielkonfigurationsdateien](example_config) als Ausgangspunkt verwenden und sie an deine Bedürfnisse anpassen.
+
+Prinzipiell gibt es zwei Möglichkeiten, die ESPHome-Firmware zu bauen:
+
+1. [Über Home Assistant mit dem ESPHome Device Compiler Add-on](https://www.esphome.io/guides/getting_started_hassio)
+2. [Über die Kommandozeile mit dem ESPHome Python-Paket](https://www.esphome.io/guides/getting_started_command_line)
+
+Für welche Methode du dich entscheiden solltest, hängt davon ab, wie vertraut du mit ESPHome bist und ob du lieber mit einer grafischen Benutzeroberfläche oder mit der Kommandozeile arbeitest. Außerdem könnte die Leistungsfähigkeit des Hosts, auf dem du die Firmware baust, eine Rolle spielen, um den Vorgang zu beschleunigen.
+
+> [!NOTE]
+> Es ist **nicht** nötig, dieses Repository zu kopieren ("forken") und die Anpassungen an der Beispielkonfiguration im kopierten Repository vorzunehmen. Stattdessen reicht es aus, die Beispielkonfiguration lokal zu speichern und anzupassen oder die angepasste Konfiguration auf deinem Home Assistant Host abzulegen (sollte die Erstellung der ESPHome-Firmware mithilfe des ESPHome Device Compiler Add-ons erwünscht sein).
 
 Die folgenden Abschnitte beschreiben die wichtigsten Komponenten, die in der Firmware-Konfigurationsdatei enthalten sind.
 
@@ -82,9 +92,9 @@ Die folgenden generischen Einstellungen können konfiguriert werden:
 | `debounce_threshold` | Zahl&nbsp;/ [ID](https://www.esphome.io/guides/configuration-types#config-id)&nbsp;<sup>3</sup> | nein | 400 | Minimale Zeit in Millisekunden zwischen fallender und darauffolgender steigender Flanke, damit die Umdrehung berücksichtigt wird, siehe Abschnitt [Entprellung](#entprellung) für Details |
 | `energy_start_value` | [ID](https://www.esphome.io/guides/configuration-types#config-id) | nein | - | [Zahlen-Komponente](https://www.esphome.io/components/number), deren Wert beim Booten als Startwert für den Verbrauchszähler verwendet wird |
 
-<sup>1</sup> Bestimmte Anwendungsfälle benötigen das Konfigurationselement `id`.
+<sup>1</sup> Bestimmte [Anwendungsfälle](#anwendungsbeispiele) benötigen das Konfigurationselement `id`.
 
-<sup>2</sup> Nur eines der beiden Konfigurationselemente `digital_input` und `analog_input` wird benötigt, je nach Hardware-Aufbauvariante.
+<sup>2</sup> Nur eines der beiden Konfigurationselemente - `digital_input` oder `analog_input` - wird benötigt, je nach [Hardware-Aufbauvariante](#hardware-aufbau).
 
 <sup>3</sup> Die Konfigurationselemente `analog_threshold`, `off_tolerance`, `on_tolerance` und `debounce_threshold` erwarten entweder eine feste Zahl oder die ID einer [Zahlen-Komponente](https://www.esphome.io/components/number). Letzteres ermöglicht das Konfigurieren des Wertes über das User-Interface (z.B. durch die Verwendung einer [Template-Zahlen-Komponente](https://www.esphome.io/components/number/template.html)).
 
@@ -249,7 +259,7 @@ Der Schwellwert `analog_threshold` steuert, wann das analoge Signal als "erkannt
 ![Analoger Schwellwert](img/analog_threshold.png)
 
 Software-seitig müssen nun beispielsweise folgende Konfigurations-Schritte durchgeführt werden:
-1.  In der YAML-Konfigurationsdatei wird ein [ADC-Sensor](https://www.esphome.io/components/sensor/adc.html) konfiguriert, der einen mit dem analogen Ausgang des TCRT5000-Moduls verbundenen ADC-Pin ausliest.
+1.  In der YAML-Konfigurationsdatei wird ein [ADC-Sensor](https://www.esphome.io/components/sensor/adc.html) konfiguriert, der den mit dem analogen Ausgang des TCRT5000-Moduls verbundenen ADC-Pin ausliest.
     ```yaml
     sensor:
       - platform: adc
@@ -388,7 +398,7 @@ Die beiden Versatzwerte `off_tolerance` und `on_tolerance` können konfiguriert 
 ![Hysterese-Kennlinie](img/hysteresis.png)
 
 #### Glättung des analogen Signals
-Durch eine geschickte Konfiguration des Aktualisierungsintervalls `update_interval` und der Anzahl Abtastungen pro Aktualisierung (`samples`) für den analogen Sensor `analog_input` kann die Kurve des analogen Signals so weit geglättet werden, dass kurzfristige Schwankungen eliminiert werden. Es ist aber zu bedenken, dass zu große Aktualisierungsintervalle dazu führen können, dass einzelne Umdrehungen bei sehr hohen Drehgeschwindigkeiten nicht mehr erkannt werden, da die Zeit zwischen steigender und darauffolgender fallender Flanke kleiner als das eingestellte Aktualisierungsintervall ist. Auch diese Art der Entprellung funktioniert nur bei der Verwendung des analogen Eingangssignals des Infrarotsensors.
+Durch eine geschickte Konfiguration des Aktualisierungsintervalls `update_interval` und der Anzahl Abtastungen pro Aktualisierung (`samples`) für den analogen Sensor `analog_input` kann die Kurve des analogen Signals so weit geglättet werden, dass kurzfristige Schwankungen eliminiert werden. Es ist aber zu bedenken, dass zu große Aktualisierungsintervalle dazu führen können, dass einzelne Umdrehungen bei sehr hohen Drehgeschwindigkeiten nicht mehr erkannt werden, da dann die Zeit zwischen steigender und darauffolgender fallender Flanke kleiner als das eingestellte Aktualisierungsintervall ist. Auch diese Art der Entprellung funktioniert nur bei der Verwendung des analogen Eingangssignals des Infrarotsensors.
 
 ### Manuelles Überschreiben des Zählerstands
 Um den Zählerstand in der Ferraris-Komponente mit dem tatsächlichen Zählerstand des Ferraris-Stromzählers abzugleichen, kann der Wert des Verbrauchszähler-Sensors explizit überschrieben werden. Dazu werden die zwei Aktionen `ferraris.set_energy_meter` und `ferraris.set_rotation_counter` (siehe [Aktionen](#aktionen)) zur Verfügung gestellt.
@@ -552,7 +562,17 @@ The Ferraris Meter component basically supports the following setup variants:
 - [Use of multiple infrared sensors](#reading-multiple-electricity-meters)
 
 ## Software Setup
-To build an ESPHome firmware, you have to create a YAML based configuration file. You can use one of the example configuration files provided in this repository as a starting point and adapt it to your needs. For more information about writing ESPHome firmware configuration files, please refer to the [ESPHome documentation](https://www.esphome.io).
+To build an ESPHome firmware, you have to create a YAML based configuration file. You can use one of the [example configuration files](example_config) provided in this repository as a starting point and adapt it to your needs.
+
+In principle, there are two ways to build the ESPHome firmware:
+
+1. [Via Home Assistant with the ESPHome Device Compiler add-on](https://www.esphome.io/guides/getting_started_hassio)
+2. [Via the command line with the ESPHome Python package](https://www.esphome.io/guides/getting_started_command_line)
+
+Which method you should choose depends on how familiar you are with ESPHome and whether you prefer to work with a graphical user interface or the command line. In addition, the performance of the host on which you are building the firmware could play a role in speeding up the process.
+
+> [!NOTE]
+> It is **not** necessary to fork this repository and do the adaptations to the example configuration directly inside the forked repository. Instead, it is sufficient to save and adapt the example configuration locally or store it on your Home Assistant host (if you wish to build the ESPHome firmware with the ESPHome Device Compiler add-on).
 
 The following sections describe the most notable components contained in the firmware configuration file.
 
@@ -586,9 +606,9 @@ The following generic configuration items can be configured:
 | `debounce_threshold` | Number&nbsp;/ [ID](https://www.esphome.io/guides/configuration-types#config-id)&nbsp;<sup>3</sup> | no | 400 | Minimum time in milliseconds between falling and subsequent rising edge to take the rotation into account, see section [Debouncing](#debouncing) for details |
 | `energy_start_value` | [ID](https://www.esphome.io/guides/configuration-types#config-id) | no | - | [Number component](https://www.esphome.io/components/number) whose value will be used as starting value for the energy counter at boot time |
 
-<sup>1</sup> Some use cases require the configuration element `id`.
+<sup>1</sup> Some [use cases](#usage-examples) require the configuration element `id`.
 
-<sup>2</sup> Only one of `digital_input` or `analog_input` is required, depending on the hardware setup variant.
+<sup>2</sup> Only one of `digital_input` or `analog_input` is required, depending on the [hardware setup variant](#hardware-setup).
 
 <sup>3</sup> The configuration elements `analog_threshold`, `off_tolerance`, `on_tolerance` and `debounce_threshold` expect either a static number or the ID on a [number component](https://www.esphome.io/components/number). The latter allows the configuration of the value via the user interface (e.g., by using a [template number](https://www.esphome.io/components/number/template.html)).
 
@@ -753,7 +773,7 @@ The threshold value `analog_threshold` controls when the analog signal is treate
 ![Analoger Threshold](img/analog_threshold.png)
 
 On the software side, for instance, the following configuration steps must now be carried out:
-1.  An [ADC sensor](https://www.esphome.io/components/sensor/adc.html) is configured in the YAML configuration file, which reads out an ADC pin connected to the analog output of the TCRT5000 module.
+1.  An [ADC sensor](https://www.esphome.io/components/sensor/adc.html) is configured in the YAML configuration file, which reads out the ADC pin connected to the analog output of the TCRT5000 module.
     ```yaml
     sensor:
       - platform: adc
@@ -892,7 +912,7 @@ The two offset values `off_tolerance` and `on_tolerance` can be configured to us
 ![Hysteresis Curve](img/hysteresis.png)
 
 #### Smoothing of the analog Signal
-By carefully configuring the update interval `update_interval` and the number of samples per update (`samples`) for the analog sensor `analog_input`, the curve of the analog signal can be smoothed to such an extent that short-term fluctuations are eliminated. However, bear in mind that excessive update intervals can lead to individual rotations no longer being detected at very high rotation speeds, as the time between the rising and subsequent falling edge is shorter than the set update interval. Also this type of debouncing only works when using the analog input signal of the infrared sensor.
+By carefully configuring the update interval `update_interval` and the number of samples per update (`samples`) for the analog sensor `analog_input`, the curve of the analog signal can be smoothed to such an extent that short-term fluctuations are eliminated. However, bear in mind that excessive update intervals can lead to individual rotations no longer being detected at very high rotation speeds, as the time between the rising and subsequent falling edge is then shorter than the set update interval. Also this type of debouncing only works when using the analog input signal of the infrared sensor.
 
 ### Explicit Meter Reading Replacement
 To synchronize the meter reading in the Ferraris component with the actual meter reading of the Ferraris electricity meter, the value of the energy meter sensor can be explicitly overwritten. The two actions `ferraris.set_energy_meter` and `ferraris.set_rotation_counter` (see [Actions](#actions)) are provided for this purpose.
