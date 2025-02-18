@@ -21,6 +21,8 @@ Ferraris Meter ist eine ESPHome-Komponente zur Erstellung einer ESP-Firmware, di
   - [Auslesen des Stromzählers über den analogen Ausgang des Infrarotsensors](#auslesen-des-stromzählers-über-den-analogen-ausgang-des-infrarotsensors)
   - [Auslesen mehrerer Stromzähler](#auslesen-mehrerer-stromzähler)
   - [Kalibrierung](#kalibrierung)
+    - [Kalibrierung des digitalen Ausgangssignals](#kalibrierung-des-digitalen-ausgangssignals)
+    - [Kalibrierung des analogen Ausgangssignals](#kalibrierung-des-analogen-ausgangssignals)
   - [Entprellung](#entprellung)
     - [Entprellungsschwellwert](#entprellungsschwellwert)
     - [Hysterese-Kennlinie](#hysterese-kennlinie)
@@ -78,19 +80,38 @@ external_components:
 > [!TIP]
 > Im obigen Beispiel wird der neueste Stand der Komponente aus dem `main` Branch des Repositories geladen. Ich empfehle aber, mittels Versionsnummer auf einen freigegebenen Stand zu verweisen, um mehr Kontrolle darüber zu haben, welcher Software-Stand verwendet wird und um besser auf "breaking changes" reagieren zu können. Siehe Beispielkonfiguration, wie das gemacht werden kann.
 
-Die folgenden generischen Einstellungen können konfiguriert werden:
+Die folgenden allgemeinen Einstellungen können konfiguriert werden:
 
 | Option | Typ | Benötigt | Standard | Beschreibung |
 | ------ | --- | -------- | -------- | ------------ |
 | `id` | [ID](https://www.esphome.io/guides/configuration-types#config-id) | nein <sup>1</sup> | - | Instanz der Ferraris-Komponente |
-| `digital_input` | [Pin](https://www.esphome.io/guides/configuration-types#pin) | ja <sup>2</sup> | - | GPIO-Pin, mit dem der digitale Ausgang des TCRT5000-Moduls verbunden ist |
-| `analog_input` | [ID](https://www.esphome.io/guides/configuration-types#config-id) | ja <sup>2</sup> | - | [ADC-Sensor](https://www.esphome.io/components/sensor/adc.html), der den mit dem analogen Ausgang des TCRT5000-Moduls verbundenen Pin ausliest |
-| `analog_threshold` | Zahl&nbsp;/ [ID](https://www.esphome.io/guides/configuration-types#config-id)&nbsp;<sup>3</sup> | nein | 50 | Schwellwert für die Erkennung einer Umdrehung über den analogen Eingang |
-| `off_tolerance` | Zahl&nbsp;/ [ID](https://www.esphome.io/guides/configuration-types#config-id)&nbsp;<sup>3</sup> | nein | 0 | Negativer Versatz zum analogen Schwellwert für die fallende Flanke, siehe Abschnitt [Entprellung](#entprellung) für Details |
-| `on_tolerance` | Zahl&nbsp;/ [ID](https://www.esphome.io/guides/configuration-types#config-id)&nbsp;<sup>3</sup> | nein | 0 | Positiver Versatz zum analogen Schwellwert für die steigende Flanke, siehe Abschnitt [Entprellung](#entprellung) für Details |
 | `rotations_per_kwh` | Zahl | nein | 75 | Anzahl der Umdrehungen der Drehscheibe pro kWh (der Wert ist i.d.R. auf dem Ferraris-Stromzähler vermerkt) |
-| `debounce_threshold` | Zahl&nbsp;/ [ID](https://www.esphome.io/guides/configuration-types#config-id)&nbsp;<sup>3</sup> | nein | 400 | Minimale Zeit in Millisekunden zwischen fallender und darauffolgender steigender Flanke, damit die Umdrehung berücksichtigt wird, siehe Abschnitt [Entprellung](#entprellung) für Details |
+| `debounce_threshold` | Zahl&nbsp;/ [ID](https://www.esphome.io/guides/configuration-types#config-id)&nbsp;<sup>3</sup> | nein | 400 | Minimale Zeit in Millisekunden zwischen fallender und darauffolgender steigender Flanke, damit die Umdrehung berücksichtigt wird, siehe Abschnitt [Entprellungsschwellwert](#entprellungsschwellwert) für Details |
 | `energy_start_value` | [ID](https://www.esphome.io/guides/configuration-types#config-id) | nein | - | [Zahlen-Komponente](https://www.esphome.io/components/number), deren Wert beim Booten als Startwert für den Verbrauchszähler verwendet wird |
+
+Die folgenden Einstellungen sind nur relevant, wenn der digitale Ausgang des Infrarotsensors verwendet wird:
+
+| Option | Typ | Benötigt | Standard | Beschreibung |
+| ------ | --- | -------- | -------- | ------------ |
+| `digital_input` | [Pin](https://www.esphome.io/guides/configuration-types#pin) | ja <sup>2</sup> | - | GPIO-Pin, mit dem der digitale Ausgang des TCRT5000-Moduls verbunden ist |
+
+Die folgenden Einstellungen sind nur relevant, wenn der analoge Ausgang des Infrarotsensors verwendet wird:
+
+| Option | Typ | Benötigt | Standard | Beschreibung |
+| ------ | --- | -------- | -------- | ------------ |
+| `analog_input` | [ID](https://www.esphome.io/guides/configuration-types#config-id) | ja <sup>2</sup> | - | [ADC-Sensor](https://www.esphome.io/components/sensor/adc.html), der den mit dem analogen Ausgang des TCRT5000-Moduls verbundenen Pin ausliest |
+| `analog_threshold` | Zahl&nbsp;/ [ID](https://www.esphome.io/guides/configuration-types#config-id)&nbsp;<sup>3</sup> | nein | 50.0 | Schwellwert für die Erkennung einer Umdrehung über den analogen Eingang, siehe Abschnitt [Kalibrierung des analogen Ausgangssignals](#kalibrierung-des-analogen-ausgangssignals) für Details |
+| `off_tolerance` | Zahl&nbsp;/ [ID](https://www.esphome.io/guides/configuration-types#config-id)&nbsp;<sup>3</sup> | nein | 0.0 | Negativer Versatz zum analogen Schwellwert für die fallende Flanke, siehe Abschnitt [Hysterese-Kennlinie](#hysterese-kennlinie) für Details |
+| `on_tolerance` | Zahl&nbsp;/ [ID](https://www.esphome.io/guides/configuration-types#config-id)&nbsp;<sup>3</sup> | nein | 0.0 | Positiver Versatz zum analogen Schwellwert für die steigende Flanke, siehe Abschnitt [Hysterese-Kennlinie](#hysterese-kennlinie) für Details |
+| `calibrate_on_boot` | Wörterbuch | nein | - | Wenn vorhanden, wird die automatische Kalibrierung des analogen Ausgangssignals vom Infrarotsensor nach dem Aufstarten ausgeführt, siehe Abschnitt [Kalibrierung des analogen Ausgangssignals](#kalibrierung-des-analogen-ausgangssignals) für Details |
+
+Die folgenden Einstellungen können für `calibrate_on_boot` konfiguriert werden:
+
+| Option | Typ | Benötigt | Standard | Beschreibung |
+| ------ | --- | -------- | -------- | ------------ |
+| `num_captured_values` | Zahl | nein | 6000 | Anzahl der zu erfassenden analogen Werte pro Kalibrierungsdurchlauf |
+| `min_level_distance` | Zahl | nein | 6.0 | Mindestdifferenz zwischen niedrigstem und höchstem Analogwert, damit die Kalibrierung als erfolgreich angesehen und der analoge Schwellwert gesetzt wird |
+| `max_iterations` | Zahl | nein | 3 | Maximale Anzahl fehlgeschlagener Kalibrierungsdurchläufe, bevor aufgegeben wird |
 
 <sup>1</sup> Bestimmte [Anwendungsfälle](#anwendungsbeispiele) benötigen das Konfigurationselement `id`.
 
@@ -192,7 +213,7 @@ switch:
 ```
 
 ### Aktionen
-Die Ferraris-Komponente stellt zwei Aktionen zum Setzen des Zählerstands und zum Setzen des Umdrehungszählers zur Verfügung.
+Die Ferraris-Komponente stellt verschiedene Aktionen zur Verfügung, um Werte zu setzen oder das Verhalten zu steuern.
 
 #### Zählerstand setzen
 | Aktion | Beschreibung |
@@ -203,6 +224,8 @@ Die Ferraris-Komponente stellt zwei Aktionen zum Setzen des Zählerstands und zu
 | Parameter | Typ | Bereich | Beschreibung |
 | --------- | --- | ------- | ------------ |
 | `value` | `float` | >=&nbsp;0 | Zielwert für den Zählerstand in Kilowattstunden (kWh) |
+
+Anstelle eines festen Zahlenwerts kann auch ein Lambda-Ausdruck verwendet werden, der den zu übergebenden Wert zurückgibt.
 
 > [!NOTE]
 > Obwohl der Sensor für den aktuellen Zählerstand die Einheit **Wh (Wattstunden)** hat, verwendet die Aktion zum Überschreiben des Zählerstands die Einheit **kWh (Kilowattstunden)**, da die analogen Ferraris-Stromzähler den Zählerstand üblicherweise auch in dieser Einheit anzeigen.
@@ -220,6 +243,22 @@ Die Ferraris-Komponente stellt zwei Aktionen zum Setzen des Zählerstands und zu
 | --------- | --- | ------- | ------------ |
 | `value` | `uint64` | >=&nbsp;0 | Zielwert für den Umdrehungszähler in Anzahl Umdrehungen |
 
+Anstelle eines festen Zahlenwerts kann auch ein Lambda-Ausdruck verwendet werden, der den zu übergebenden Wert zurückgibt.
+
+#### Automatische analoge Kalibrierung
+| Aktion | Beschreibung |
+| ------ | ------------ |
+| `ferraris.start_analog_calibration` | Startet die automatische Kalibrierung des analogen Ausgangssignals vom Infrarotsensor |
+
+##### Parameter
+Alle Parameter sind optional und können weggelassen werden.
+
+| Parameter | Typ | Bereich | Standard | Beschreibung |
+| --------- | --- | ------- | -------- | ------------ |
+| `num_captured_values` | `uint32` | 100&nbsp;...&nbsp;100000 | 6000 | Anzahl der zu erfassenden analogen Werte pro Kalibrierungsdurchlauf |
+| `min_level_distance` | `float` | >=&nbsp;0 | 6.0 | Mindestdifferenz zwischen niedrigstem und höchstem Analogwert, damit die Kalibrierung als erfolgreich angesehen und der analoge Schwellwert gesetzt wird |
+| `max_iterations` | `uint8` | 1&nbsp;...&nbsp;10 | 3 | Maximale Anzahl fehlgeschlagener Kalibrierungsdurchläufe, bevor aufgegeben wird |
+
 ## Anwendungsbeispiele
 In diesem Abschnitt sind verschiedene Anwendungsbeispiele für die Ferraris-Komponente beschrieben.
 
@@ -230,7 +269,7 @@ Der folgende Steckplatinen-Schaltplan zeigt ein Beispiel für einen Versuchsaufb
 
 ![Steckplatinen-Schaltplan (digitaler Pin)](img/breadboard_schematic.png)
 
-Mithilfe eines Schraubenziehers muss anschließend über das Potientiometer das digitale Ausgangssignal kalibriert werden. Dabei helfen die beiden grünen LEDs auf der Rückseite des Sensors. Die rechte LED leuchtet dauerhaft, wenn der Sensor mit Strom versorgt wird. Die linke LED leuchtet, solange kein "Hindernis" erkannt wurde und erlischt, wenn die Reflektion unterbrochen wurde. Letzteres ist der Zustand, wenn die Markierung auf der Drehscheibe des Ferraris-Stromzählers vor den Sensor wandert. Das Potentiometer sollte also so eingestellt werden, dass die linke LED gerade noch leuchtet, wenn die Markierung nicht im Bereich des Infrarot Sender/Empfänger-Paares ist und erlischt, sobald sich die Markierung davor schiebt. Dies ist nur ein sehr kleiner Bereich und es kann etwas schwierig werden, diese Einstellung zu finden. Zur zusätzlichen Unterstützung dieses Prozesses kann in der Ferraris Meter Firmware der Kalibierungsmodus aktiviert werden, siehe Abschnitt [Kalibierung](#kalibrierung) für Details.
+Die Kalibrierung des digitalen Ausgangssignals erfolgt mithilfe des auf der Platine des Infrarotsensors befindlichen Potentiometers, siehe Abschnitt [Kalibrierung des digitalen Ausgangssignals](#kalibrierung-des-digitalen-ausgangssignals) für Details.
 
 > [!TIP]
 > Sollte es nicht gelingen, eine passende und funktionierende Einstellung für das Potentiometer zu finden, kann alternativ der analoge Ausgang des Infrarotsensors verwendet werden, siehe nächsten Abschnitt.
@@ -252,11 +291,7 @@ Der folgende Steckplatinen-Schaltplan zeigt ein Beispiel für einen Versuchsaufb
 
 ![Steckplatinen-Schaltplan (analoger Pin)](img/breadboard_schematic_analog.png)
 
-Eine Kalibrierung mittels des Potientiometers auf dem TCRT5000-Modul entfällt, stattdessen müssen software-seitig der Schwellwert für den analogen Eingang und optional die Versatzwerte für eine Hysterese-Kennlinie konfiguriert werden (siehe auch Abschnitt [Entprellung](#entprellung) weiter unten). Auch hier kann der Kalibrierungsmodus der Ferraris-Komponente helfen, siehe Abschnitt [Kalibierung](#kalibrierung) für Details.
-
-Der Schwellwert `analog_threshold` steuert, wann das analoge Signal als "erkannt" (markierter Bereich der Drehscheibe) und wann als "nicht erkannt" (nicht markierter Bereich der Drehscheibe) behandelt wird. Ist der Wert des ADC-Sensors `analog_input` größer als der Schwellwert, gilt die Markierung als erkannt, ist er kleiner oder gleich, gilt sie als nicht erkannt.
-
-![Analoger Schwellwert](img/analog_threshold.png)
+Eine Kalibrierung mittels des Potientiometers auf dem TCRT5000-Modul entfällt. Stattdessen müssen software-seitig der Schwellwert für den analogen Eingang und optional die Versatzwerte für eine Hysterese-Kennlinie konfiguriert werden, siehe Abschnitt [Kalibrierung des analogen Ausgangssignals](#kalibrierung-des-analogen-ausgangssignals) für Details.
 
 Software-seitig müssen nun beispielsweise folgende Konfigurations-Schritte durchgeführt werden:
 1.  In der YAML-Konfigurationsdatei wird ein [ADC-Sensor](https://www.esphome.io/components/sensor/adc.html) konfiguriert, der den mit dem analogen Ausgang des TCRT5000-Moduls verbundenen ADC-Pin ausliest.
@@ -270,38 +305,16 @@ Software-seitig müssen nun beispielsweise folgende Konfigurations-Schritte durc
         samples: 10
         update_interval: 50ms
     ```
-2.  In der YAML-Konfigurationsdatei wird eine [Template-Zahlen-Komponente](https://www.esphome.io/components/number/template.html) angelegt und für den Schwellwert des analogen Signals konfiguriert.
-    ```yaml
-    number:
-      - platform: template
-        id: adc_threshold
-        name: ADC Schwellwert
-        icon: mdi:speedometer-slow
-        entity_category: config
-        mode: box
-        optimistic: true
-        initial_value: 50
-        min_value: 0
-        max_value: 1000
-        step: 1
-    ```
-3.  Unter der Konfiguration der Ferraris-Komponente verweist der Eintrag `analog_input` auf den unter 1. angelegten ADC-Sensor und der Eintrag `analog_threshold` auf die unter 2. angelegte Zahlen-Komponente.
+2.  Unter der Konfiguration der Ferraris-Komponente verweist der Eintrag `analog_input` auf den unter 1. angelegten ADC-Sensor und der Eintrag `analog_threshold` gibt den analogen Schwellwert an (siehe Abschnitt [Kalibrierung des analogen Ausgangssignals](#kalibrierung-des-analogen-ausgangssignals) für weitere Informationen zum analogen Schwellwert). Zudem können optional die Versatzwerte `off_tolerance` und `on_tolerance` konfiguriert werden (siehe Abschnitt [Hysterese-Kennlinie](#hysterese-kennlinie) für weitere Details).
     ```yaml
     ferraris:
       id: ferraris_meter
       analog_input: adc_input
-      analog_threshold: adc_threshold
+      analog_threshold: 45.0
+      off_tolerance: 1.0
+      on_tolerance: 1.0
       # ...
     ```
-    Alternativ kann auch ein fester Zahlenwert für `analog_threshold` angegeben werden, wenn der Schwellwert bereits bekannt ist und nicht mehr konfiguriert/verändert werden muss. In diesem Fall kann Schritt 2 entfallen.
-    ```yaml
-    ferraris:
-      # ...
-      analog_threshold: 45
-      # ...
-    ```
-
-Die Konfiguration der Versatzwerte `off_tolerance` und `on_tolerance` ist sehr ähnlich zur Konfiguration von `analog_threshold` und wurde deshalb in obigem Beispiel nicht explizit gezeigt.
 
 **Beispiel-Konfiguration:** [ferraris_meter_analog.yaml](example_config/ferraris_meter_analog.yaml)
 
@@ -371,7 +384,7 @@ Software-seitig müssen nun beispielsweise folgende Konfigurations-Schritte durc
 ### Kalibrierung
 Während der Positionierung und Ausrichtung des Infrarotsensors sowie der Einstellung des Potentiometers oder des analogen Schwellwerts ist es wenig sinnvoll, die Umdrehungen der Drehscheibe des Ferraris-Stromzählers zu messen und die Verbräuche zu berechnen, da die Zustandsänderungen des Sensors nicht der tatsächlichen Erkennung der Markierung auf der Drehscheibe entsprechen. Deshalb gibt es die Möglichkeit, die Ferraris-Komponente in den Kalibrierungsmodus zu versetzen, indem man den Schalter für den Kalibrierungsmodus (siehe [Aktoren](#aktoren)) einschaltet. Solange der Kalibrierungsmodus aktiviert ist, wird keine Berechnung der Verbrauchsdaten durchgeführt und die entsprechenden Sensoren (siehe [Primäre Sensoren](#primäre-sensoren)) werden nicht verändert. Stattdessen ist der diagnostische Sensor für die Umdrehungsindikation (siehe [Diagnostische Sensoren](#diagnostische-sensoren)) aktiv und kann zusätzlich verwendet werden, um bei der korrekten Ausrichtung zu unterstützen. Der Sensor befindet sich in dem Zustand `on` wenn die Markierung auf der Drehscheibe erkannt wurde und `off` wenn keine Markierung erkannt wurde.
 
-Um den Kalibierungsmodus nutzen zu können, müssen die Komponenten `calibration_mode` und `rotation_indicator` in der YAML-Datei konfiguriert sein:
+Um den Kalibierungsmodus vollständig nutzen zu können, müssen die Komponenten `calibration_mode` und `rotation_indicator` in der YAML-Datei konfiguriert sein:
 ```yaml
 binary_sensor:
   - platform: ferraris
@@ -384,6 +397,73 @@ switch:
       name: Kalibrierungsmodus
 ```
 
+#### Kalibrierung des digitalen Ausgangssignals
+Mithilfe eines Schraubenziehers kann über das Potientiometer das digitale Ausgangssignal des Infrarotsensors kalibriert werden. Dabei helfen die beiden grünen LEDs auf der Rückseite des Sensors. Die rechte LED leuchtet dauerhaft, wenn der Sensor mit Strom versorgt wird. Die linke LED leuchtet, solange kein "Hindernis" erkannt wurde und erlischt, wenn die Reflektion unterbrochen wurde. Letzteres ist der Zustand, wenn die Markierung auf der Drehscheibe des Ferraris-Stromzählers vor den Sensor wandert. Das Potentiometer sollte also so eingestellt werden, dass die linke LED gerade noch leuchtet, wenn die Markierung nicht im Bereich des Infrarot Sender/Empfänger-Paares ist und erlischt, sobald sich die Markierung davor schiebt. Dies ist nur ein sehr kleiner Bereich und es kann etwas schwierig werden, diese Einstellung zu finden.
+
+#### Kalibrierung des analogen Ausgangssignals
+Das analoge Ausgangssignal des Infrarotsensors wird software-seitig je nach Präferenz entweder manuell oder automatisch kalibriert. Der Schwellwert `analog_threshold` steuert, wann das analoge Signal als "erkannt" (markierter Bereich der Drehscheibe) und wann als "nicht erkannt" (nicht markierter Bereich der Drehscheibe) behandelt wird. Ist der Wert des ADC-Sensors `analog_input` größer als der Schwellwert, gilt die Markierung als erkannt, ist er kleiner oder gleich, gilt sie als nicht erkannt.
+
+![Analoger Schwellwert](img/analog_threshold.png)
+
+Für die manuelle Kalibrierung muss ein passender Wert für den analogen Schwellwert ermittelt und konfiguriert werden.
+
+Wenn der Schwellwert ermittelt wurde und nicht mehr konfiguriert/verändert werden muss, kann ein fester Zahlenwert für `analog_threshold` angegeben werden:
+```yaml
+ferraris:
+  # ...
+  analog_threshold: 45.0
+  # ...
+```
+
+Wenn der Schwellwert noch nicht bekannt ist oder später über das User-Interface veränderbar sein soll, kann anstelle eines festen Zahlenwerts eine [Template-Zahlen-Komponente](https://www.esphome.io/components/number/template.html) (oder alternativ eine [Home Assistant Zahlen-Komponente](https://www.esphome.io/components/number/homeassistant.html)) eingetragen werden:
+```yaml
+ferraris:
+  # ...
+  analog_threshold: adc_threshold
+  # ...
+
+number:
+  - platform: template
+    id: adc_threshold
+    name: ADC Schwellwert
+    icon: mdi:speedometer-slow
+    entity_category: config
+    mode: box
+    optimistic: true
+    initial_value: 50.0
+    min_value: 0.0
+    max_value: 1000.0
+    step: 0.5
+```
+
+Es ist auch möglich, den analogen Schwellwert automatisch von der Ferraris-Software berechnen zu lassen. Dies geschieht durch das Aufrufen der Aktion `start_analog_calibration` (siehe [Aktionen](#aktionen)). Dabei analysiert die Software eine konfigurierbare Anzahl analoger Samples vom Infrarotsensor und ermittelt den kleinsten und den größten analogen Wert. Anschließend wird das arithmetische Mittel aus den beiden Grenzwerten berechnet und als analoger Schwellwert verwendet.
+
+Um die automatische Kalibrierung vom User-Interface aus starten zu können, kann ein [Template-Button](https://www.esphome.io/components/button/template.html) konfiguriert werden, der beim Drücken die Aktion aufruft:
+```yaml
+button:
+  - platform: template
+    name: Auto-Kalibrierung starten
+    icon: mdi:auto-fix
+    entity_category: config
+    on_press:
+      - ferraris.start_analog_calibration:
+          id: ferraris_meter
+          num_captured_values: 6000
+          min_level_distance: 6.0
+          max_iterations: 3
+```
+
+Um die automatische Kalibrierung bei jedem Aufstarten des Mikrocontrollers zu starten, kann folgender Eintrag zur Konfiguration der Ferraris-Komponente hinzugefügt werden:
+```yaml
+ferraris:
+  # ...
+  calibrate_on_boot:
+    num_captured_values: 6000
+    min_level_distance: 6.0
+    max_iterations: 3
+  # ...
+```
+
 ### Entprellung
 Der Übergang von nicht markiertem zu markiertem Bereich und umgekehrt auf der Drehscheibe kann zu einem schnellen Hin-und Herspringen ("Prellen") des Erkennungszustands des Sensors führen, das vor allem bei langsamen Drehgeschwindigkeiten auftritt und nicht vollständig durch die Kalibrierung unterdrückt werden kann. Dieses Prellen führt zu verfälschten Messwerten und um diese zu vermeiden, gibt es folgende Einstellungensmöglichkeiten.
 
@@ -392,10 +472,81 @@ Der Entprellungsschwellwert `debounce_threshold` spezifiziert die minimale Zeit 
 
 ![Entprellungsschwellwert](img/debounce_threshold.png)
 
+Um eine Entprellung über den Schwellwert zu aktivieren, muss der entsprechende Wert in der Konfiguration der Ferraris-Komponente gesetzt werden:
+```yaml
+ferraris:
+  # ...
+  debounce_threshold: 400
+  # ...
+```
+
+Wenn der Wert dynamisch über das User-Interface einstellbar sein soll, kann anstelle eines festen Zahlenwerts eine [Template-Zahlen-Komponente](https://www.esphome.io/components/number/template.html) (oder alternativ eine [Home Assistant Zahlen-Komponente](https://www.esphome.io/components/number/homeassistant.html)) eingetragen werden:
+```yaml
+ferraris:
+  # ...
+  debounce_threshold: debounce_threshold
+  # ...
+
+number:
+  - platform: template
+    id: debounce_threshold
+    name: Entprellungsschwellwert
+    icon: mdi:speedometer-slow
+    entity_category: config
+    mode: box
+    optimistic: true
+    initial_value: 400
+    min_value: 0
+    max_value: 2000
+    step: 1
+```
+
 #### Hysterese-Kennlinie
 Die beiden Versatzwerte `off_tolerance` und `on_tolerance` können konfiguriert werden, um eine Hysterese-Kennlinie für die Erkennung des markiertes Bereichs auf der Drehscheibe über das analoge Signal zu verwenden. Dadurch wird ein "Zittern" des analogen Signals kompensiert und damit ein mögliches Prellen des Erkennungszustands für den markierten Bereich auf der Drehscheibe minimiert. Diese Art der Entprellung funktioniert nur bei der Verwendung des analogen Eingangssignals des Infrarotsensors.
 
 ![Hysterese-Kennlinie](img/hysteresis.png)
+
+Um eine Entprellung über die Hysterese-Kennlinie zu aktivieren, müssen die entsprechenden Werte in der Konfiguration der Ferraris-Komponente gesetzt werden:
+```yaml
+ferraris:
+  # ...
+  off_tolerance: 1.0
+  on_tolerance: 1.0
+  # ...
+```
+
+Wenn die Werte dynamisch über das User-Interface einstellbar sein sollen, können anstelle der festen Zahlenwerte [Template-Zahlen-Komponenten](https://www.esphome.io/components/number/template.html) (oder alternativ [Home Assistant Zahlen-Komponenten](https://www.esphome.io/components/number/homeassistant.html)) eingetragen werden:
+```yaml
+ferraris:
+  # ...
+  off_tolerance: off_tolerance
+  on_tolerance: on_tolerance
+  # ...
+
+number:
+  - platform: template
+    id: off_tolerance
+    name: Hysterese Aussschalttoleranz
+    icon: mdi:speedometer-slow
+    entity_category: config
+    mode: slider
+    optimistic: true
+    initial_value: 1.0
+    min_value: 0.0
+    max_value: 5.0
+    step: 0.5
+  - platform: template
+    id: on_tolerance
+    name: Hysterese Einschalttoleranz
+    icon: mdi:speedometer-slow
+    entity_category: config
+    mode: slider
+    optimistic: true
+    initial_value: 1.0
+    min_value: 0.0
+    max_value: 5.0
+    step: 0.5
+```
 
 #### Glättung des analogen Signals
 Durch eine geschickte Konfiguration des Aktualisierungsintervalls `update_interval` und der Anzahl Abtastungen pro Aktualisierung (`samples`) für den analogen Sensor `analog_input` kann die Kurve des analogen Signals so weit geglättet werden, dass kurzfristige Schwankungen eliminiert werden. Es ist aber zu bedenken, dass zu große Aktualisierungsintervalle dazu führen können, dass einzelne Umdrehungen bei sehr hohen Drehgeschwindigkeiten nicht mehr erkannt werden, da dann die Zeit zwischen steigender und darauffolgender fallender Flanke kleiner als das eingestellte Aktualisierungsintervall ist. Auch diese Art der Entprellung funktioniert nur bei der Verwendung des analogen Eingangssignals des Infrarotsensors.
@@ -531,17 +682,19 @@ Ferraris Meter is an ESPHome component for creating an ESP firmware that uses an
   - [Actors](#actors)
   - [Actions](#actions)
 - [Usage Examples](#usage-examples)
-  - [Reading the electricity Meter via the digital Output of the infrared Sensor](#reading-the-electricity-meter-via-the-digital-output-of-the-infrared-sensor)
-  - [Reading the electricity Meter via the analog Output of the infrared Sensor](#reading-the-electricity-meter-via-the-analog-output-of-the-infrared-sensor)
-  - [Reading multiple electricity Meters](#reading-multiple-electricity-meters)
+  - [Reading the Electricity Meter via the digital Output of the Infrared Sensor](#reading-the-electricity-meter-via-the-digital-output-of-the-infrared-sensor)
+  - [Reading the Electricity Meter via the analog Output of the Infrared Sensor](#reading-the-electricity-meter-via-the-analog-output-of-the-infrared-sensor)
+  - [Reading multiple Electricity Meters](#reading-multiple-electricity-meters)
   - [Calibration](#calibration)
+    - [Calibration of the digital Output Signal](#calibration-of-the-digital-output-signal)
+    - [Calibration of the analog Output Signal](#calibration-of-the-analog-output-signal)
   - [Debouncing](#debouncing)
     - [Debounce Threshold](#debounce-threshold)
     - [Hysteresis Curve](#hysteresis-curve)
     - [Smoothing of the analog Signal](#smoothing-of-the-analog-signal)
   - [Explicit Meter Reading Replacement](#explicit-meter-reading-replacement)
-    - [Setting energy meter manually via the user interface](#setting-energy-meter-manually-via-the-user-interface)
-    - [Setting energy meter automatically](#setting-energy-meter-automatically)
+    - [Setting Energy Meter manually via the User Interface](#setting-energy-meter-manually-via-the-user-interface)
+    - [Setting Energy Meter automatically](#setting-energy-meter-automatically)
   - [Meter Reading Recovery after Restart](#meter-reading-recovery-after-restart)
 - [Help/Support](SUPPORT.md#-getting-support-for-esphome-ferraris-meter)
 - [Contributing](CONTRIBUTING.md#contributing-to-esphome-ferraris-meter)
@@ -592,19 +745,38 @@ external_components:
 > [!TIP]
 > In the above example, the newest version of the component from the `main` branch of the repository is loaded. However, I recommend using a version number to refer to a released version in order to have more control over which software version is used and to be able to react better to "breaking changes". See the example configuration for how this can be done.
 
-The following generic configuration items can be configured:
+The following common configuration items can be configured:
 
 | Option | Type | Required | Default | Description |
 | ------ | ---- | -------- | ------- | ----------- |
 | `id` | [ID](https://www.esphome.io/guides/configuration-types#config-id) | no <sup>1</sup> | - | Ferraris component instance |
-| `digital_input` | [Pin](https://www.esphome.io/guides/configuration-types#pin) | yes <sup>2</sup> | - | GPIO pin to which the digital output of the TCRT5000 module is connected |
-| `analog_input` | [ID](https://www.esphome.io/guides/configuration-types#config-id) | yes <sup>2</sup> | - | [ADC sensor](https://www.esphome.io/components/sensor/adc.html) which reads out the pin connected to the analog output of the TCRT5000 module |
-| `analog_threshold` | Number&nbsp;/ [ID](https://www.esphome.io/guides/configuration-types#config-id)&nbsp;<sup>3</sup> | no | 50 | Threshold value for the detection of rotations via the analog input |
-| `off_tolerance` | Number&nbsp;/ [ID](https://www.esphome.io/guides/configuration-types#config-id)&nbsp;<sup>3</sup> | no | 0 | Negative offset to the analog threshold for the falling edge, see section [Debouncing](#debouncing) for details |
-| `on_tolerance` | Number&nbsp;/ [ID](https://www.esphome.io/guides/configuration-types#config-id)&nbsp;<sup>3</sup> | no | 0 | Positive offset to the analog threshold for the rising edge, see section [Debouncing](#adebouncing) for details |
 | `rotations_per_kwh` | Number | no | 75 | Number of rotations of the turntable per kWh (that value is usually noted on the Ferraris electricity meter) |
-| `debounce_threshold` | Number&nbsp;/ [ID](https://www.esphome.io/guides/configuration-types#config-id)&nbsp;<sup>3</sup> | no | 400 | Minimum time in milliseconds between falling and subsequent rising edge to take the rotation into account, see section [Debouncing](#debouncing) for details |
+| `debounce_threshold` | Number&nbsp;/ [ID](https://www.esphome.io/guides/configuration-types#config-id)&nbsp;<sup>3</sup> | no | 400 | Minimum time in milliseconds between falling and subsequent rising edge to take the rotation into account, see section [Debounce Threshold](#debounce-threshold) for details |
 | `energy_start_value` | [ID](https://www.esphome.io/guides/configuration-types#config-id) | no | - | [Number component](https://www.esphome.io/components/number) whose value will be used as starting value for the energy counter at boot time |
+
+The following configuration items are only relevant, if the digital output of the infrared sensor is used:
+
+| Option | Type | Required | Default | Description |
+| ------ | ---- | -------- | ------- | ----------- |
+| `digital_input` | [Pin](https://www.esphome.io/guides/configuration-types#pin) | yes <sup>2</sup> | - | GPIO pin to which the digital output of the TCRT5000 module is connected |
+
+The following configuration items are only relevant, if the analog output of the infrared sensor is used:
+
+| Option | Type | Required | Default | Description |
+| ------ | ---- | -------- | ------- | ----------- |
+| `analog_input` | [ID](https://www.esphome.io/guides/configuration-types#config-id) | yes <sup>2</sup> | - | [ADC sensor](https://www.esphome.io/components/sensor/adc.html) which reads out the pin connected to the analog output of the TCRT5000 module |
+| `analog_threshold` | Number&nbsp;/ [ID](https://www.esphome.io/guides/configuration-types#config-id)&nbsp;<sup>3</sup> | no | 50.0 | Threshold value for the detection of rotations via the analog input, see section [Calibration of the analog Output Signal](#calibration-of-the-analog-output-signal) for details |
+| `off_tolerance` | Number&nbsp;/ [ID](https://www.esphome.io/guides/configuration-types#config-id)&nbsp;<sup>3</sup> | no | 0.0 | Negative offset to the analog threshold for the falling edge, see section [Hysteresis Curve](#hysteresis-curve) for details |
+| `on_tolerance` | Number&nbsp;/ [ID](https://www.esphome.io/guides/configuration-types#config-id)&nbsp;<sup>3</sup> | no | 0.0 | Positive offset to the analog threshold for the rising edge, see section [Hysteresis Curve](#hysteresis-curve) for details |
+| `calibrate_on_boot` | Map | no | - | If present, the automatic calibration of the analog output signal from the infrared sensor will be started after boot, see section [Calibration of the analog Output Signal](#calibration-of-the-analog-output-signal) for details |
+
+The following configuration items can be configured for the `calibrate_on_boot` entry:
+
+| Option | Type | Required | Default | Description |
+| ------ | ---- | -------- | ------- | ----------- |
+| `num_captured_values` | Number | no | 6000 | Number of analog values to capture per calibration iteration |
+| `min_level_distance` | Number | no | 6.0 | Minimum difference between lowest and highest analog value to accept the calibration and set the analog threshold |
+| `max_iterations` | Number | no | 3 | Maximum number of failed calibration iterations before giving up |
 
 <sup>1</sup> Some [use cases](#usage-examples) require the configuration element `id`.
 
@@ -706,7 +878,7 @@ switch:
 ```
 
 ### Actions
-The Ferraris component provides two actions for setting the energy meter reading and the rotation counter.
+The Ferraris component provides various actions for setting values or controlling the behavior.
 
 #### Set Energy Meter
 | Action | Description |
@@ -717,6 +889,8 @@ The Ferraris component provides two actions for setting the energy meter reading
 | Parameter | Type | Range | Description |
 | --------- | ---- | ----- | ----------- |
 | `value` | `float` | >=&nbsp;0 | Target value for the energy meter reading in kilowatt hours (kWh) |
+
+Instead of a fixed numeric value, it is also possible to specify a lambda expression that returns the value to be passed to the action.
 
 > [!NOTE]
 > Although the sensor for the current meter reading has the unit **Wh (watt hours)**, the action for overwriting the meter reading has the unit **kWh (kilowatt hours)**, as the analog Ferraris electricity meters usually also display the meter reading in this unit.
@@ -734,17 +908,33 @@ The Ferraris component provides two actions for setting the energy meter reading
 | --------- | ---- | ----- | ----------- |
 | `value` | `uint64` | >=&nbsp;0 | Target value for the rotation counter in number of rotations |
 
+Instead of a fixed numeric value, it is also possible to specify a lambda expression that returns the value to be passed to the action.
+
+#### Automatic analog Calibration
+| Action | Description |
+| ------ | ----------- |
+| `ferraris.start_analog_calibration` | Starts the automatic calibration of the analog output signal from the infrared sensor |
+
+##### Parameters
+All parameters are optional and can be omitted.
+
+| Parameter | Type | Range | Default | Description |
+| --------- | ---- | ----- | ------- | ----------- |
+| `num_captured_values` | `uint32` | 100&nbsp;...&nbsp;100000 | 6000 | Number of analog values to capture per calibration iteration |
+| `min_level_distance` | `float` | >=&nbsp;0 | 6.0 | Minimum difference between lowest and highest analog value to accept the calibration and set the analog threshold |
+| `max_iterations` | `uint8` | 1&nbsp;...&nbsp;10 | 3 | Maximum number of failed calibration iterations before giving up |
+
 ## Usage Examples
 This section describes various examples of usage for the Ferraris component.
 
-### Reading the electricity Meter via the digital Output of the infrared Sensor
+### Reading the Electricity Meter via the digital Output of the Infrared Sensor
 In this variant, the digital output of the infrared sensor is used to detect rotations of the turntable. The analog output is not required, the other pins must be connected to the corresponding pins of the microcontroller. The 3.3V output of the ESP should be used for VCC and the digital output D0 must be connected to a free GPIO pin (e.g. GPIO4, corresponding to pin D2 on the D1 Mini).
 
 The following breadboard schematic shows an example test setup using an ESP8266 D1 Mini development board as microcontroller.
 
 ![Breadboard Schematic (digital Pin)](img/breadboard_schematic.png)
 
-The digital output signal of the infrared sensor must be calibrated via the potentiometer using a screwdriver; the two green LEDs on the back of the sensor help with this. The right-hand LED lights up continuously when the sensor is supplied with power. The left-hand LED lights up as long as no "obstacle" has been detected and goes out when the reflection has been interrupted. The latter is the state when the mark on the Ferraris electricity meter's turntable moves in front of the sensor. The adjustment of the potentiometer should therefore be set so that the left-hand LED just lights up when the marker is not in the range of the infrared transmitter/receiver pair and goes out as soon as the marker moves in front of it. This is only a very small range and it can be a little difficult to find this setting. To further assist with this process, the calibration mode can be enabled in the Ferraris Meter firmware, see section [calibration](#calibration) for details.
+The digital output signal is calibrated using the potentiometer on the infrared sensor circuit board, see section [Calibration of the digital Output Signal](#calibration-of-the-digital-output-signal) for details.
 
 > [!TIP]
 > In case you are unable to find an appropriate and working adjustment of the potentiometer, you can alternatively use the analog output of the infrared sensor, see next section.
@@ -759,18 +949,14 @@ ferraris:
 
 **Example configuration file:** [ferraris_meter_digital.yaml](example_config/ferraris_meter_digital.yaml)
 
-### Reading the electricity Meter via the analog Output of the infrared Sensor
+### Reading the Electricity Meter via the analog Output of the Infrared Sensor
 In this variant, the analog output of the infrared sensor is used to detect rotations of the turntable. The digital output is not required, the other pins must be connected to the corresponding pins of the microcontroller. The 3.3V output of the ESP should be used for VCC and the analog output A0 must be connected to a free ADC pin (e.g. GPIO17, corresponding to pin A0 on the D1 Mini).
 
 The following breadboard schematic shows an example test setup using an ESP8266 D1 Mini development board as microcontroller.
 
 ![Breadboard Schematic (analog Pin)](img/breadboard_schematic_analog.png)
 
-A calibration using the potentiometer on the TCRT5000 module is not needed. Instead, the threshold for the analog input and optionally the offset values for a hysteresis curve must be configured on the software side (see also section [Debouncing](#debouncing) further down). Here as well, the calibration mode of the Ferraris component could be helpful, see section [calibration](#calibration) for details.
-
-The threshold value `analog_threshold` controls when the analog signal is treated as "detected" (marked area of the turntable) and when it is treated as "not detected" (unmarked area of the turntable). If the value from the ADC sensor `analog_input` is greater than the threshold value, the marking is considered detected; if it is smaller than or equal to the threshold value, it is considered not detected.
-
-![Analoger Threshold](img/analog_threshold.png)
+A calibration using the potentiometer on the TCRT5000 module is not needed. Instead, the threshold for the analog input and optionally the offset values for a hysteresis curve must be configured on the software side, see section [Calibration of the analog Output Signal](#calibration-of-the-analog-output-signal) for details.
 
 On the software side, for instance, the following configuration steps must now be carried out:
 1.  An [ADC sensor](https://www.esphome.io/components/sensor/adc.html) is configured in the YAML configuration file, which reads out the ADC pin connected to the analog output of the TCRT5000 module.
@@ -784,42 +970,20 @@ On the software side, for instance, the following configuration steps must now b
         samples: 10
         update_interval: 50ms
     ```
-2.  A [template number component](https://www.esphome.io/components/number/template.html) is created in the YAML configuration file and configured for the threshold value of the analog signal.
-    ```yaml
-    number:
-      - platform: template
-        id: adc_threshold
-        name: ADC threshold
-        icon: mdi:speedometer-slow
-        entity_category: config
-        mode: box
-        optimistic: true
-        initial_value: 50
-        min_value: 0
-        max_value: 1000
-        step: 1
-    ```
-3.  Under the configuration of the Ferraris component, the entry `analog_input` refers to the ADC sensor created under 1. and the entry `analog_threshold` refers to the number component created under 2.
+2.  Under the configuration of the Ferraris component, the entry `analog_input` refers to the ADC sensor created under 1. and the entry `analog_threshold` specifies the analog threshold (see section [Calibration of the analog Output Signal](#calibration-of-the-analog-output-signal) for further information about the analog threshold). Additionally, the offset values  `off_tolerance` and `on_tolerance` can be configured (see section [Hysteresis Curve](#hysteresis-curve) für further details).
     ```yaml
     ferraris:
       id: ferraris_meter
       analog_input: adc_input
-      analog_threshold: adc_threshold
+      analog_threshold: 45.0
+      off_tolerance: 1.0
+      on_tolerance: 1.0
       # ...
     ```
-    Alternatively, a fixed numerical value can be specified for `analog_threshold` if the threshold value is already known and no longer needs to be configured/changed. In this case, step 2 can be omitted.
-    ```yaml
-    ferraris:
-      # ...
-      analog_threshold: 45
-      # ...
-    ```
-
-The configuration for the offset values `off_tolerance` and `on_tolerance` is very similar to the configuration of `analog_threshold` and therefore not explicitly shown in above example.
 
 **Example configuration file:** [ferraris_meter_analog.yaml](example_config/ferraris_meter_analog.yaml)
 
-### Reading multiple electricity Meters
+### Reading multiple Electricity Meters
 It is also possible to read more than one Ferraris electricity meter with a single ESP microcontroller. This requires multiple infrared sensors / TCRT5000 modules and additional free GPIO pins on the microcontroller. The TCRT5000 modules have to be connected to the voltage source of the ESP microcontroller via VCC and GND as described in the section [Hardware Setup](#hardware-setup) and the D0 outputs have to be connected to free GPIO pins on the ESP board.
 
 > [!NOTE]
@@ -898,6 +1062,73 @@ switch:
       name: Calibration mode
 ```
 
+### Calibration of the digital Output Signal
+The digital output signal of the infrared sensor must be calibrated via the potentiometer using a screwdriver; the two green LEDs on the back of the sensor help with this. The right-hand LED lights up continuously when the sensor is supplied with power. The left-hand LED lights up as long as no "obstacle" has been detected and goes out when the reflection has been interrupted. The latter is the state when the mark on the Ferraris electricity meter's turntable moves in front of the sensor. The adjustment of the potentiometer should therefore be set so that the left-hand LED just lights up when the marker is not in the range of the infrared transmitter/receiver pair and goes out as soon as the marker moves in front of it. This is only a very small range and it can be a little difficult to find this setting.
+
+### Calibration of the analog Output Signal
+The analog output signal from the infrared sensor is calibrated either manually or automatically by the software, depending on your preference. The threshold value `analog_threshold` controls when the analog signal is treated as "detected" (marked area of the turntable) and when it is treated as "not detected" (unmarked area of the turntable). If the value from the ADC sensor `analog_input` is greater than the threshold value, the marking is considered detected; if it is smaller than or equal to the threshold value, it is considered not detected.
+
+![Analoger Threshold](img/analog_threshold.png)
+
+For manual calibration, a suitable value for the analog threshold value must be determined and configured.
+
+If the threshold value has been determined and no longer needs to be configured/changed, a fixed numerical value can be entered for `analog_threshold`:
+```yaml
+ferraris:
+  # ...
+  analog_threshold: 45.0
+  # ...
+```
+
+If the threshold value is not yet known or should be modifiable later via the user interface, a [template number component](https://www.esphome.io/components/number/template.html) (or alternatively a [Home Assistant number component](https://www.esphome.io/components/number/homeassistant.html)) can be entered instead of a fixed numerical value:
+```yaml
+ferraris:
+  # ...
+  analog_threshold: adc_threshold
+  # ...
+
+number:
+  - platform: template
+    id: adc_threshold
+    name: ADC threshold
+    icon: mdi:speedometer-slow
+    entity_category: config
+    mode: box
+    optimistic: true
+    initial_value: 50.0
+    min_value: 0.0
+    max_value: 1000.0
+    step: 0.5
+```
+
+It is also possible to have the analog threshold value calculated automatically by the Ferraris software. This is done by calling the action `start_analog_calibration` (see [Actions](#actions)). The software analyzes a configurable number of analog samples from the infrared sensor and determines the lowest and highest analog value. The arithmetic mean of the two limit values is then calculated and used as the analog threshold value.
+
+To start the automatic calibration from the user interface, a [template button](https://www.esphome.io/components/button/template.html) can be configured, which calls the action when pressed:
+```yaml
+button:
+  - platform: template
+    name: Start auto calibration
+    icon: mdi:auto-fix
+    entity_category: config
+    on_press:
+      - ferraris.start_analog_calibration:
+          id: ferraris_meter
+          num_captured_values: 6000
+          min_level_distance: 6.0
+          max_iterations: 3
+```
+
+To start the automatic calibration every time the microcontroller is started, the following entry can be added to the configuration of the Ferraris component:
+```yaml
+ferraris:
+  # ...
+  calibrate_on_boot:
+    num_captured_values: 6000
+    min_level_distance: 6.0
+    max_iterations: 3
+  # ...
+```
+
 ### Debouncing
 The transition from unmarked to marked area and vice versa on the turntable can lead to a rapid back and forth jump ("bouncing") in the detection state of the sensor, which occurs particularly at slow rotation speeds and cannot be completely suppressed by the calibration. This bouncing of the state leads to falsified measured values and to avoid this, the following settings can be applied.
 
@@ -906,10 +1137,81 @@ The debounce threshold value `debounce_threshold` specifies the minimum time in 
 
 ![Debounce Threshold](img/debounce_threshold.png)
 
+To activate debouncing via the threshold value, the corresponding item must be set in the configuration of the Ferraris component:
+```yaml
+ferraris:
+  # ...
+  debounce_threshold: 400
+  # ...
+```
+
+If the value should be modifiable via the user interface, a [template number component](https://www.esphome.io/components/number/template.html) (or alternatively a [Home Assistant number component](https://www.esphome.io/components/number/homeassistant.html)) can be entered instead of a fixed numerical value:
+```yaml
+ferraris:
+  # ...
+  debounce_threshold: debounce_threshold
+  # ...
+
+number:
+  - platform: template
+    id: debounce_threshold
+    name: Debounce threshold
+    icon: mdi:speedometer-slow
+    entity_category: config
+    mode: box
+    optimistic: true
+    initial_value: 400
+    min_value: 0
+    max_value: 2000
+    step: 1
+```
+
 #### Hysteresis Curve
 The two offset values `off_tolerance` and `on_tolerance` can be configured to use a hysteresis curve for the detection of the marked area on the turntable via the analog signal. This compensates the jitter of the analog signal and thus minimizes any possible bouncing of the detection status for the marked area on the turntable. This type of debouncing only works when using the analog input signal of the infrared sensor.
 
 ![Hysteresis Curve](img/hysteresis.png)
+
+To activate debouncing via the hysteresis curve, the corresponding items must be set in the configuration of the Ferraris component:
+```yaml
+ferraris:
+  # ...
+  off_tolerance: 1.0
+  on_tolerance: 1.0
+  # ...
+```
+
+If the values should be modifiable via the user interface, [template number components](https://www.esphome.io/components/number/template.html) (or alternatively [Home Assistant number components](https://www.esphome.io/components/number/homeassistant.html)) can be entered instead of fixed numerical values:
+```yaml
+ferraris:
+  # ...
+  off_tolerance: off_tolerance
+  on_tolerance: on_tolerance
+  # ...
+
+number:
+  - platform: template
+    id: off_tolerance
+    name: Hysteresis off tolerance
+    icon: mdi:speedometer-slow
+    entity_category: config
+    mode: slider
+    optimistic: true
+    initial_value: 1.0
+    min_value: 0.0
+    max_value: 5.0
+    step: 0.5
+  - platform: template
+    id: on_tolerance
+    name: Hysteresis on tolerance
+    icon: mdi:speedometer-slow
+    entity_category: config
+    mode: slider
+    optimistic: true
+    initial_value: 1.0
+    min_value: 0.0
+    max_value: 5.0
+    step: 0.5
+```
 
 #### Smoothing of the analog Signal
 By carefully configuring the update interval `update_interval` and the number of samples per update (`samples`) for the analog sensor `analog_input`, the curve of the analog signal can be smoothed to such an extent that short-term fluctuations are eliminated. However, bear in mind that excessive update intervals can lead to individual rotations no longer being detected at very high rotation speeds, as the time between the rising and subsequent falling edge is then shorter than the set update interval. Also this type of debouncing only works when using the analog input signal of the infrared sensor.
@@ -922,7 +1224,7 @@ To synchronize the meter reading in the Ferraris component with the actual meter
 
 The actions can be used in different ways, depending on whether the energy meter reading is to be set manually via the user interface or trigger-based via automations and scripts. Two possible usage examples are described below, but there are more possibilities existing which are not described here.
 
-#### Setting energy meter manually via the user interface
+#### Setting Energy Meter manually via the User Interface
 For instance, the following configuration steps are carried out (in this example to overwrite the energy meter with a kilowatt hours value):
 1.  A [template number component](https://www.esphome.io/components/number/template.html) is created in the YAML configuration file and configured for a meter reading in the unit kilowatt hours.
     ```yaml
@@ -955,7 +1257,7 @@ For instance, the following configuration steps are carried out (in this example
                 return (val >= 0) ? val : 0;
     ```
 
-#### Setting energy meter automatically
+#### Setting Energy Meter automatically
 For instance, the following configuration steps are carried out:
 1.  A [user-defined action](https://www.esphome.io/components/api.html#api-device-actions) is created in the YAML configuration file, which calls one of the Ferraris actions (in the following example the action `ferraris.set_energy_meter` is used).
     ```yaml

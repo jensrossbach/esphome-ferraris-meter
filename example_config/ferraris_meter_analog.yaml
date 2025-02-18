@@ -147,3 +147,14 @@ button:
           value: !lambda |-
             float val = id(target_energy_value).state;
             return (val >= 0) ? val : 0;
+  # button used to trigger automatic calibration of analog signal from infrared sensor
+  - platform: template
+    name: Auto-Kalibrierung starten
+    icon: mdi:auto-fix
+    entity_category: config
+    on_press:
+      - ferraris.start_analog_calibration:
+          id: ferraris_meter
+          num_captured_values: 6000
+          min_level_distance: 6.0
+          max_iterations: 3

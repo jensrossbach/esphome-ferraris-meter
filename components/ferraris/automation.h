@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Jens-Uwe Rossbach
+ * Copyright (c) 2024-2025 Jens-Uwe Rossbach
  *
  * This code is licensed under the MIT License.
  *
@@ -77,5 +77,35 @@ namespace esphome::ferraris
     protected:
         FerrarisMeter *m_ferraris_meter;
         TemplatableValue<uint64_t, Ts...> m_rotation_counter_value;
+    };
+
+    template<typename... Ts> class StartAnalogCalibrationAction : public Action<Ts...>
+    {
+    public:
+        StartAnalogCalibrationAction(
+                FerrarisMeter *ferraris_meter,
+                uint32_t num_captured_values,
+                float min_level_dist,
+                uint8_t max_iterations)
+            : m_ferraris_meter(ferraris_meter)
+            , m_num_captured_values(num_captured_values)
+            , m_min_level_distance(min_level_dist)
+            , m_max_iterations(max_iterations)
+        {
+        }
+
+        void play(Ts... x) override
+        {
+            m_ferraris_meter->start_analog_calibration(
+                                    m_num_captured_values,
+                                    m_min_level_distance,
+                                    m_max_iterations);
+        }
+
+    protected:
+        FerrarisMeter *m_ferraris_meter;
+        uint32_t m_num_captured_values;
+        float m_min_level_distance;
+        uint8_t m_max_iterations;
     };
 }  // namespace esphome::ferraris

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Jens-Uwe Rossbach
+ * Copyright (c) 2024-2025 Jens-Uwe Rossbach
  *
  * This code is licensed under the MIT License.
  *
@@ -62,6 +62,19 @@ namespace esphome::ferraris
         void restore_energy_meter(float value);
         void set_energy_meter(float value);
         void set_rotation_counter(uint64_t value);
+
+        void start_analog_calibration(
+                uint32_t num_captured_values,
+                float min_level_dist,
+                uint8_t max_iterations)
+        {
+            m_num_captured_values = num_captured_values;
+            m_min_level_distance = min_level_dist;
+            m_max_iterations = max_iterations;
+
+            m_level_value_counter = 0;
+            m_iteration_counter = 0;
+        }
 
 #ifdef USE_SENSOR
         void set_digital_input_pin(InternalGPIOPin *pin)
@@ -198,6 +211,14 @@ namespace esphome::ferraris
         int64_t m_last_time;
         int64_t m_last_rising_time;
         uint64_t m_rotation_counter;
+
+        float m_off_level;
+        float m_on_level;
+        uint32_t m_num_captured_values;
+        float m_min_level_distance;
+        uint8_t m_max_iterations;
+        uint8_t m_iteration_counter;
+        uint32_t m_level_value_counter;
 
         bool m_calibration_mode;
         bool m_start_value_received;

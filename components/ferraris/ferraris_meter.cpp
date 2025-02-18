@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Jens-Uwe Rossbach
+ * Copyright (c) 2024-2025 Jens-Uwe Rossbach
  *
  * This code is licensed under the MIT License.
  *
@@ -66,6 +66,13 @@ namespace esphome::ferraris
         , m_last_time(-1)
         , m_last_rising_time(-1)
         , m_rotation_counter(0)
+        , m_off_level(0.0)
+        , m_on_level(0.0)
+        , m_num_captured_values(6000)
+        , m_min_level_distance(6.0)
+        , m_max_iterations(3)
+        , m_iteration_counter(0)
+        , m_level_value_counter(m_num_captured_values)
         , m_calibration_mode(false)
         , m_start_value_received(false)
     {
@@ -90,6 +97,68 @@ namespace esphome::ferraris
                 }
 
                 handle_state(state);
+
+                if (m_level_value_counter < m_num_captured_values)
+                {
+                    if (m_level_value_counter == 0)
+                    {
+                        ++m_iteration_counter;
+
+                        ESP_LOGD(
+                            TAG, "Starting automatic analog calibration:  CAPT %u  DIST %.1f  ITER %u/%u",
+                            m_num_captured_values, m_min_level_distance, m_iteration_counter, m_max_iterations);
+
+                        // use current value as initial state
+                        m_on_level = value;
+                        m_off_level = value;
+
+                        ESP_LOGD(TAG, "Calibrating initial levels:  VAL %.1f", value);
+                    }
+                    else
+                    {
+                        if (value > m_on_level)
+                        {
+                            m_on_level = value;
+                            ESP_LOGD(TAG, "Calibrating ON level:  VAL %.1f", m_on_level);
+                        }
+
+                        if (value < m_off_level)
+                        {
+                            m_off_level = value;
+                            ESP_LOGD(TAG, "Calibrating OFF level:  VAL %.1f", m_off_level);
+                        }
+                    }
+
+                    ++m_level_value_counter;
+
+                    if (m_level_value_counter == m_num_captured_values)
+                    {
+                        if ((m_on_level >= m_off_level) && ((m_on_level - m_off_level) >= m_min_level_distance))
+                        {
+                            float threshold = (m_off_level + m_on_level) / 2;
+
+                            if (m_analog_input_threshold_number != nullptr)
+                            {
+                                m_analog_input_threshold_number->publish_state(threshold);
+                            }
+                            else
+                            {
+                                m_analog_input_threshold = threshold;
+                            }
+
+                            ESP_LOGD(TAG, "Automatic analog calibration finished:  OFF %.1f  ON %.1f  TRSH %.1f", m_off_level, m_on_level, threshold);
+                        }
+                        else if (m_iteration_counter < m_max_iterations)
+                        {
+                            ESP_LOGW(TAG, "Insufficient data for analog calibration, starting over");
+                            m_level_value_counter = 0;
+                        }
+                        else
+                        {
+                            ESP_LOGE(TAG, "Too many failed analog calibration iterations, giving up");
+                        }
+                    }
+                }
             });
         }
 

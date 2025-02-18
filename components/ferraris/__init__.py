@@ -1,4 +1,4 @@
-# Copyright (c) 2024 Jens-Uwe Rossbach
+# Copyright (c) 2024-2025 Jens-Uwe Rossbach
 #
 # This code is licensed under the MIT License.
 #
@@ -36,20 +36,30 @@ from esphome.const       import (
 CODEOWNERS = ["@jensrossbach"]
 MULTI_CONF = True
 
-CONF_FERRARIS_ID        = "ferraris_id"
-CONF_DIGITAL_INPUT      = "digital_input"
-CONF_ANALOG_INPUT       = "analog_input"
-CONF_ANALOG_THRESHOLD   = "analog_threshold"
-CONF_OFF_TOLERANCE      = "off_tolerance"
-CONF_ON_TOLERANCE       = "on_tolerance"
-CONF_ROTATIONS_PER_KWH  = "rotations_per_kwh"
-CONF_DEBOUNCE_THRESHOLD = "debounce_threshold"
-CONF_ENERGY_START_VALUE = "energy_start_value"
+# common
+CONF_FERRARIS_ID         = "ferraris_id"
+CONF_ROTATIONS_PER_KWH   = "rotations_per_kwh"
+CONF_DEBOUNCE_THRESHOLD  = "debounce_threshold"
+CONF_ENERGY_START_VALUE  = "energy_start_value"
+
+# digital input
+CONF_DIGITAL_INPUT       = "digital_input"
+
+# analog input
+CONF_ANALOG_INPUT        = "analog_input"
+CONF_ANALOG_THRESHOLD    = "analog_threshold"
+CONF_OFF_TOLERANCE       = "off_tolerance"
+CONF_ON_TOLERANCE        = "on_tolerance"
+CONF_CALIBRATE_ON_BOOT   = "calibrate_on_boot"
+CONF_NUM_CAPTURED_VALUES = "num_captured_values"
+CONF_MIN_LEVEL_DISTANCE  = "min_level_distance"
+CONF_MAX_ITERATIONS      = "max_iterations"
 
 ferraris_ns = cg.esphome_ns.namespace("ferraris")
 FerrarisMeter = ferraris_ns.class_("FerrarisMeter", cg.Component)
 SetEnergyMeterAction = ferraris_ns.class_("SetEnergyMeterAction", automation.Action)
 SetRotationCounterAction = ferraris_ns.class_("SetRotationCounterAction", automation.Action)
+StartAnalogCalibrationAction = ferraris_ns.class_("StartAnalogCalibrationAction", automation.Action)
 
 def ensure_gpio_or_adc(value):
     if CONF_DIGITAL_INPUT not in value and CONF_ANALOG_INPUT not in value:
@@ -57,6 +67,11 @@ def ensure_gpio_or_adc(value):
     if CONF_DIGITAL_INPUT in value and CONF_ANALOG_INPUT in value:
         raise cv.Invalid(f"Only one of '{CONF_DIGITAL_INPUT}' or '{CONF_ANALOG_INPUT}' can be specified, not both.")
     return value
+
+ANALOG_CALIBRATION_SCHEMA = cv.Schema({
+        cv.Optional(CONF_NUM_CAPTURED_VALUES, default = 6000): cv.int_range(min=100, max=100000),
+        cv.Optional(CONF_MIN_LEVEL_DISTANCE, default = 6.0): cv.positive_float,
+        cv.Optional(CONF_MAX_ITERATIONS, default = 3): cv.int_range(min=1, max=10)})
 
 CONFIG_SCHEMA = cv.All(
     cv.Schema({
@@ -68,7 +83,8 @@ CONFIG_SCHEMA = cv.All(
         cv.Optional(CONF_ON_TOLERANCE, default = 0): cv.Any(cv.All(cv.positive_float, cv.Coerce(float)), cv.use_id(number.Number)),
         cv.Optional(CONF_ROTATIONS_PER_KWH, default = 75): cv.int_range(min = 1),
         cv.Optional(CONF_DEBOUNCE_THRESHOLD, default = 400): cv.Any(cv.int_range(min = 0), cv.use_id(number.Number)),
-        cv.Optional(CONF_ENERGY_START_VALUE): cv.use_id(number.Number)
+        cv.Optional(CONF_ENERGY_START_VALUE): cv.use_id(number.Number),
+        cv.Optional(CONF_CALIBRATE_ON_BOOT): ANALOG_CALIBRATION_SCHEMA
     }).extend(cv.COMPONENT_SCHEMA),
     ensure_gpio_or_adc)
 
@@ -104,6 +120,13 @@ async def to_code(config):
             num = await cg.get_variable(config[CONF_ON_TOLERANCE])
             cg.add(cmp.set_on_tolerance_number(num))
 
+        if CONF_CALIBRATE_ON_BOOT in config:
+            calib_conf = config[CONF_CALIBRATE_ON_BOOT]
+            cg.add(cmp.start_analog_calibration(
+                            calib_conf[CONF_NUM_CAPTURED_VALUES],
+                            calib_conf[CONF_MIN_LEVEL_DISTANCE],
+                            calib_conf[CONF_MAX_ITERATIONS]))
+
     if isinstance(config[CONF_DEBOUNCE_THRESHOLD], int):
         cg.add(cmp.set_debounce_threshold(config[CONF_DEBOUNCE_THRESHOLD]))
     else:
@@ -120,7 +143,7 @@ async def to_code(config):
     cv.Schema(
     {
         cv.Required(CONF_ID): cv.use_id(FerrarisMeter),
-        cv.Required(CONF_VALUE): cv.templatable(cv.float_range(min = 0))
+        cv.Required(CONF_VALUE): cv.templatable(cv.positive_float)
     }))
 async def set_energy_meter_action_to_code(config, action_id, template_arg, args):
     parent = await cg.get_variable(config[CONF_ID])
@@ -145,5 +168,24 @@ async def set_rotation_counter_action_to_code(config, action_id, template_arg, a
 
     tmpl = await cg.templatable(config[CONF_VALUE], args, int)
     cg.add(act.set_rotation_counter_value(tmpl))
+
+    return act
+
+@automation.register_action(
+    "ferraris.start_analog_calibration",
+    StartAnalogCalibrationAction,
+    cv.Schema(
+    {
+        cv.Required(CONF_ID): cv.use_id(FerrarisMeter)
+    }).extend(ANALOG_CALIBRATION_SCHEMA))
+async def start_analog_calibration_action_to_code(config, action_id, template_arg, args):
+    parent = await cg.get_variable(config[CONF_ID])
+    act = cg.new_Pvariable(
+                action_id,
+                template_arg,
+                parent,
+                config[CONF_NUM_CAPTURED_VALUES],
+                config[CONF_MIN_LEVEL_DISTANCE],
+                config[CONF_MAX_ITERATIONS])
 
     return act
