@@ -73,130 +73,148 @@ namespace esphome::ferraris
 
     void FerrarisMeter::setup()
     {
+        ESP_LOGD(TAG, "Delaying actual setup for 5 seconds");
+
+        set_timeout(5000, [this]()
+        {
+            ESP_LOGD(TAG, "Setup START");
 #ifdef USE_SENSOR
-        if (m_analog_input_sensor != nullptr)
-        {
-            m_analog_input_sensor->add_on_state_callback([this](float value)
+            if (m_analog_input_sensor != nullptr)
             {
-                bool state = false;
-
-                if (m_last_state)
+                ESP_LOGD(TAG, "Setting up m_analog_input_sensor");
+                m_analog_input_sensor->add_on_state_callback([this](float value)
                 {
-                    state = (value > m_analog_input_threshold - m_off_tolerance);
-                }
-                else
-                {
-                    state = (value > m_analog_input_threshold + m_on_tolerance);
-                }
+                    bool state = false;
 
-                handle_state(state);
-            });
-        }
+                    if (m_last_state)
+                    {
+                        state = (value > m_analog_input_threshold - m_off_tolerance);
+                    }
+                    else
+                    {
+                        state = (value > m_analog_input_threshold + m_on_tolerance);
+                    }
 
-        if (m_power_consumption_sensor != nullptr)
-        {
-            m_power_consumption_sensor->publish_state(0);
-        }
+                    handle_state(state);
+                });
+            }
+
+            if (m_power_consumption_sensor != nullptr)
+            {
+                ESP_LOGD(TAG, "Initializing m_power_consumption_sensor");
+                m_power_consumption_sensor->publish_state(0);
+            }
 #endif
 
 #ifdef USE_BINARY_SENSOR
-        if (m_rotation_indicator_sensor != nullptr)
-        {
-            m_rotation_indicator_sensor->publish_state(false);
-        }
+            if (m_rotation_indicator_sensor != nullptr)
+            {
+                ESP_LOGD(TAG, "Initializing m_rotation_indicator_sensor");
+                m_rotation_indicator_sensor->publish_state(false);
+            }
 #endif
 
 #ifdef USE_NUMBER
-        if (m_analog_input_threshold_number != nullptr)
-        {
-            if (m_analog_input_threshold_number->has_state())
+            if (m_analog_input_threshold_number != nullptr)
             {
-                m_analog_input_threshold = m_analog_input_threshold_number->state;
-            }
-
-            m_analog_input_threshold_number->add_on_state_callback([this](float value)
-            {
-                m_analog_input_threshold = value;
-            });
-        }
-
-        if (m_off_tolerance_number != nullptr)
-        {
-            if (m_off_tolerance_number->has_state())
-            {
-                m_off_tolerance = m_off_tolerance_number->state;
-            }
-
-            m_off_tolerance_number->add_on_state_callback([this](float value)
-            {
-                m_off_tolerance = value;
-            });
-        }
-
-        if (m_on_tolerance_number != nullptr)
-        {
-            if (m_on_tolerance_number->has_state())
-            {
-                m_on_tolerance = m_on_tolerance_number->state;
-            }
-
-            m_on_tolerance_number->add_on_state_callback([this](float value)
-            {
-                m_on_tolerance = value;
-            });
-        }
-
-        if (m_debounce_threshold_number != nullptr)
-        {
-            if (m_debounce_threshold_number->has_state())
-            {
-                m_debounce_threshold = m_debounce_threshold_number->state;
-            }
-
-            m_debounce_threshold_number->add_on_state_callback([this](float value)
-            {
-                m_debounce_threshold = value;
-            });
-        }
-
-        if (m_energy_start_value_number != nullptr)
-        {
-            if (m_energy_start_value_number->has_state())
-            {
-                restore_energy_meter(m_energy_start_value_number->state);
-            }
-            else
-            {
-                m_energy_start_value_number->add_on_state_callback([this](float value)
+                ESP_LOGD(TAG, "Setting up m_analog_input_threshold_number");
+                if (m_analog_input_threshold_number->has_state())
                 {
-                    restore_energy_meter(value);
+                    m_analog_input_threshold = m_analog_input_threshold_number->state;
+                }
+
+                m_analog_input_threshold_number->add_on_state_callback([this](float value)
+                {
+                    m_analog_input_threshold = value;
                 });
             }
-        }
-        else
-        {
-            update_energy_counter();
-        }
-#endif
 
-#ifdef USE_SWITCH
-        if (m_calibration_mode_switch != nullptr)
-        {
-            optional<bool> initial_state = m_calibration_mode_switch->get_initial_state_with_restore_mode();
-
-            if (initial_state.has_value())
+            if (m_off_tolerance_number != nullptr)
             {
-                if (initial_state.value())
+                ESP_LOGD(TAG, "Setting up m_off_tolerance_number");
+                if (m_off_tolerance_number->has_state())
                 {
-                    m_calibration_mode_switch->turn_on();
+                    m_off_tolerance = m_off_tolerance_number->state;
+                }
+
+                m_off_tolerance_number->add_on_state_callback([this](float value)
+                {
+                    m_off_tolerance = value;
+                });
+            }
+
+            if (m_on_tolerance_number != nullptr)
+            {
+                ESP_LOGD(TAG, "Setting up m_on_tolerance_number");
+                if (m_on_tolerance_number->has_state())
+                {
+                    m_on_tolerance = m_on_tolerance_number->state;
+                }
+
+                m_on_tolerance_number->add_on_state_callback([this](float value)
+                {
+                    m_on_tolerance = value;
+                });
+            }
+
+            if (m_debounce_threshold_number != nullptr)
+            {
+                ESP_LOGD(TAG, "Setting up m_debounce_threshold_number");
+                if (m_debounce_threshold_number->has_state())
+                {
+                    m_debounce_threshold = m_debounce_threshold_number->state;
+                }
+
+                m_debounce_threshold_number->add_on_state_callback([this](float value)
+                {
+                    m_debounce_threshold = value;
+                });
+            }
+
+            if (m_energy_start_value_number != nullptr)
+            {
+                ESP_LOGD(TAG, "Setting up m_energy_start_value_number");
+                if (m_energy_start_value_number->has_state())
+                {
+                    restore_energy_meter(m_energy_start_value_number->state);
                 }
                 else
                 {
-                    m_calibration_mode_switch->turn_off();
+                    m_energy_start_value_number->add_on_state_callback([this](float value)
+                    {
+                        restore_energy_meter(value);
+                    });
                 }
             }
-        }
+            else
+            {
+                ESP_LOGD(TAG, "Initializing energy counter");
+                update_energy_counter();
+            }
 #endif
+
+#ifdef USE_SWITCH
+            if (m_calibration_mode_switch != nullptr)
+            {
+                ESP_LOGD(TAG, "Setting up m_calibration_mode_switch");
+                optional<bool> initial_state = m_calibration_mode_switch->get_initial_state_with_restore_mode();
+
+                if (initial_state.has_value())
+                {
+                    if (initial_state.value())
+                    {
+                        m_calibration_mode_switch->turn_on();
+                    }
+                    else
+                    {
+                        m_calibration_mode_switch->turn_off();
+                    }
+                }
+            }
+#endif
+            ESP_LOGD(TAG, "Setup END");
+
+        });
     }
 
     void FerrarisMeter::loop()
