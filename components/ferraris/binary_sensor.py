@@ -1,4 +1,4 @@
-# Copyright (c) 2024 Jens-Uwe Rossbach
+# Copyright (c) 2024-2025 Jens-Uwe Rossbach
 #
 # This code is licensed under the MIT License.
 #
@@ -26,6 +26,8 @@ import esphome.config_validation as cv
 
 from esphome.components import binary_sensor
 from esphome.const      import (
+    DEVICE_CLASS_PROBLEM,
+    DEVICE_CLASS_RUNNING,
     ENTITY_CATEGORY_DIAGNOSTIC
 )
 from .                  import (
@@ -36,13 +38,24 @@ from .                  import (
 
 CODEOWNERS = ["@jensrossbach"]
 
-CONF_ROTATION_INDICATOR = "rotation_indicator"
+CONF_ROTATION_INDICATOR        = "rotation_indicator"
+CONF_ANALOG_CALIBRATION_STATE  = "analog_calibration_state"
+CONF_ANALOG_CALIBRATION_RESULT = "analog_calibration_result"
 
 CONFIG_SCHEMA = cv.Schema(
 {
     cv.GenerateID(CONF_FERRARIS_ID): cv.use_id(FerrarisMeter),
     cv.Optional(CONF_ROTATION_INDICATOR): binary_sensor.binary_sensor_schema(
         icon="mdi:rotate-360",
+        entity_category=ENTITY_CATEGORY_DIAGNOSTIC
+    ),
+    cv.Optional(CONF_ANALOG_CALIBRATION_STATE): binary_sensor.binary_sensor_schema(
+        icon="mdi:state-machine",
+        device_class = DEVICE_CLASS_RUNNING,
+        entity_category=ENTITY_CATEGORY_DIAGNOSTIC
+    ),
+    cv.Optional(CONF_ANALOG_CALIBRATION_RESULT): binary_sensor.binary_sensor_schema(
+        device_class = DEVICE_CLASS_PROBLEM,
         entity_category=ENTITY_CATEGORY_DIAGNOSTIC
     )
 })
@@ -54,3 +67,11 @@ async def to_code(config):
     if CONF_ROTATION_INDICATOR in config:
         sens = await binary_sensor.new_binary_sensor(config[CONF_ROTATION_INDICATOR])
         cg.add(cmp.set_rotation_indicator_sensor(sens))
+
+    if CONF_ANALOG_CALIBRATION_STATE in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_ANALOG_CALIBRATION_STATE])
+        cg.add(cmp.set_analog_calibration_state_sensor(sens))
+
+    if CONF_ANALOG_CALIBRATION_RESULT in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_ANALOG_CALIBRATION_RESULT])
+        cg.add(cmp.set_analog_calibration_result_sensor(sens))

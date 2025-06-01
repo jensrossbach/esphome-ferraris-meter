@@ -96,12 +96,27 @@ namespace esphome::ferraris
         {
             m_energy_meter_sensor = sensor;
         }
+
+        void set_analog_value_spectrum_sensor(sensor::Sensor *sensor)
+        {
+            m_analog_value_spectrum_sensor = sensor;
+        }
 #endif
 
 #ifdef USE_BINARY_SENSOR
-        void set_rotation_indicator_sensor(binary_sensor::BinarySensor *rotind_sensor)
+        void set_rotation_indicator_sensor(binary_sensor::BinarySensor *sensor)
         {
-            m_rotation_indicator_sensor = rotind_sensor;
+            m_rotation_indicator_sensor = sensor;
+        }
+
+        void set_analog_calibration_state_sensor(binary_sensor::BinarySensor *sensor)
+        {
+            m_analog_calibration_state_sensor = sensor;
+        }
+
+        void set_analog_calibration_result_sensor(binary_sensor::BinarySensor *sensor)
+        {
+            m_analog_calibration_result_sensor = sensor;
         }
 #endif
 
@@ -163,6 +178,7 @@ namespace esphome::ferraris
     private:
         void update_power_consumption(uint32_t rotation_time);
         void update_energy_counter();
+        void set_analog_calibration_state(bool running, float range = 0, bool problem = false);
 
         static inline uint32_t get_duration(uint32_t time1, uint32_t time2)
         {
@@ -186,9 +202,12 @@ namespace esphome::ferraris
         sensor::Sensor* m_analog_input_sensor;
         sensor::Sensor* m_power_consumption_sensor;
         sensor::Sensor* m_energy_meter_sensor;
+        sensor::Sensor* m_analog_value_spectrum_sensor;
 #endif
 #ifdef USE_BINARY_SENSOR
         binary_sensor::BinarySensor* m_rotation_indicator_sensor;
+        binary_sensor::BinarySensor* m_analog_calibration_state_sensor;
+        binary_sensor::BinarySensor* m_analog_calibration_result_sensor;
 #endif
 #ifdef USE_SWITCH
         switch_::Switch* m_calibration_mode_switch;

@@ -30,6 +30,7 @@ from esphome.const      import (
     STATE_CLASS_TOTAL_INCREASING,
     DEVICE_CLASS_POWER,
     DEVICE_CLASS_ENERGY,
+    ENTITY_CATEGORY_DIAGNOSTIC,
     UNIT_WATT,
     UNIT_WATT_HOURS
 )
@@ -41,8 +42,9 @@ from .                  import (
 
 CODEOWNERS = ["@jensrossbach"]
 
-CONF_POWER_CONSUMPTION = "power_consumption"
-CONF_ENERGY_METER      = "energy_meter"
+CONF_POWER_CONSUMPTION     = "power_consumption"
+CONF_ENERGY_METER          = "energy_meter"
+CONF_ANALOG_VALUE_SPECTRUM = "analog_value_spectrum"
 
 CONFIG_SCHEMA = cv.Schema(
 {
@@ -60,6 +62,11 @@ CONFIG_SCHEMA = cv.Schema(
         state_class=STATE_CLASS_TOTAL_INCREASING,
         unit_of_measurement=UNIT_WATT_HOURS,
         accuracy_decimals=1
+    ),
+    cv.Optional(CONF_ANALOG_VALUE_SPECTRUM): sensor.sensor_schema(
+        icon="mdi:arrow-expand-vertical",
+        accuracy_decimals=0,
+        entity_category=ENTITY_CATEGORY_DIAGNOSTIC
     )
 })
 
@@ -70,6 +77,11 @@ async def to_code(config):
     if CONF_POWER_CONSUMPTION in config:
         sens = await sensor.new_sensor(config[CONF_POWER_CONSUMPTION])
         cg.add(cmp.set_power_consumption_sensor(sens))
+
     if CONF_ENERGY_METER in config:
         sens = await sensor.new_sensor(config[CONF_ENERGY_METER])
         cg.add(cmp.set_energy_meter_sensor(sens))
+
+    if CONF_ANALOG_VALUE_SPECTRUM in config:
+        sens = await sensor.new_sensor(config[CONF_ANALOG_VALUE_SPECTRUM])
+        cg.add(cmp.set_analog_value_spectrum_sensor(sens))

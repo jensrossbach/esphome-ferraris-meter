@@ -2,7 +2,7 @@
 > [!NOTE]
 > This is the German version, for the English version, scroll down or click [here](#esphome-ferraris-meter-english).
 
-Ferraris Meter ist eine ESPHome-Komponente zur Erstellung einer ESP-Firmware, die mithilfe eines ESP-Mikrocontrollers und eines Infrarotsensors die Geschwindigkeit und die Umdrehungen der Drehscheibe eines analogen Ferraris-Stromzählers ermitteln und daraus den momentanen Stromverbrauch und den Zählerstand berechnen kann. Diese Werte können dann zur weiteren Verarbeitung an eine Hausautomatisierungs-Software wie beispielsweise Home Assistant geschickt werden.
+Ferraris Meter ist eine ESPHome-Plattform zur Erstellung einer ESP-Firmware, die mithilfe eines ESP-Mikrocontrollers und eines Infrarotsensors die Geschwindigkeit und die Umdrehungen der Drehscheibe eines analogen Ferraris-Stromzählers ermitteln und daraus den momentanen Stromverbrauch und den Zählerstand berechnen kann. Diese Werte können dann zur weiteren Verarbeitung an eine Hausautomatisierungs-Software wie beispielsweise Home Assistant geschickt werden.
 
 - [Haftungsausschluss](#haftungsausschluss)
 - [Lizenz](LICENSE)
@@ -44,7 +44,7 @@ Hardware-seitig wird lediglich ein ESP-Mikrocontroller (z.B. ESP8266 oder ESP32,
 
 Beim Platzieren des Sensors auf der Abdeckplatte des Ferraris-Stromzählers ist ein wenig Geschick und Präzisionsarbeit gefragt. Das Infrarot Sender/Empfänger-Paar des Sensors muss mittig millimetergenau über der Drehscheibe ausgerichtet werden und geradlinig auf die Drehscheibe zeigen.
 
-Die Ferraris Meter Komponente unterstützt prinzipiell folgende Aufbauvarianten:
+Die Ferraris-Plattform unterstützt prinzipiell folgende Aufbauvarianten:
 - [Verwendung eines einzelnen Infrarotsensors über den digitalen Ausgang](#auslesen-des-stromzählers-über-den-digitalen-ausgang-des-infrarotsensors)
 - [Verwendung eines einzelnen Infrarotsensors über den analogen Ausgang](#auslesen-des-stromzählers-über-den-analogen-ausgang-des-infrarotsensors)
 - [Verwendung mehrerer Infrarotsensoren](#auslesen-mehrerer-stromzähler)
@@ -65,7 +65,7 @@ Für welche Methode du dich entscheiden solltest, hängt davon ab, wie vertraut 
 Die folgenden Abschnitte beschreiben die wichtigsten Komponenten, die in der Firmware-Konfigurationsdatei enthalten sind.
 
 ### Ferraris-Komponente
-Die Komponente Ferraris ist unabdingbar und muss hinzugefügt werden, um ihre Sensoren zu verwenden.
+Die Ferraris-Komponente (`ferraris`) ist das Herz der Ferraris-Plattform und muss hinzugefügt werden, um deren Sensoren, -Aktoren und -Aktionen zu verwenden.
 
 Da es sich um eine benutzerdefinierte Komponente handelt, die nicht Teil von ESPHome ist, muss sie explizit importiert werden. Am einfachsten ist es, die Komponente direkt aus diesem Repository zu laden.
 
@@ -162,7 +162,7 @@ wifi:
 ```
 
 ### Sensoren
-Die Ferraris-Komponente verfügt über primäre Sensoren, um die berechneten Verbrauchswerte auszugeben sowie über diagnostische Sensoren für den Kalibrierungsmodus. Alle Sensoren sind optional und können weggelassen werden, wenn sie nicht benötigt werden.
+Die Ferraris-Plattform verfügt über primäre Sensoren, um die berechneten Verbrauchswerte auszugeben sowie über diagnostische Sensoren für den Kalibrierungsmodus. Alle Sensoren sind optional und können weggelassen werden, wenn sie nicht benötigt werden.
 
 #### Primäre Sensoren
 Die folgenden primären Sensoren können konfiguriert werden:
@@ -190,19 +190,31 @@ Die folgenden diagnostischen Sensoren können konfiguriert werden:
 | Sensor | Typ | Beschreibung |
 | ------ | --- | ------------ |
 | `rotation_indicator` | binär | Zeigt an, ob die Markierung auf der Drehscheibe gerade vor dem Infrarotsensor ist (funktioniert nur im Kalibrierungsmodus) |
+| `analog_calibration_state` | binär | Status der automatischen analogen Kalibrierung (ob aktiv oder nicht) |
+| `analog_calibration_result` | binär | Ergebnis der letzten automatischen analogen Kalibrierung (ob erfolgreich oder nicht) |
+| `analog_value_spectrum` | numerisch | Bandbreite der analogen Werte (Differenz zwischen kleinstem und größtem analogen Wert) |
 
-Detaillierte Informationen zu den Konfigurationsmöglichkeiten der einzelnen Elemente findest du in der Dokumentation der [ESPHome Binärsensorkomponenten](https://www.esphome.io/components/binary_sensor).
+Detaillierte Informationen zu den Konfigurationsmöglichkeiten der einzelnen Elemente findest du in der Dokumentation der [ESPHome Binärsensorkomponenten](https://www.esphome.io/components/binary_sensor) und der [ESPHome Sensorkomponenten](https://www.esphome.io/components/sensor).
 
 ##### Beispiel
 ```yaml
+sensor:
+  - platform: ferraris
+    analog_value_spectrum:
+      name: Analoge Bandbreite
+
 binary_sensor:
   - platform: ferraris
     rotation_indicator:
       name: Umdrehungsindikator
+    analog_calibration_state:
+      name: Status Analoge Kalibrierung
+    analog_calibration_result:
+      name: Ergebnis Analoge Kalibrierung
 ```
 
 ### Aktoren
-Zu diagnostischen Zwecken verfügt die Ferraris-Komponente über einen [Schalter](https://www.esphome.io/components/switch). Dieser hat den Namen `calibration_mode` und kann dazu verwendet werden, die Komponente in den Kalibierungsmodus zu versetzen (siehe Abschnitt [Kalibrierung](#kalibrierung) für weitere Informationen).
+Zu diagnostischen Zwecken verfügt die Ferraris-Plattform über einen [Schalter](https://www.esphome.io/components/switch). Dieser hat den Namen `calibration_mode` und kann dazu verwendet werden, die Komponente in den Kalibierungsmodus zu versetzen (siehe Abschnitt [Kalibrierung](#kalibrierung) für weitere Informationen).
 
 ##### Beispiel
 ```yaml
@@ -213,7 +225,7 @@ switch:
 ```
 
 ### Aktionen
-Die Ferraris-Komponente stellt verschiedene Aktionen zur Verfügung, um Werte zu setzen oder das Verhalten zu steuern.
+Die Ferraris-Plattform stellt verschiedene Aktionen zur Verfügung, um Werte zu setzen oder das Verhalten zu steuern.
 
 #### Zählerstand setzen
 | Aktion | Beschreibung |
@@ -260,7 +272,7 @@ Alle Parameter sind optional und können weggelassen werden.
 | `max_iterations` | `uint8` | 1&nbsp;...&nbsp;10 | 3 | Maximale Anzahl fehlgeschlagener Kalibrierungsdurchläufe, bevor aufgegeben wird |
 
 ## Anwendungsbeispiele
-In diesem Abschnitt sind verschiedene Anwendungsbeispiele für die Ferraris-Komponente beschrieben.
+In diesem Abschnitt sind verschiedene Anwendungsbeispiele für die Ferraris-Plattform beschrieben.
 
 ### Auslesen des Stromzählers über den digitalen Ausgang des Infrarotsensors
 In dieser Variante wird der digitale Ausgang des Infrarotsensors verwendet, um Umdrehungen der Drehscheibe zu erkennen. Der analoge Ausgang wird nicht benötigt, die anderen Pins müssen mit den entsprechenden Pins des Mikrocontrollers verbunden werden. Für VCC sollte der 3,3V-Ausgang des ESPs verwendet werden und der digitale Ausgang D0 muss mit einem freien GPIO-Pin (z.B. GPIO4, entspricht dem Pin D2 auf dem D1 Mini) verbunden werden.
@@ -341,7 +353,7 @@ Software-seitig müssen nun beispielsweise folgende Konfigurations-Schritte durc
         digital_input: GPIO5
         # ...
     ```
-2.  Alle von der Ferraris-Komponente bereitgestellten Sensoren und Komponenten müssen, sofern benötigt, vervielfacht und den entsprechenden Instanzen der Ferraris-Komponente über den Eintrag `ferraris_id` zugewiesen werden.
+2.  Alle von der Ferraris-Plattform bereitgestellten Sensoren und Komponenten müssen, sofern benötigt, vervielfacht und den entsprechenden Instanzen der Ferraris-Komponente über den Eintrag `ferraris_id` zugewiesen werden.
     ```yaml
     sensor:
       - platform: ferraris
@@ -377,14 +389,14 @@ Software-seitig müssen nun beispielsweise folgende Konfigurations-Schritte durc
         calibration_mode:
           name: Kalibrierungsmodus 2
     ```
-3.  Alle weiteren in der YAML-Konfigurationsdatei definierten Komponenten, die mit den Ferraris-Sensoren und -Komponenten interagieren, müssen eventuell vervielfacht und/oder angepasst werden.
+3.  Alle weiteren in der YAML-Konfigurationsdatei definierten Komponenten, die mit den Komponenten, Sensoren, Aktoren und Aktionen der Ferraris-Plattform interagieren, müssen eventuell vervielfacht und/oder angepasst werden.
 
 **Beispiel-Konfiguration:** [ferraris_meter_multi.yaml](example_config/ferraris_meter_multi.yaml)
 
 ### Kalibrierung
 Während der Positionierung und Ausrichtung des Infrarotsensors sowie der Einstellung des Potentiometers oder des analogen Schwellwerts ist es wenig sinnvoll, die Umdrehungen der Drehscheibe des Ferraris-Stromzählers zu messen und die Verbräuche zu berechnen, da die Zustandsänderungen des Sensors nicht der tatsächlichen Erkennung der Markierung auf der Drehscheibe entsprechen. Deshalb gibt es die Möglichkeit, die Ferraris-Komponente in den Kalibrierungsmodus zu versetzen, indem man den Schalter für den Kalibrierungsmodus (siehe [Aktoren](#aktoren)) einschaltet. Solange der Kalibrierungsmodus aktiviert ist, wird keine Berechnung der Verbrauchsdaten durchgeführt und die entsprechenden Sensoren (siehe [Primäre Sensoren](#primäre-sensoren)) werden nicht verändert. Stattdessen ist der diagnostische Sensor für die Umdrehungsindikation (siehe [Diagnostische Sensoren](#diagnostische-sensoren)) aktiv und kann zusätzlich verwendet werden, um bei der korrekten Ausrichtung zu unterstützen. Der Sensor befindet sich in dem Zustand `on` wenn die Markierung auf der Drehscheibe erkannt wurde und `off` wenn keine Markierung erkannt wurde.
 
-Um den Kalibierungsmodus vollständig nutzen zu können, müssen die Komponenten `calibration_mode` und `rotation_indicator` in der YAML-Datei konfiguriert sein:
+Um den Kalibierungsmodus optimal nutzen zu können, müssen die Komponenten `calibration_mode` und `rotation_indicator` in der YAML-Datei konfiguriert sein:
 ```yaml
 binary_sensor:
   - platform: ferraris
@@ -438,13 +450,31 @@ number:
 
 Es ist auch möglich, den analogen Schwellwert automatisch von der Ferraris-Software berechnen zu lassen. Dies geschieht durch das Aufrufen der Aktion `start_analog_calibration` (siehe [Aktionen](#aktionen)). Dabei analysiert die Software eine konfigurierbare Anzahl analoger Samples vom Infrarotsensor und ermittelt den kleinsten und den größten analogen Wert. Anschließend wird das arithmetische Mittel aus den beiden Grenzwerten berechnet und als analoger Schwellwert verwendet.
 
+Um den Status und das Ergebnis der automatischen analogen Kalibrierung zu überwachen, können zusätzliche diagnostische Sensoren konfiguriert werden. Diese zeigen an, ob die Kalibrierung gerade läuft, ob sie erfolgreich abgeschlossen wurde und wie hoch die ermittelte Bandbreite der analogen Werte ist.
+
+```yaml
+sensor:
+  - platform: ferraris
+    # ...
+    analog_value_spectrum:
+      name: Analoge Bandbreite
+
+binary_sensor:
+  - platform: ferraris
+    # ...
+    analog_calibration_state:
+      name: Status Analoge Kalibrierung
+    analog_calibration_result:
+      name: Ergebnis Analoge Kalibrierung
+```
+
 Um die automatische Kalibrierung vom User-Interface aus starten zu können, kann ein [Template-Button](https://www.esphome.io/components/button/template.html) konfiguriert werden, der beim Drücken die Aktion aufruft:
 ```yaml
 button:
   - platform: template
     name: Auto-Kalibrierung starten
     icon: mdi:auto-fix
-    entity_category: config
+    entity_category: diagnostic
     on_press:
       - ferraris.start_analog_calibration:
           id: ferraris_meter
@@ -463,6 +493,43 @@ ferraris:
     max_iterations: 3
   # ...
 ```
+
+Eine weitere Möglichkeit ist, die Kalibrierung über eine Automation in Home Assistant in regelmäßigen Intervallen oder unter bestimmten Bedingungen zu starten. Dafür führt man beispielsweise folgende Konfigurations-Schritte durch:
+
+1.  In der YAML-Konfigurationsdatei wird die Aktion für die Kalibrierung über die API für Home Assistant zugänglich gemacht.
+    ```yaml
+    api:
+      # ...
+      actions:
+        - action: start_analog_calibration
+          variables:
+            num_captured_values: int
+            min_level_distance: float
+            max_iterations: int
+          then:
+            - ferraris.start_analog_calibration:
+                id: ferraris_meter
+                num_captured_values: !lambda "return num_captured_values;"
+                min_level_distance: !lambda "return min_level_distance;"
+                max_iterations: !lambda "return max_iterations;"
+    ```
+2.  In Home Assistant wird eine [Automation](https://www.home-assistant.io/docs/automation) erstellt, die die benutzerdefinierte ESPHome-Aktion aufruft (im folgenden Beispiel wird die Kalibrierung gestartet, sobald seit mehr als einer Stunde keine Aktualisierung mehr vom Sensor übertragen wurde).
+    ```yaml
+    - id: '1234567890'
+      alias: Stromzähler neu kalibrieren
+      triggers:
+          trigger: template
+          value_template: '{{ now() - states.sensor.ferraris_meter_momentanverbrauch.last_updated >= timedelta(hours=1) }}'
+      conditions: []
+      actions:
+        - action: esphome.ferraris_meter_start_analog_calibration
+          data:
+            num_captured_values: 6000
+            min_level_distance: 6.0
+            max_iterations: 3
+      mode: single
+    ```
+    Alternativ kann in der Automation auch einfach ein Button-Druck des oben beschriebenen Buttons ausgelöst werden, sofern dieser konfiguriert wurde und ein Setzen der Kalibrierungsparameter von Home Assistant aus nicht nötig ist. In diesem Fall kann Schritt 1 entfallen.
 
 ### Entprellung
 Der Übergang von nicht markiertem zu markiertem Bereich und umgekehrt auf der Drehscheibe kann zu einem schnellen Hin-und Herspringen ("Prellen") des Erkennungszustands des Sensors führen, das vor allem bei langsamen Drehgeschwindigkeiten auftritt und nicht vollständig durch die Kalibrierung unterdrückt werden kann. Dieses Prellen führt zu verfälschten Messwerten und um diese zu vermeiden, gibt es folgende Einstellungensmöglichkeiten.
@@ -667,7 +734,7 @@ Damit dies funktioniert, müssen beispielsweise folgende Konfigurations-Schritte
 -----
 
 # ESPHome Ferraris Meter (English)
-Ferraris Meter is an ESPHome component for creating an ESP firmware that uses an ESP microcontroller and an infrared sensor to capture the number of rotations and the speed of the turntable of an analog Ferraris electricity meter and to calculate the current electricity consumption and meter reading. These values can then be sent to a home automation software such as Home Assistant for further processing.
+Ferraris Meter is an ESPHome plattform for creating an ESP firmware that uses an ESP microcontroller and an infrared sensor to capture the number of rotations and the speed of the turntable of an analog Ferraris electricity meter and to calculate the current electricity consumption and meter reading. These values can then be sent to a home automation software such as Home Assistant for further processing.
 
 - [Disclaimer](#disclaimer)
 - [License](LICENSE)
@@ -709,7 +776,7 @@ On the hardware side, only an ESP microcontroller (e.g. ESP8266 or ESP32, incl. 
 
 Placing the sensor on the cover plate of the Ferraris electricity meter requires a little skill and precision work. The infrared transmitter/receiver pair of the sensor must be aligned centrally above the turntable with millimeter precision and point in a straight line to the turntable.
 
-The Ferraris Meter component basically supports the following setup variants:
+The Ferraris platform basically supports the following setup variants:
 - [Use of a single infrared sensor via the digital output](#reading-the-electricity-meter-via-the-digital-output-of-the-infrared-sensor)
 - [Use of a single infrared sensor via the analog output](#reading-the-electricity-meter-via-the-analog-output-of-the-infrared-sensor)
 - [Use of multiple infrared sensors](#reading-multiple-electricity-meters)
@@ -730,7 +797,7 @@ Which method you should choose depends on how familiar you are with ESPHome and 
 The following sections describe the most notable components contained in the firmware configuration file.
 
 ### Ferraris Component
-The Ferraris component is essential and must be added in order to use its sensors.
+The Ferraris component (`ferraris`) is the heart of the Ferraris platform and must be added in order to use its sensors, actors and actions.
 
 As this is a custom component which is not part of ESPHome, it must be imported explicitly. The easiest way is to load the component directly from this repository.
 
@@ -827,7 +894,7 @@ wifi:
 ```
 
 ### Sensors
-The Ferraris component provides primary sensors to expose the calculated consumption values as well as diagnostic sensors for the calibration mode. All sensors are optional and can be omitted if not needed.
+The Ferraris platform provides primary sensors to expose the calculated consumption values as well as diagnostic sensors for the calibration mode. All sensors are optional and can be omitted if not needed.
 
 #### Primary Sensors
 The following primary sensors can be configured:
@@ -855,19 +922,31 @@ The following diagnostic sensors can be configured:
 | Sensor | Type | Description |
 | ------ | ---- | ----------- |
 | `rotation_indicator` | binary | Indicates if the mark on the turntable is in front of the infrared sensor (only works in calibration mode) |
+| `analog_calibration_state` | binary | State of the automatic analog calibration (if running or not) |
+| `analog_calibration_result` | binary | Result of the latest automatic analog calibration (if successful or not) |
+| `analog_value_spectrum` | numeric | Spectrum of the analog values (difference between lowest and highest analog value) |
 
-For detailed configuration options of each item, please refer to ESPHome [binary sensor component configuration](https://www.esphome.io/components/binary_sensor).
+For detailed configuration options of each item, please refer to ESPHome [binary sensor component configuration](https://www.esphome.io/components/binary_sensor) and to ESPHome [sensor component configuration](https://www.esphome.io/components/sensor).
 
 ##### Example
 ```yaml
+sensor:
+  - platform: ferraris
+    analog_value_spectrum:
+      name: Analoge value spectrum
+
 binary_sensor:
   - platform: ferraris
     rotation_indicator:
       name: Rotation indicator
+    analog_calibration_state:
+      name: Analog calibration state
+    analog_calibration_result:
+      name: Analog calibration result
 ```
 
 ### Actors
-For diagnostic purposes, the Ferraris component provides a [switch](https://www.esphome.io/components/switch) with the name `calibration_mode`. It can be used to set the component to calibration mode (see section [calibration](#calibration) for further information).
+For diagnostic purposes, the Ferraris platform provides a [switch](https://www.esphome.io/components/switch) with the name `calibration_mode`. It can be used to set the component to calibration mode (see section [calibration](#calibration) for further information).
 
 ##### Example
 ```yaml
@@ -878,7 +957,7 @@ switch:
 ```
 
 ### Actions
-The Ferraris component provides various actions for setting values or controlling the behavior.
+The Ferraris platform provides various actions for setting values or controlling the behavior.
 
 #### Set Energy Meter
 | Action | Description |
@@ -925,7 +1004,7 @@ All parameters are optional and can be omitted.
 | `max_iterations` | `uint8` | 1&nbsp;...&nbsp;10 | 3 | Maximum number of failed calibration iterations before giving up |
 
 ## Usage Examples
-This section describes various examples of usage for the Ferraris component.
+This section describes various examples of usage for the Ferraris platform.
 
 ### Reading the Electricity Meter via the digital Output of the Infrared Sensor
 In this variant, the digital output of the infrared sensor is used to detect rotations of the turntable. The analog output is not required, the other pins must be connected to the corresponding pins of the microcontroller. The 3.3V output of the ESP should be used for VCC and the digital output D0 must be connected to a free GPIO pin (e.g. GPIO4, corresponding to pin D2 on the D1 Mini).
@@ -1006,7 +1085,7 @@ On the software side, for instance, the following configuration steps must now b
         digital_input: GPIO5
         # ...
     ```
-2.  All needed sensors and components provided by the Ferraris component must be duplicated and assigned to the corresponding Ferraris component instances via the `ferraris_id` configuration entry.
+2.  All needed sensors and components provided by the Ferraris platform must be duplicated and assigned to the corresponding Ferraris component instances via the `ferraris_id` configuration entry.
     ```yaml
     sensor:
       - platform: ferraris
@@ -1042,14 +1121,14 @@ On the software side, for instance, the following configuration steps must now b
         calibration_mode:
           name: Calibration mode 2
     ```
-3.  All other components defined in the YAML configuration file that interact with the Ferraris sensors and components may need to be multiplied and/or adapted.
+3.  All other components defined in the YAML configuration file that interact with the components, sensors, actors and actions of the Ferraris platform may need to be multiplied and/or adapted.
 
 **Example configuration file:** [ferraris_meter_multi.yaml](example_config/ferraris_meter_multi.yaml)
 
 ### Calibration
 During the positioning and alignment of the infrared sensor as well as the adjustment of the potentiometer or the analog threshold, it makes little sense to measure the rotations of the Ferraris electricity meter's turntable and calculate the consumption values, as the changes in state of the sensor do not correspond to the actual detection of the mark on the turntable. It is therefore possible to set the Ferraris component to calibration mode by turning on the calibration mode switch (see [Actors](#actors)). As long as the calibration mode is activated, no calculation of the consumption data is performed and the corresponding sensors (see [Primary Sensors](#primary-sensors)) are not changed. Instead, the diagnostic sensor for the rotation indication (see [Diagnostic Sensors](#diagnostic-sensors)) is active and can additionally be used to assist with correct alignment. The sensor has the `on` state when the marker on the turntable is detected and the `off` state when it is not detected.
 
-To be able to use the calibration mode, the components `calibration_mode` and `rotation_indicator` must be configured in the YAML file:
+To be able to use the calibration mode optimally, the components `calibration_mode` and `rotation_indicator` must be configured in the YAML file:
 ```yaml
 binary_sensor:
   - platform: ferraris
@@ -1103,13 +1182,31 @@ number:
 
 It is also possible to have the analog threshold value calculated automatically by the Ferraris software. This is done by calling the action `start_analog_calibration` (see [Actions](#actions)). The software analyzes a configurable number of analog samples from the infrared sensor and determines the lowest and highest analog value. The arithmetic mean of the two limit values is then calculated and used as the analog threshold value.
 
+Additional diagnostic sensors can be configured to monitor the status and result of the automatic analog calibration. These sensors indicate whether the calibration is currently running, whether it has been successfully completed and what the determined bandwidth of the analog values is.
+
+```yaml
+sensor:
+  - platform: ferraris
+    # ...
+    analog_value_spectrum:
+      name: Analoge value spectrum
+
+binary_sensor:
+  - platform: ferraris
+    # ...
+    analog_calibration_state:
+      name: Analog calibration state
+    analog_calibration_result:
+      name: Analog calibration result
+```
+
 To start the automatic calibration from the user interface, a [template button](https://www.esphome.io/components/button/template.html) can be configured, which calls the action when pressed:
 ```yaml
 button:
   - platform: template
     name: Start auto calibration
     icon: mdi:auto-fix
-    entity_category: config
+    entity_category: diagnostic
     on_press:
       - ferraris.start_analog_calibration:
           id: ferraris_meter
@@ -1128,6 +1225,43 @@ ferraris:
     max_iterations: 3
   # ...
 ```
+
+Another possibility is to start the calibration via an automation in Home Assistant in regular intervals or under certain conditions. For example, the following configuration steps can be carried out:
+
+1.  In the YAML configuration file, the action for the calibration is made accessible via the API for Home Assistant.
+    ```yaml
+    api:
+      # ...
+      actions:
+        - action: start_analog_calibration
+          variables:
+            num_captured_values: int
+            min_level_distance: float
+            max_iterations: int
+          then:
+            - ferraris.start_analog_calibration:
+                id: ferraris_meter
+                num_captured_values: !lambda "return num_captured_values;"
+                min_level_distance: !lambda "return min_level_distance;"
+                max_iterations: !lambda "return max_iterations;"
+    ```
+2.  In Home Assistant, an [automation](https://www.home-assistant.io/docs/automation) is created that calls the user-defined ESPHome action (in the following example, the calibration is started as soon as no update has been transmitted from the sensor for more than one hour).
+    ```yaml
+    - id: '1234567890'
+      alias: Re-calibrate electricity meter
+      triggers:
+          trigger: template
+          value_template: '{{ now() - states.sensor.ferraris_meter_power_consumption.last_updated >= timedelta(hours=1) }}'
+      conditions: []
+      actions:
+        - action: esphome.ferraris_meter_start_analog_calibration
+          data:
+            num_captured_values: 6000
+            min_level_distance: 6.0
+            max_iterations: 3
+      mode: single
+    ```
+    Alternatively, you can simply trigger a button press of the button described above in the automation, provided it has been configured and it is not required to set the calibration parameters from Home Assistant. In this case, step 1 can be omitted.
 
 ### Debouncing
 The transition from unmarked to marked area and vice versa on the turntable can lead to a rapid back and forth jump ("bouncing") in the detection state of the sensor, which occurs particularly at slow rotation speeds and cannot be completely suppressed by the calibration. This bouncing of the state leads to falsified measured values and to avoid this, the following settings can be applied.

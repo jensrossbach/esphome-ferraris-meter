@@ -65,6 +65,9 @@ sensor:
     # sensor for energy meter reading
     energy_meter:
       name: Verbrauchszähler
+    # diagnostic sensor showing analog value spectrum determined during last automatic analog calibration
+    analog_value_spectrum:
+      name: Analoge Bandbreite
   # sensor for analog input signal
   - platform: adc
     id: adc_input
@@ -81,17 +84,23 @@ sensor:
 # binary sensors
 binary_sensor:
   - platform: ferraris
-    # sensor for indicating detected rotation during calibration mode
+    # diagnostic sensor indicating detected rotation during calibration mode
     rotation_indicator:
       name: Umdrehungsindikator
-  # sensor for wireless connection status
+    # diagnostic sensor indicating if the automatic analog calibration is currently running
+    analog_calibration_state:
+      name: Status Analoge Kalibrierung
+    # diagnostic sensor indicating if the last automatic analog calibration was successful or failed
+    analog_calibration_result:
+      name: Ergebnis Analoge Kalibrierung
+  # diagnostic sensor for wireless connection status
   - platform: status
     name: Status
 
 # text sensors
 text_sensor:
   - platform: wifi_info
-    # sensor providing the IP address of the ESP microcontroller
+    # diagnostic sensor providing the IP address of the ESP microcontroller
     ip_address:
       name: IP Adresse
 
@@ -130,7 +139,7 @@ number:
 # switch components
 switch:
   - platform: ferraris
-    # switch used to activate or deactivate the calibration mode
+    # diagnostic switch used to activate or deactivate the calibration mode
     calibration_mode:
       name: Kalibrierungsmodus
 
@@ -147,11 +156,11 @@ button:
           value: !lambda |-
             float val = id(target_energy_value).state;
             return (val >= 0) ? val : 0;
-  # button used to trigger automatic calibration of analog signal from infrared sensor
+  # diagnostic button used to trigger automatic calibration of analog signal from infrared sensor
   - platform: template
     name: Auto-Kalibrierung starten
     icon: mdi:auto-fix
-    entity_category: config
+    entity_category: diagnostic
     on_press:
       - ferraris.start_analog_calibration:
           id: ferraris_meter

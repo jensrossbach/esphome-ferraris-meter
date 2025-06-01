@@ -44,9 +44,12 @@ namespace esphome::ferraris
         , m_analog_input_sensor(nullptr)
         , m_power_consumption_sensor(nullptr)
         , m_energy_meter_sensor(nullptr)
+        , m_analog_value_spectrum_sensor(nullptr)
 #endif
 #ifdef USE_BINARY_SENSOR
         , m_rotation_indicator_sensor(nullptr)
+        , m_analog_calibration_state_sensor(nullptr)
+        , m_analog_calibration_result_sensor(nullptr)
 #endif
 #ifdef USE_SWITCH
         , m_calibration_mode_switch(nullptr)
@@ -80,6 +83,8 @@ namespace esphome::ferraris
 
     void FerrarisMeter::setup()
     {
+        ESP_LOGCONFIG(TAG, "Setting up Ferraris Meter...");
+
 #ifdef USE_SENSOR
         if (m_analog_input_sensor != nullptr)
         {
@@ -107,6 +112,7 @@ namespace esphome::ferraris
                         ESP_LOGD(
                             TAG, "Starting automatic analog calibration:  CAPT %u  DIST %.1f  ITER %u/%u",
                             m_num_captured_values, m_min_level_distance, m_iteration_counter, m_max_iterations);
+                        set_analog_calibration_state(true);
 
                         // use current value as initial state
                         m_on_level = value;
@@ -147,6 +153,7 @@ namespace esphome::ferraris
                             }
 
                             ESP_LOGD(TAG, "Automatic analog calibration finished:  OFF %.1f  ON %.1f  TRSH %.1f", m_off_level, m_on_level, threshold);
+                            set_analog_calibration_state(false, m_on_level - m_off_level);
                         }
                         else if (m_iteration_counter < m_max_iterations)
                         {
@@ -156,15 +163,11 @@ namespace esphome::ferraris
                         else
                         {
                             ESP_LOGE(TAG, "Too many failed analog calibration iterations, giving up");
+                            set_analog_calibration_state(false, m_on_level - m_off_level, true);
                         }
                     }
                 }
             });
-        }
-
-        if (m_power_consumption_sensor != nullptr)
-        {
-            m_power_consumption_sensor->publish_state(0);
         }
 #endif
 
@@ -172,6 +175,11 @@ namespace esphome::ferraris
         if (m_rotation_indicator_sensor != nullptr)
         {
             m_rotation_indicator_sensor->publish_state(false);
+        }
+
+        if (m_analog_calibration_state_sensor != nullptr)
+        {
+            m_analog_calibration_state_sensor->publish_state(false);
         }
 #endif
 
@@ -321,9 +329,12 @@ namespace esphome::ferraris
 #ifdef USE_SENSOR
         LOG_SENSOR("", "Power consumption sensor", m_power_consumption_sensor);
         LOG_SENSOR("", "Energy meter sensor", m_energy_meter_sensor);
+        LOG_SENSOR("", "Analog value spectrum sensor", m_analog_value_spectrum_sensor);
 #endif
 #ifdef USE_BINARY_SENSOR
         LOG_BINARY_SENSOR("", "Rotation indicator sensor", m_rotation_indicator_sensor);
+        LOG_BINARY_SENSOR("", "Analog calibration state sensor", m_analog_calibration_state_sensor);
+        LOG_BINARY_SENSOR("", "Analog calibration result sensor", m_analog_calibration_result_sensor);
 #endif
 #ifdef USE_SWITCH
         LOG_SWITCH("", "Calibration mode switch", m_calibration_mode_switch);
@@ -464,6 +475,27 @@ namespace esphome::ferraris
 
             m_energy_meter_sensor->publish_state(energy);
             ESP_LOGD(TAG, "Published energy meter sensor state: %.2f Wh (%d rotations)", energy, m_rotation_counter);
+        }
+#endif
+    }
+
+    void FerrarisMeter::set_analog_calibration_state(bool running, float range, bool problem)
+    {
+#ifdef USE_BINARY_SENSOR
+        if (m_analog_calibration_state_sensor != nullptr)
+        {
+            m_analog_calibration_state_sensor->publish_state(running);
+        }
+
+        if (!running && (m_analog_calibration_result_sensor != nullptr))
+        {
+            m_analog_calibration_result_sensor->publish_state(problem);
+        }
+#endif
+#ifdef USE_SENSOR
+        if (!running && (m_analog_value_spectrum_sensor != nullptr))
+        {
+            m_analog_value_spectrum_sensor->publish_state(range);
         }
 #endif
     }
