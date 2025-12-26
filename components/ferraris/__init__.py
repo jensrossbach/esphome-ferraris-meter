@@ -71,7 +71,7 @@ def ensure_gpio_or_adc(value):
 ANALOG_CALIBRATION_SCHEMA = cv.Schema({
         cv.Optional(CONF_NUM_CAPTURED_VALUES, default = 6000): cv.int_range(min=100, max=100000),
         cv.Optional(CONF_MIN_LEVEL_DISTANCE, default = 6.0): cv.positive_float,
-        cv.Optional(CONF_MAX_ITERATIONS, default = 3): cv.int_range(min=1, max=10)})
+        cv.Optional(CONF_MAX_ITERATIONS, default = 3): cv.int_range(min=1, max=10000)})
 
 CONFIG_SCHEMA = cv.All(
     cv.Schema({

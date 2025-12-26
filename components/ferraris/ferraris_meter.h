@@ -66,7 +66,7 @@ namespace esphome::ferraris
         void start_analog_calibration(
                 uint32_t num_captured_values,
                 float min_level_dist,
-                uint8_t max_iterations)
+                uint16_t max_iterations)
         {
             m_num_captured_values = num_captured_values;
             m_min_level_distance = min_level_dist;
@@ -235,8 +235,8 @@ namespace esphome::ferraris
         float m_on_level;
         uint32_t m_num_captured_values;
         float m_min_level_distance;
-        uint8_t m_max_iterations;
-        uint8_t m_iteration_counter;
+        uint16_t m_max_iterations;
+        uint16_t m_iteration_counter;
         uint32_t m_level_value_counter;
 
         bool m_calibration_mode;
