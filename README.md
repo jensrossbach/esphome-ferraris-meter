@@ -269,7 +269,7 @@ Alle Parameter sind optional und können weggelassen werden.
 | --------- | --- | ------- | -------- | ------------ |
 | `num_captured_values` | `uint32` | 100&nbsp;...&nbsp;100000 | 6000 | Anzahl der zu erfassenden analogen Werte pro Kalibrierungsdurchlauf |
 | `min_level_distance` | `float` | >=&nbsp;0 | 6.0 | Mindestdifferenz zwischen niedrigstem und höchstem Analogwert, damit die Kalibrierung als erfolgreich angesehen und der analoge Schwellwert gesetzt wird |
-| `max_iterations` | `uint8` | 1&nbsp;...&nbsp;10 | 3 | Maximale Anzahl fehlgeschlagener Kalibrierungsdurchläufe, bevor aufgegeben wird |
+| `max_iterations` | `uint16` | 1&nbsp;...&nbsp;10000 | 3 | Maximale Anzahl fehlgeschlagener Kalibrierungsdurchläufe, bevor aufgegeben wird |
 
 ## Anwendungsbeispiele
 In diesem Abschnitt sind verschiedene Anwendungsbeispiele für die Ferraris-Plattform beschrieben.
@@ -1001,7 +1001,7 @@ All parameters are optional and can be omitted.
 | --------- | ---- | ----- | ------- | ----------- |
 | `num_captured_values` | `uint32` | 100&nbsp;...&nbsp;100000 | 6000 | Number of analog values to capture per calibration iteration |
 | `min_level_distance` | `float` | >=&nbsp;0 | 6.0 | Minimum difference between lowest and highest analog value to accept the calibration and set the analog threshold |
-| `max_iterations` | `uint8` | 1&nbsp;...&nbsp;10 | 3 | Maximum number of failed calibration iterations before giving up |
+| `max_iterations` | `uint16` | 1&nbsp;...&nbsp;10000 | 3 | Maximum number of failed calibration iterations before giving up |
 
 ## Usage Examples
 This section describes various examples of usage for the Ferraris platform.
