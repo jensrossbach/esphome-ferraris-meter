@@ -58,6 +58,7 @@ namespace esphome::ferraris
         , m_analog_input_threshold_number(nullptr)
         , m_off_tolerance_number(nullptr)
         , m_on_tolerance_number(nullptr)
+        , m_debounce_threshold_number(nullptr)
         , m_energy_start_value_number(nullptr)
 #endif
         , m_analog_input_threshold(0.0f)
@@ -381,7 +382,7 @@ namespace esphome::ferraris
                             ESP_LOGD(TAG, "Rotation time:  %u ms", rotation_time);
 
                             m_rotation_counter++;
-                            ESP_LOGD(TAG, "Updated rotation counter:  %u rotations", m_rotation_counter);
+                            ESP_LOGD(TAG, "Updated rotation counter:  %llu rotations", m_rotation_counter);
 
                             update_power_consumption(rotation_time);
                             update_energy_counter();
@@ -430,7 +431,7 @@ namespace esphome::ferraris
         if (!m_start_value_received)
         {
             m_rotation_counter = static_cast<uint64_t>(value / 1000 * m_rotations_per_kwh);
-            ESP_LOGD(TAG, "Restored rotation counter:  %u rotations", m_rotation_counter);
+            ESP_LOGD(TAG, "Restored rotation counter:  %llu rotations", m_rotation_counter);
 
             m_start_value_received = true;
             update_energy_counter();
@@ -440,7 +441,7 @@ namespace esphome::ferraris
     void FerrarisMeter::set_energy_meter(float value)
     {
         m_rotation_counter = static_cast<uint64_t>(std::round(value * m_rotations_per_kwh));
-        ESP_LOGD(TAG, "Set energy meter:  %.2f kWh (%u rotations)", value, m_rotation_counter);
+        ESP_LOGD(TAG, "Set energy meter:  %.2f kWh (%llu rotations)", value, m_rotation_counter);
 
         update_energy_counter();
     }
@@ -448,7 +449,7 @@ namespace esphome::ferraris
     void FerrarisMeter::set_rotation_counter(uint64_t value)
     {
         m_rotation_counter = value;
-        ESP_LOGD(TAG, "Set rotation counter:  %u rotations", m_rotation_counter);
+        ESP_LOGD(TAG, "Set rotation counter:  %llu rotations", (unsigned long long) m_rotation_counter);
 
         update_energy_counter();
     }
@@ -474,7 +475,7 @@ namespace esphome::ferraris
             float energy = static_cast<float>(m_rotation_counter) / m_rotations_per_kwh * WATTS_PER_KW;
 
             m_energy_meter_sensor->publish_state(energy);
-            ESP_LOGD(TAG, "Published energy meter sensor state: %.2f Wh (%d rotations)", energy, m_rotation_counter);
+            ESP_LOGD(TAG, "Published energy meter sensor state: %.2f Wh (%llu rotations)", energy, m_rotation_counter);
         }
 #endif
     }
