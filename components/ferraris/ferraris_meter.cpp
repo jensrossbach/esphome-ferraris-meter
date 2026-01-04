@@ -449,7 +449,7 @@ namespace esphome::ferraris
     void FerrarisMeter::set_rotation_counter(uint64_t value)
     {
         m_rotation_counter = value;
-        ESP_LOGD(TAG, "Set rotation counter:  %llu rotations", (unsigned long long) m_rotation_counter);
+        ESP_LOGD(TAG, "Set rotation counter:  %llu rotations", m_rotation_counter);
 
         update_energy_counter();
     }
