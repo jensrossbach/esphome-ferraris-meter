@@ -1,0 +1,67 @@
+# Translation for index.rst
+# Copyright (C) 2024-2026, Jens-Uwe Rossbach
+# This file is distributed under the same license as the ESPHome Ferraris
+# Meter package.
+# Jens-Uwe Rossbach <devel@jrossbach.de>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ESPHome Ferraris Meter \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-15 17:08+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Jens-Uwe Rossbach <devel@jrossbach.de>\n"
+"Language: en\n"
+"Language-Team: Jens-Uwe Rossbach <devel@jrossbach.de>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/index.rst:7
+msgid "ESPHome Ferraris Meter"
+msgstr ""
+
+#: ../../source/index.rst:9
+msgid ""
+"Ferraris Meter ist eine ESPHome-Plattform zur Erstellung einer ESP-"
+"Firmware, die mithilfe eines ESP-Mikrocontrollers und eines "
+"Infrarotsensors die Geschwindigkeit und die Umdrehungen der Drehscheibe "
+"eines analogen Ferraris-Stromzählers ermitteln und daraus den momentanen "
+"Stromverbrauch und den Zählerstand berechnen kann. Diese Werte können "
+"dann zur weiteren Verarbeitung an eine Hausautomatisierungs-Software wie "
+"beispielsweise Home Assistant geschickt werden."
+msgstr ""
+"Ferraris Meter is an ESPHome plattform for creating an ESP firmware that "
+"uses an ESP microcontroller and an infrared sensor to capture the number "
+"of rotations and the speed of the turntable of an analog Ferraris "
+"electricity meter and to calculate the current electricity consumption "
+"and meter reading. These values can then be sent to a home automation "
+"software such as Home Assistant for further processing."
+
+#: ../../source/index.rst:12
+msgid "Hauftungsausschluss"
+msgstr "Disclaimer"
+
+#: ../../source/index.rst:13
+msgid ""
+"**DIE SOFTWARE (EINSCHLIEßLICH DER DOKUMENTATION MIT HARDWARE BEISPIEL-"
+"AUFBAUTEN) WIRD OHNE MÄNGELGEWÄHR UND OHNE JEGLICHE AUSDRÜCKLICHE ODER "
+"STILLSCHWEIGENDE GEWÄHRLEISTUNG, EINSCHLIEẞLICH, ABER NICHT BESCHRÄNKT "
+"AUF DIE GEWÄHRLEISTUNG DER MARKTGÄNGIGKEIT, DER EIGNUNG FÜR EINEN "
+"BESTIMMTEN ZWECK UND DER NICHTVERLETZUNG VON RECHTEN DRITTER, ZUR "
+"VERFÜGUNG GESTELLT. DIE AUTOREN ODER URHEBERRECHTSINHABER SIND IN KEINEM "
+"FALL HAFTBAR FÜR ANSPRÜCHE, SCHÄDEN ODER ANDERE VERPFLICHTUNGEN, OB IN "
+"EINER VERTRAGS- ODER HAFTUNGSKLAGE, EINER UNERLAUBTEN HANDLUNG ODER "
+"ANDERWEITIG, DIE SICH AUS ODER IN VERBINDUNG MIT DER SOFTWARE ODER DER "
+"NUTZUNG ODER ANDEREN GESCHÄFTEN MIT DER SOFTWARE ERGEBEN.**"
+msgstr ""
+"**THE SOFTWARE (INCLUDING THE DOCUMENTATION WITH THE EXAMPLE HARDWARE "
+"SETUP) IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR "
+"IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, "
+"FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL "
+"THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR "
+"OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, "
+"ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR "
+"OTHER DEALINGS IN THE SOFTWARE.**"

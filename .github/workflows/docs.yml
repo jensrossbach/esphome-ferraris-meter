@@ -1,0 +1,61 @@
+name: Build and Deploy Sphinx Documentation
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install sphinx sphinx-intl pydata-sphinx-theme
+
+      - name: Build German documentation
+        env:
+          SPHINX_LANGUAGE: de
+        run: |
+          sphinx-build -b html -D language=de doc/source doc/build/html/de
+
+      - name: Build English documentation
+        env:
+          SPHINX_LANGUAGE: en
+        run: |
+          sphinx-build -b html -D language=en doc/source doc/build/html/en
+
+      - name: Copy root index.html
+        run: cp doc/index.html doc/build/html/index.html
+
+      - name: Upload artifact for deployment
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: doc/build/html
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

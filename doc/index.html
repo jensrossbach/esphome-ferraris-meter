@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="0; url=./en/">
+  <script>
+    (function() {
+      const lang = navigator.language || navigator.userLanguage;
+      const normalized = lang.toLowerCase();
+
+      if (normalized.startsWith("de")) {
+        window.location.replace("./de/");
+      } else {
+        window.location.replace("./en/");
+      }
+    })();
+  </script>
+  <title>Redirecting…</title>
+</head>
+<body>
+  <p>Redirecting…</p>
+</body>
+</html>
