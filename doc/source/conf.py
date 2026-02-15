@@ -38,8 +38,8 @@ html_context = {
     "copyright": copyright,
     "year": datetime.now().year,
     "languages": {
-        "de": "/de/index.html",
-        "en": "/en/index.html"
+        "de": "/esphome-ferraris-meter/de/index.html",
+        "en": "/esphome-ferraris-meter/en/index.html"
     }
 }
 
