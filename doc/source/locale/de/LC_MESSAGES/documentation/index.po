@@ -1,0 +1,25 @@
+# Translation for index.rst
+# Copyright (C) 2024-2026, Jens-Uwe Rossbach
+# This file is distributed under the same license as the ESPHome Ferraris
+# Meter package.
+# Jens-Uwe Rossbach <devel@jrossbach.de>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ESPHome Ferraris Meter \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-14 11:28+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Jens-Uwe Rossbach <devel@jrossbach.de>\n"
+"Language: de\n"
+"Language-Team: Jens-Uwe Rossbach <devel@jrossbach.de>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/documentation/index.rst:3
+msgid "Dokumentation"
+msgstr ""

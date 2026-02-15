@@ -1,0 +1,66 @@
+# Translation for hardware_setup.rst
+# Copyright (C) 2024-2026, Jens-Uwe Rossbach
+# This file is distributed under the same license as the ESPHome Ferraris
+# Meter package.
+# Jens-Uwe Rossbach <devel@jrossbach.de>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ESPHome Ferraris Meter \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-14 11:28+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Jens-Uwe Rossbach <devel@jrossbach.de>\n"
+"Language: en\n"
+"Language-Team: Jens-Uwe Rossbach <devel@jrossbach.de>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/documentation/hardware_setup.rst:5
+msgid "Hardware-Aufbau"
+msgstr "Hardware Setup"
+
+#: ../../source/documentation/hardware_setup.rst:7
+msgid ""
+"Hardware-seitig wird lediglich ein ESP-Mikrocontroller (z.B. ESP8266 oder"
+" ESP32, inkl. Spannungsversorgung) und ein Infrarotsensor (z.B. TCRT5000)"
+" benötigt. Für die reine Funktionalität des Ferraris Meters reicht ein "
+"ESP8266 als Mikrocontroller völlig aus. Für den Infrarotsensor gibt es "
+"fertige TCRT5000-basierte Breakout-Module mit 3,3V-5V Eingangsspannung, "
+"die auch über einen regelbaren Widerstand (Potentiometer) verfügen, um "
+"den digitalen Ausgang zu kalibrieren. Diese TCRT5000-Module haben 4 Pins "
+"- VCC und GND für die Stromversorgung des Sensor-Chips sowie einen "
+"digitalen Ausgang D0 und einen analogen Ausgang A0."
+msgstr "On the hardware side, only an ESP microcontroller (e.g. ESP8266 or ESP32, incl. power supply) and an infrared sensor (e.g. TCRT5000) are required. An ESP8266 microcontroller is completely sufficient for the pure functionality of the Ferraris Meter. For the infrared sensor, there are ready-made TCRT5000-based breakout modules with 3.3V-5V input voltage available, which also have an adjustable resistor (potentiometer) to calibrate the digital output of the sensor. These TCRT5000 modules have 4 pins - VCC and GND for the power supply of the sensor chip as well as a digital output D0 and an analog output A0."
+
+#: ../../source/documentation/hardware_setup.rst:9
+msgid ""
+"Beim Platzieren des Sensors auf der Abdeckplatte des Ferraris-"
+"Stromzählers ist ein wenig Geschick und Präzisionsarbeit gefragt. Das "
+"Infrarot Sender/Empfänger-Paar des Sensors muss mittig millimetergenau "
+"über der Drehscheibe ausgerichtet werden und geradlinig auf die "
+"Drehscheibe zeigen."
+msgstr "Placing the sensor on the cover plate of the Ferraris electricity meter requires a little skill and precision work. The infrared transmitter/receiver pair of the sensor must be aligned centrally above the turntable with millimeter precision and point in a straight line to the turntable."
+
+#: ../../source/documentation/hardware_setup.rst:11
+msgid "Die Ferraris-Plattform unterstützt prinzipiell folgende Aufbauvarianten:"
+msgstr "The Ferraris platform basically supports the following setup variants:"
+
+#: ../../source/documentation/hardware_setup.rst:13
+msgid ""
+":ref:`Verwendung eines einzelnen Infrarotsensors über den digitalen "
+"Ausgang <energy-meter-digital>`"
+msgstr ":ref:`Use of a single infrared sensor via the digital output <energy-meter-digital>`"
+
+#: ../../source/documentation/hardware_setup.rst:14
+msgid ""
+":ref:`Verwendung eines einzelnen Infrarotsensors über den analogen "
+"Ausgang <energy-meter-analog>`"
+msgstr ":ref:`Use of a single infrared sensor via the analog output <energy-meter-analog>`"
+
+#: ../../source/documentation/hardware_setup.rst:15
+msgid ":ref:`Verwendung mehrerer Infrarotsensoren <energy-meter-multiple>`"
+msgstr ":ref:`Use of multiple infrared sensors <energy-meter-multiple>`"

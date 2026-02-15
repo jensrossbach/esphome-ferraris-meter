@@ -1,0 +1,787 @@
+# Translation for software_setup.rst
+# Copyright (C) 2024-2026, Jens-Uwe Rossbach
+# This file is distributed under the same license as the ESPHome Ferraris
+# Meter package.
+# Jens-Uwe Rossbach <devel@jrossbach.de>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ESPHome Ferraris Meter \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-14 11:28+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Jens-Uwe Rossbach <devel@jrossbach.de>\n"
+"Language: de\n"
+"Language-Team: Jens-Uwe Rossbach <devel@jrossbach.de>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/documentation/software_setup.rst:3
+msgid "Software-Konfiguration"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:5
+msgid ""
+"Um eine ESPHome-Firmware zu erstellen, muss eine YAML-basierte "
+"Konfigurationsdatei erstellt werden. Du kannst eine der in diesem "
+"Repository bereitgestellten `Beispielkonfigurationsdateien "
+"<https://github.com/jensrossbach/esphome-ferraris-"
+"meter/tree/main/example_config>`_ als Ausgangspunkt verwenden und sie an "
+"deine Bedürfnisse anpassen."
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:7
+msgid "Prinzipiell gibt es zwei Möglichkeiten, die ESPHome-Firmware zu bauen:"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:10
+msgid ""
+"`Über Home Assistant mit dem ESPHome Device Compiler Add-on "
+"<https://www.esphome.io/guides/getting_started_hassio>`_"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:11
+msgid ""
+"`Über die Kommandozeile mit dem ESPHome Python-Paket "
+"<https://www.esphome.io/guides/getting_started_command_line>`_"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:13
+msgid ""
+"Für welche Methode du dich entscheiden solltest, hängt davon ab, wie "
+"vertraut du mit ESPHome bist und ob du lieber mit einer grafischen "
+"Benutzeroberfläche oder mit der Kommandozeile arbeitest. Außerdem könnte "
+"die Leistungsfähigkeit des Hosts, auf dem du die Firmware baust, eine "
+"Rolle spielen, um den Vorgang zu beschleunigen."
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:17
+msgid ""
+"Es ist **nicht** nötig, dieses Repository zu kopieren (\"forken\") und "
+"die Anpassungen an der Beispielkonfiguration im kopierten Repository "
+"vorzunehmen. Stattdessen reicht es aus, die Beispielkonfiguration lokal "
+"zu speichern und anzupassen oder die angepasste Konfiguration auf deinem "
+"Home Assistant Host abzulegen (sollte die Erstellung der ESPHome-Firmware"
+" mithilfe des ESPHome Device Compiler Add-ons erwünscht sein)."
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:19
+msgid ""
+"Die folgenden Abschnitte beschreiben die wichtigsten Komponenten, die in "
+"der Firmware-Konfigurationsdatei enthalten sind."
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:22
+msgid "Ferraris-Komponente"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:24
+msgid ""
+"Die Ferraris-Komponente (``ferraris``) ist das Fundament der Ferraris-"
+"Plattform und muss hinzugefügt werden, um deren Sensoren, -Aktoren und "
+"-Aktionen zu verwenden."
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:26
+msgid ""
+"Da es sich um eine benutzerdefinierte Komponente handelt, die nicht Teil "
+"von ESPHome ist, muss sie explizit importiert werden. Am einfachsten ist "
+"es, die Komponente direkt aus diesem Repository zu laden."
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:29
+#: ../../source/documentation/software_setup.rst:147
+#: ../../source/documentation/software_setup.rst:164
+#: ../../source/documentation/software_setup.rst:189
+#: ../../source/documentation/software_setup.rst:222
+#: ../../source/documentation/software_setup.rst:263
+#: ../../source/documentation/software_setup.rst:289
+msgid "Beispiel"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:39
+msgid ""
+"Im obigen Beispiel wird der neueste Stand der Komponente aus dem ``main``"
+" Branch des Repositories geladen. Ich empfehle aber, mittels "
+"Versionsnummer auf einen freigegebenen Stand zu verweisen, um mehr "
+"Kontrolle darüber zu haben, welcher Software-Stand verwendet wird und um "
+"besser auf \"breaking changes\" reagieren zu können. Siehe "
+"Beispielkonfiguration, wie das gemacht werden kann."
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:42
+msgid "Die folgenden allgemeinen Einstellungen können konfiguriert werden:"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:47
+#: ../../source/documentation/software_setup.rst:78
+#: ../../source/documentation/software_setup.rst:94
+#: ../../source/documentation/software_setup.rst:129
+msgid "Option"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:48
+#: ../../source/documentation/software_setup.rst:79
+#: ../../source/documentation/software_setup.rst:95
+#: ../../source/documentation/software_setup.rst:129
+#: ../../source/documentation/software_setup.rst:210
+#: ../../source/documentation/software_setup.rst:244
+#: ../../source/documentation/software_setup.rst:319
+#: ../../source/documentation/software_setup.rst:351
+#: ../../source/documentation/software_setup.rst:375
+msgid "Typ"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:49
+#: ../../source/documentation/software_setup.rst:80
+#: ../../source/documentation/software_setup.rst:96
+#: ../../source/documentation/software_setup.rst:129
+msgid "Benötigt"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:50
+#: ../../source/documentation/software_setup.rst:81
+#: ../../source/documentation/software_setup.rst:97
+#: ../../source/documentation/software_setup.rst:129
+#: ../../source/documentation/software_setup.rst:375
+msgid "Standard"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:51
+#: ../../source/documentation/software_setup.rst:82
+#: ../../source/documentation/software_setup.rst:98
+#: ../../source/documentation/software_setup.rst:129
+#: ../../source/documentation/software_setup.rst:210
+#: ../../source/documentation/software_setup.rst:245
+#: ../../source/documentation/software_setup.rst:309
+#: ../../source/documentation/software_setup.rst:319
+#: ../../source/documentation/software_setup.rst:336
+#: ../../source/documentation/software_setup.rst:351
+#: ../../source/documentation/software_setup.rst:363
+#: ../../source/documentation/software_setup.rst:375
+msgid "Beschreibung"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:52
+msgid "``id``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:53
+#: ../../source/documentation/software_setup.rst:68
+#: ../../source/documentation/software_setup.rst:100
+msgid "`ID <https://www.esphome.io/guides/configuration-types#config-id>`_"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:54
+msgid "nein [#fn1]_"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:55
+#: ../../source/documentation/software_setup.rst:70
+#: ../../source/documentation/software_setup.rst:86
+#: ../../source/documentation/software_setup.rst:102
+#: ../../source/documentation/software_setup.rst:122
+msgid "\\-"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:56
+msgid "Instanz der Ferraris-Komponente"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:57
+msgid "``rotations_per_kwh``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:58
+#: ../../source/documentation/software_setup.rst:131
+#: ../../source/documentation/software_setup.rst:133
+#: ../../source/documentation/software_setup.rst:136
+msgid "Zahl"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:59
+#: ../../source/documentation/software_setup.rst:64
+#: ../../source/documentation/software_setup.rst:69
+#: ../../source/documentation/software_setup.rst:106
+#: ../../source/documentation/software_setup.rst:111
+#: ../../source/documentation/software_setup.rst:116
+#: ../../source/documentation/software_setup.rst:121
+#: ../../source/documentation/software_setup.rst:131
+#: ../../source/documentation/software_setup.rst:133
+#: ../../source/documentation/software_setup.rst:136
+msgid "nein"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:60
+msgid "75"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:61
+msgid ""
+"Anzahl der Umdrehungen der Drehscheibe pro kWh (der Wert ist i.d.R. auf "
+"dem Ferraris-Stromzähler vermerkt)"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:62
+msgid "``debounce_threshold``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:63
+msgid ""
+"Zahl |nbsp| / |nbsp| `ID <https://www.esphome.io/guides/configuration-"
+"types#config-id>`_ |nbsp| [#fn3]_"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:65
+msgid "400"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:66
+msgid ""
+"Minimale Zeit in Millisekunden zwischen fallender und darauffolgender "
+"steigender Flanke, damit die Umdrehung berücksichtigt wird; siehe "
+"Abschnitt :ref:`Entprellungsschwellwert <debounce-threshold>` für Details"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:67
+msgid "``energy_start_value``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:71
+msgid ""
+"`Zahlen-Komponente <https://www.esphome.io/components/number>`_, deren "
+"Wert beim Booten als Startwert für den Verbrauchszähler verwendet wird"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:73
+msgid ""
+"Die folgenden Einstellungen sind nur relevant, wenn der digitale Ausgang "
+"des Infrarotsensors verwendet wird:"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:83
+msgid "``digital_input``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:84
+msgid "`Pin <https://www.esphome.io/guides/configuration-types#pin>`_"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:85
+#: ../../source/documentation/software_setup.rst:101
+msgid "ja [#fn2]_"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:87
+msgid "GPIO-Pin, mit dem der digitale Ausgang des TCRT5000-Moduls verbunden ist"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:89
+msgid ""
+"Die folgenden Einstellungen sind nur relevant, wenn der analoge Ausgang "
+"des Infrarotsensors verwendet wird:"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:99
+msgid "``analog_input``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:103
+msgid ""
+"`ADC-Sensor <https://www.esphome.io/components/sensor/adc.html>`_, der "
+"den mit dem analogen Ausgang des TCRT5000-Moduls verbundenen Pin ausliest"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:104
+msgid "``analog_threshold``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:105
+#: ../../source/documentation/software_setup.rst:110
+#: ../../source/documentation/software_setup.rst:115
+msgid ""
+"Zahl |nbsp| / |nbsp| `ID <https://www.esphome.io/guides/configuration-"
+"types#config-id>`_"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:107
+msgid "50.0"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:108
+msgid ""
+"Schwellwert für die Erkennung einer Umdrehung über den analogen Eingang, "
+"siehe Abschnitt :ref:`Kalibrierung des analogen Ausgangssignals <analog-"
+"calibration>` für Details"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:109
+msgid "``off_tolerance``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:112
+#: ../../source/documentation/software_setup.rst:117
+msgid "0.0"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:113
+msgid ""
+"Negativer Versatz zum analogen Schwellwert für die fallende Flanke, siehe"
+" Abschnitt :ref:`Hysterese-Kennlinie <hysteresis-curve>` für Details"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:114
+msgid "``on_tolerance``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:118
+msgid ""
+"Positiver Versatz zum analogen Schwellwert für die steigende Flanke, "
+"siehe Abschnitt :ref:`Hysterese-Kennlinie <hysteresis-curve>` für Details"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:119
+msgid "``calibrate_on_boot``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:120
+msgid "Objekt"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:123
+msgid ""
+"Wenn vorhanden, wird die automatische Kalibrierung des analogen "
+"Ausgangssignals vom Infrarotsensor nach dem Aufstarten ausgeführt, siehe "
+"Abschnitt :ref:`Kalibrierung des analogen Ausgangssignals <analog-"
+"calibration>` für Details"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:126
+msgid ""
+"Die folgenden Einstellungen können für das Objekt ``calibrate_on_boot`` "
+"konfiguriert werden:"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:131
+#: ../../source/documentation/software_setup.rst:377
+msgid "``num_captured_values``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:131
+#: ../../source/documentation/software_setup.rst:377
+msgid "6000"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:131
+#: ../../source/documentation/software_setup.rst:377
+msgid "Anzahl der zu erfassenden analogen Werte pro Kalibrierungsdurchlauf"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:133
+#: ../../source/documentation/software_setup.rst:379
+msgid "``min_level_distance``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:133
+#: ../../source/documentation/software_setup.rst:379
+msgid "6.0"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:133
+#: ../../source/documentation/software_setup.rst:379
+msgid ""
+"Mindestdifferenz zwischen niedrigstem und höchstem Analogwert, damit die "
+"Kalibrierung als erfolgreich angesehen und der analoge Schwellwert "
+"gesetzt wird"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:136
+#: ../../source/documentation/software_setup.rst:381
+msgid "``max_iterations``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:136
+#: ../../source/documentation/software_setup.rst:381
+msgid "3"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:136
+#: ../../source/documentation/software_setup.rst:381
+msgid ""
+"Maximale Anzahl fehlgeschlagener Kalibrierungsdurchläufe, bevor "
+"aufgegeben wird"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:140
+msgid ""
+"Bestimmte :ref:`Anwendungsfälle <usage-examples>` benötigen das "
+"Konfigurationselement ``id``."
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:142
+msgid ""
+"Nur eines der beiden Konfigurationselemente - ``digital_input`` oder "
+"``analog_input`` - wird benötigt, je nach :ref:`Hardware-Aufbauvariante "
+"<hardware-setup>`."
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:144
+msgid ""
+"Die Konfigurationselemente ``analog_threshold``\\ , ``off_tolerance``\\ ,"
+" ``on_tolerance`` und ``debounce_threshold`` erwarten entweder eine feste"
+" Zahl oder die ID einer `Zahlen-Komponente "
+"<https://www.esphome.io/components/number>`_. Letzteres ermöglicht das "
+"Konfigurieren des Wertes über das User-Interface (z.B. durch die "
+"Verwendung einer `Template-Zahlen-Komponente "
+"<https://www.esphome.io/components/number/template.html>`_\\ )."
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:159
+msgid "API/MQTT-Komponente"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:161
+msgid ""
+"Eine `API-Komponente <https://www.esphome.io/components/api.html>`_ ist "
+"erforderlich, wenn der ESP in Home Assistant integriert werden soll. Für "
+"den Fall, dass eine alternative Hausautomatisierungs-Software verwendet "
+"werden soll, muss stattdessen eine `MQTT-Komponente "
+"<https://www.esphome.io/components/mqtt.html>`_ hinzugefügt werden. "
+"Allerdings funktionieren dann bestimmte Mechanismen wie das Überschreiben"
+" des Zählerstands oder das Wiederherstellen des letzten Zählerstands nach"
+" einem Neustart (siehe weiter unten für Details) u.U. nicht mehr."
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:166
+msgid ""
+"Nachfolgend ein Beispiel für die Integration mit Home Assistant (und "
+"verschlüsselter API):"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:174
+msgid ""
+"Und hier ein Beispiel für die Verwendung mit einer alternativen "
+"Hausautomatisierungs-Software mittels MQTT:"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:184
+msgid "WiFi-Komponente"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:186
+msgid ""
+"Eine `WiFi-Komponente <https://www.esphome.io/components/wifi.html>`_ "
+"sollte vorhanden sein, da die Sensor-Werte ansonsten nicht ohne weiteres "
+"an ein anderes Gerät übertragen werden können."
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:198
+msgid "Sensoren"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:200
+msgid ""
+"Die Ferraris-Plattform verfügt über primäre Sensoren, um die berechneten "
+"Verbrauchswerte auszugeben sowie über diagnostische Sensoren für den "
+"Kalibrierungsmodus. Alle Sensoren sind optional und können weggelassen "
+"werden, wenn sie nicht benötigt werden."
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:205
+msgid "Primäre Sensoren"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:207
+msgid "Die folgenden primären Sensoren können konfiguriert werden:"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:210
+#: ../../source/documentation/software_setup.rst:243
+msgid "Sensor"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:210
+msgid "Geräteklasse"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:210
+msgid "Zustandsklasse"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:210
+msgid "Einheit"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:212
+msgid "``power_consumption``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:212
+#: ../../source/documentation/software_setup.rst:214
+#: ../../source/documentation/software_setup.rst:256
+msgid "numerisch"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:212
+msgid "``power``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:212
+msgid "``measurement``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:212
+msgid "W"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:212
+msgid "Aktueller Stromverbrauch"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:214
+msgid "``energy_meter``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:214
+msgid "``energy``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:214
+msgid "``total_increasing``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:214
+msgid "Wh"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:214
+msgid "Gesamtstromverbrauch (Stromzähler/Zählerstand)"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:219
+msgid ""
+"Detaillierte Informationen zu den Konfigurationsmöglichkeiten der "
+"einzelnen Elemente findest du in der Dokumentation der `ESPHome "
+"Sensorkomponenten <https://www.esphome.io/components/sensor>`_."
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:236
+msgid "Diagnostische Sensoren"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:238
+msgid "Die folgenden diagnostischen Sensoren können konfiguriert werden:"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:246
+msgid "``rotation_indicator``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:247
+#: ../../source/documentation/software_setup.rst:250
+#: ../../source/documentation/software_setup.rst:253
+msgid "binär"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:248
+msgid ""
+"Zeigt an, ob die Markierung auf der Drehscheibe gerade vor dem "
+"Infrarotsensor ist (funktioniert nur im Kalibrierungsmodus)"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:249
+msgid "``analog_calibration_state``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:251
+msgid "Status der automatischen analogen Kalibrierung (ob aktiv oder nicht)"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:252
+msgid "``analog_calibration_result``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:254
+msgid ""
+"Ergebnis der letzten automatischen analogen Kalibrierung (ob erfolgreich "
+"oder nicht)"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:255
+msgid "``analog_value_spectrum``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:257
+msgid ""
+"Bandbreite der analogen Werte (Differenz zwischen kleinstem und größtem "
+"analogen Wert)"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:260
+msgid ""
+"Detaillierte Informationen zu den Konfigurationsmöglichkeiten der "
+"einzelnen Elemente findest du in der Dokumentation der `ESPHome "
+"Binärsensorkomponenten "
+"<https://www.esphome.io/components/binary_sensor>`_ und der `ESPHome "
+"Sensorkomponenten <https://www.esphome.io/components/sensor>`_."
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:284
+msgid "Aktoren"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:286
+msgid ""
+"Zu diagnostischen Zwecken verfügt die Ferraris-Plattform über einen "
+"`Schalter <https://www.esphome.io/components/switch>`_. Dieser hat den "
+"Namen ``calibration_mode`` und kann dazu verwendet werden, die Komponente"
+" in den Kalibierungsmodus zu versetzen (siehe Abschnitt "
+":ref:`Kalibrierung <calibration>` für weitere Informationen)."
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:301
+msgid "Aktionen"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:303
+msgid ""
+"Die Ferraris-Plattform stellt verschiedene Aktionen zur Verfügung, um "
+"Werte zu setzen oder das Verhalten zu steuern."
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:306
+msgid "Zählerstand setzen"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:309
+#: ../../source/documentation/software_setup.rst:336
+#: ../../source/documentation/software_setup.rst:363
+msgid "Aktion"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:311
+msgid "``ferraris.set_energy_meter``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:311
+msgid "Setzt den Zählerstand auf den angegeben Wert"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:316
+#: ../../source/documentation/software_setup.rst:319
+#: ../../source/documentation/software_setup.rst:348
+#: ../../source/documentation/software_setup.rst:351
+#: ../../source/documentation/software_setup.rst:370
+#: ../../source/documentation/software_setup.rst:375
+msgid "Parameter"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:319
+#: ../../source/documentation/software_setup.rst:351
+#: ../../source/documentation/software_setup.rst:375
+msgid "Bereich"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:321
+#: ../../source/documentation/software_setup.rst:353
+msgid "``value``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:321
+#: ../../source/documentation/software_setup.rst:379
+msgid "``float``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:321
+#: ../../source/documentation/software_setup.rst:379
+msgid ">= 0"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:321
+msgid "Zielwert für den Zählerstand in Kilowattstunden (kWh)"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:325
+#: ../../source/documentation/software_setup.rst:357
+msgid ""
+"Anstelle eines festen Zahlenwerts kann auch ein Lambda-Ausdruck verwendet"
+" werden, der den zu übergebenden Wert zurückgibt."
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:329
+msgid ""
+"Obwohl der Sensor für den aktuellen Zählerstand die Einheit **Wh "
+"(Wattstunden)** hat, verwendet die Aktion zum Überschreiben des "
+"Zählerstands die Einheit **kWh (Kilowattstunden)**, da die analogen "
+"Ferraris-Stromzähler den Zählerstand üblicherweise auch in dieser Einheit"
+" anzeigen."
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:333
+msgid "Umdrehungszähler setzen"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:338
+msgid "``ferraris.set_rotation_counter``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:338
+msgid "Setzt den Umdrehungszähler auf den angegeben Wert"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:344
+msgid ""
+"Die Aktion zum Setzen des Zählerstands setzt indirekt auch den "
+"Umdrehungszähler, da die Ferraris-Komponente intern mit Umdrehungen und "
+"nicht mit Wattstunden oder Kilowattstunden arbeitet."
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:353
+msgid "``uint64``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:353
+msgid "\\>= 0"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:353
+msgid "Zielwert für den Umdrehungszähler in Anzahl Umdrehungen"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:360
+msgid "Automatische analoge Kalibrierung"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:365
+msgid "``ferraris.start_analog_calibration``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:365
+msgid ""
+"Startet die automatische Kalibrierung des analogen Ausgangssignals vom "
+"Infrarotsensor"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:372
+msgid "Alle Parameter sind optional und können weggelassen werden."
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:377
+msgid "``uint32``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:377
+msgid "100 |nbsp| ... |nbsp| 100000"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:381
+msgid "``uint16``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:381
+msgid "1 |nbsp| ... |nbsp| 10000"
+msgstr ""

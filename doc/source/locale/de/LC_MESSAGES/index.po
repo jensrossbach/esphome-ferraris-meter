@@ -1,0 +1,53 @@
+# Translation for index.rst
+# Copyright (C) 2024-2026, Jens-Uwe Rossbach
+# This file is distributed under the same license as the ESPHome Ferraris
+# Meter package.
+# Jens-Uwe Rossbach <devel@jrossbach.de>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ESPHome Ferraris Meter \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-15 17:08+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Jens-Uwe Rossbach <devel@jrossbach.de>\n"
+"Language: de\n"
+"Language-Team: Jens-Uwe Rossbach <devel@jrossbach.de>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/index.rst:7
+msgid "ESPHome Ferraris Meter"
+msgstr ""
+
+#: ../../source/index.rst:9
+msgid ""
+"Ferraris Meter ist eine ESPHome-Plattform zur Erstellung einer ESP-"
+"Firmware, die mithilfe eines ESP-Mikrocontrollers und eines "
+"Infrarotsensors die Geschwindigkeit und die Umdrehungen der Drehscheibe "
+"eines analogen Ferraris-Stromzählers ermitteln und daraus den momentanen "
+"Stromverbrauch und den Zählerstand berechnen kann. Diese Werte können "
+"dann zur weiteren Verarbeitung an eine Hausautomatisierungs-Software wie "
+"beispielsweise Home Assistant geschickt werden."
+msgstr ""
+
+#: ../../source/index.rst:12
+msgid "Hauftungsausschluss"
+msgstr ""
+
+#: ../../source/index.rst:13
+msgid ""
+"**DIE SOFTWARE (EINSCHLIEßLICH DER DOKUMENTATION MIT HARDWARE BEISPIEL-"
+"AUFBAUTEN) WIRD OHNE MÄNGELGEWÄHR UND OHNE JEGLICHE AUSDRÜCKLICHE ODER "
+"STILLSCHWEIGENDE GEWÄHRLEISTUNG, EINSCHLIEẞLICH, ABER NICHT BESCHRÄNKT "
+"AUF DIE GEWÄHRLEISTUNG DER MARKTGÄNGIGKEIT, DER EIGNUNG FÜR EINEN "
+"BESTIMMTEN ZWECK UND DER NICHTVERLETZUNG VON RECHTEN DRITTER, ZUR "
+"VERFÜGUNG GESTELLT. DIE AUTOREN ODER URHEBERRECHTSINHABER SIND IN KEINEM "
+"FALL HAFTBAR FÜR ANSPRÜCHE, SCHÄDEN ODER ANDERE VERPFLICHTUNGEN, OB IN "
+"EINER VERTRAGS- ODER HAFTUNGSKLAGE, EINER UNERLAUBTEN HANDLUNG ODER "
+"ANDERWEITIG, DIE SICH AUS ODER IN VERBINDUNG MIT DER SOFTWARE ODER DER "
+"NUTZUNG ODER ANDEREN GESCHÄFTEN MIT DER SOFTWARE ERGEBEN.**"
+msgstr ""

@@ -1,3 +1,5 @@
 /.esphome/
 __pycache__/
+build/
 secrets.yaml
+*.mo
