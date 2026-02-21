@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ESPHome Ferraris Meter \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-14 11:28+0100\n"
+"POT-Creation-Date: 2026-02-16 19:56+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jens-Uwe Rossbach <devel@jrossbach.de>\n"
 "Language: en\n"
@@ -161,9 +161,9 @@ msgstr "Option"
 #: ../../source/documentation/software_setup.rst:129
 #: ../../source/documentation/software_setup.rst:210
 #: ../../source/documentation/software_setup.rst:244
-#: ../../source/documentation/software_setup.rst:319
-#: ../../source/documentation/software_setup.rst:351
-#: ../../source/documentation/software_setup.rst:375
+#: ../../source/documentation/software_setup.rst:320
+#: ../../source/documentation/software_setup.rst:353
+#: ../../source/documentation/software_setup.rst:382
 msgid "Typ"
 msgstr "Type"
 
@@ -178,7 +178,7 @@ msgstr "Required"
 #: ../../source/documentation/software_setup.rst:81
 #: ../../source/documentation/software_setup.rst:97
 #: ../../source/documentation/software_setup.rst:129
-#: ../../source/documentation/software_setup.rst:375
+#: ../../source/documentation/software_setup.rst:382
 msgid "Standard"
 msgstr "Default"
 
@@ -188,12 +188,9 @@ msgstr "Default"
 #: ../../source/documentation/software_setup.rst:129
 #: ../../source/documentation/software_setup.rst:210
 #: ../../source/documentation/software_setup.rst:245
-#: ../../source/documentation/software_setup.rst:309
-#: ../../source/documentation/software_setup.rst:319
-#: ../../source/documentation/software_setup.rst:336
-#: ../../source/documentation/software_setup.rst:351
-#: ../../source/documentation/software_setup.rst:363
-#: ../../source/documentation/software_setup.rst:375
+#: ../../source/documentation/software_setup.rst:320
+#: ../../source/documentation/software_setup.rst:353
+#: ../../source/documentation/software_setup.rst:382
 msgid "Beschreibung"
 msgstr "Description"
 
@@ -428,32 +425,32 @@ msgstr ""
 "``calibrate_on_boot`` entry:"
 
 #: ../../source/documentation/software_setup.rst:131
-#: ../../source/documentation/software_setup.rst:377
+#: ../../source/documentation/software_setup.rst:384
 msgid "``num_captured_values``"
 msgstr "``num_captured_values``"
 
 #: ../../source/documentation/software_setup.rst:131
-#: ../../source/documentation/software_setup.rst:377
+#: ../../source/documentation/software_setup.rst:384
 msgid "6000"
 msgstr "6000"
 
 #: ../../source/documentation/software_setup.rst:131
-#: ../../source/documentation/software_setup.rst:377
+#: ../../source/documentation/software_setup.rst:384
 msgid "Anzahl der zu erfassenden analogen Werte pro Kalibrierungsdurchlauf"
 msgstr "Number of analog values to capture per calibration iteration"
 
 #: ../../source/documentation/software_setup.rst:133
-#: ../../source/documentation/software_setup.rst:379
+#: ../../source/documentation/software_setup.rst:386
 msgid "``min_level_distance``"
 msgstr "``min_level_distance``"
 
 #: ../../source/documentation/software_setup.rst:133
-#: ../../source/documentation/software_setup.rst:379
+#: ../../source/documentation/software_setup.rst:386
 msgid "6.0"
 msgstr "6.0"
 
 #: ../../source/documentation/software_setup.rst:133
-#: ../../source/documentation/software_setup.rst:379
+#: ../../source/documentation/software_setup.rst:386
 msgid ""
 "Mindestdifferenz zwischen niedrigstem und höchstem Analogwert, damit die "
 "Kalibrierung als erfolgreich angesehen und der analoge Schwellwert "
@@ -463,17 +460,17 @@ msgstr ""
 "calibration and set the analog threshold"
 
 #: ../../source/documentation/software_setup.rst:136
-#: ../../source/documentation/software_setup.rst:381
+#: ../../source/documentation/software_setup.rst:388
 msgid "``max_iterations``"
 msgstr "``max_iterations``"
 
 #: ../../source/documentation/software_setup.rst:136
-#: ../../source/documentation/software_setup.rst:381
+#: ../../source/documentation/software_setup.rst:388
 msgid "3"
 msgstr "3"
 
 #: ../../source/documentation/software_setup.rst:136
-#: ../../source/documentation/software_setup.rst:381
+#: ../../source/documentation/software_setup.rst:388
 msgid ""
 "Maximale Anzahl fehlgeschlagener Kalibrierungsdurchläufe, bevor "
 "aufgegeben wird"
@@ -686,8 +683,8 @@ msgid ""
 "Zeigt an, ob die Markierung auf der Drehscheibe gerade vor dem "
 "Infrarotsensor ist (funktioniert nur im Kalibrierungsmodus)"
 msgstr ""
-"Indicates if the mark on the turntable is in front of the infrared sensor "
-"(only works in calibration mode)"
+"Indicates if the mark on the turntable is in front of the infrared sensor"
+" (only works in calibration mode)"
 
 #: ../../source/documentation/software_setup.rst:249
 msgid "``analog_calibration_state``"
@@ -767,56 +764,46 @@ msgstr ""
 msgid "Zählerstand setzen"
 msgstr "Set Energy Meter"
 
-#: ../../source/documentation/software_setup.rst:309
-#: ../../source/documentation/software_setup.rst:336
-#: ../../source/documentation/software_setup.rst:363
-msgid "Aktion"
-msgstr "Action"
-
-#: ../../source/documentation/software_setup.rst:311
-msgid "``ferraris.set_energy_meter``"
-msgstr "``ferraris.set_energy_meter``"
-
-#: ../../source/documentation/software_setup.rst:311
-msgid "Setzt den Zählerstand auf den angegeben Wert"
+#: ../../source/documentation/software_setup.rst:314
+msgid "Setzt den Zählerstand auf den angegeben Wert."
 msgstr "Sets the energy meter reading to the provided value"
 
-#: ../../source/documentation/software_setup.rst:316
-#: ../../source/documentation/software_setup.rst:319
-#: ../../source/documentation/software_setup.rst:348
-#: ../../source/documentation/software_setup.rst:351
-#: ../../source/documentation/software_setup.rst:370
-#: ../../source/documentation/software_setup.rst:375
+#: ../../source/documentation/software_setup.rst:317
+#: ../../source/documentation/software_setup.rst:320
+#: ../../source/documentation/software_setup.rst:350
+#: ../../source/documentation/software_setup.rst:353
+#: ../../source/documentation/software_setup.rst:377
+#: ../../source/documentation/software_setup.rst:382
 msgid "Parameter"
 msgstr "Parameter"
 
-#: ../../source/documentation/software_setup.rst:319
-#: ../../source/documentation/software_setup.rst:351
-#: ../../source/documentation/software_setup.rst:375
+#: ../../source/documentation/software_setup.rst:320
+#: ../../source/documentation/software_setup.rst:353
+#: ../../source/documentation/software_setup.rst:382
 msgid "Bereich"
 msgstr "Range"
 
-#: ../../source/documentation/software_setup.rst:321
-#: ../../source/documentation/software_setup.rst:353
+#: ../../source/documentation/software_setup.rst:322
+#: ../../source/documentation/software_setup.rst:355
 msgid "``value``"
 msgstr "``value``"
 
-#: ../../source/documentation/software_setup.rst:321
-#: ../../source/documentation/software_setup.rst:379
+#: ../../source/documentation/software_setup.rst:322
+#: ../../source/documentation/software_setup.rst:386
 msgid "``float``"
 msgstr "``float``"
 
-#: ../../source/documentation/software_setup.rst:321
-#: ../../source/documentation/software_setup.rst:379
+#: ../../source/documentation/software_setup.rst:322
+#: ../../source/documentation/software_setup.rst:386
 msgid ">= 0"
 msgstr ">= 0"
 
-#: ../../source/documentation/software_setup.rst:321
+#: ../../source/documentation/software_setup.rst:322
 msgid "Zielwert für den Zählerstand in Kilowattstunden (kWh)"
 msgstr "Target value for the energy meter reading in kilowatt hours (kWh)"
 
-#: ../../source/documentation/software_setup.rst:325
-#: ../../source/documentation/software_setup.rst:357
+#: ../../source/documentation/software_setup.rst:326
+#: ../../source/documentation/software_setup.rst:359
 msgid ""
 "Anstelle eines festen Zahlenwerts kann auch ein Lambda-Ausdruck verwendet"
 " werden, der den zu übergebenden Wert zurückgibt."
@@ -824,7 +811,7 @@ msgstr ""
 "Instead of a fixed numeric value, it is also possible to specify a lambda"
 " expression that returns the value to be passed to the action."
 
-#: ../../source/documentation/software_setup.rst:329
+#: ../../source/documentation/software_setup.rst:330
 msgid ""
 "Obwohl der Sensor für den aktuellen Zählerstand die Einheit **Wh "
 "(Wattstunden)** hat, verwendet die Aktion zum Überschreiben des "
@@ -837,19 +824,15 @@ msgstr ""
 "**kWh (kilowatt hours)**\\ , as the analog Ferraris electricity meters "
 "usually also display the meter reading in this unit."
 
-#: ../../source/documentation/software_setup.rst:333
+#: ../../source/documentation/software_setup.rst:334
 msgid "Umdrehungszähler setzen"
 msgstr "Set Rotation Counter"
 
-#: ../../source/documentation/software_setup.rst:338
-msgid "``ferraris.set_rotation_counter``"
-msgstr "``ferraris.set_rotation_counter``"
-
-#: ../../source/documentation/software_setup.rst:338
-msgid "Setzt den Umdrehungszähler auf den angegeben Wert"
+#: ../../source/documentation/software_setup.rst:342
+msgid "Setzt den Umdrehungszähler auf den angegeben Wert."
 msgstr "Sets the rotation counter to the provided value"
 
-#: ../../source/documentation/software_setup.rst:344
+#: ../../source/documentation/software_setup.rst:346
 msgid ""
 "Die Aktion zum Setzen des Zählerstands setzt indirekt auch den "
 "Umdrehungszähler, da die Ferraris-Komponente intern mit Umdrehungen und "
@@ -859,53 +842,58 @@ msgstr ""
 "rotation counter as the Ferraris component internally works with "
 "rotations and not with watt hours or kilowatt hours."
 
-#: ../../source/documentation/software_setup.rst:353
+#: ../../source/documentation/software_setup.rst:355
 msgid "``uint64``"
 msgstr "``uint64``"
 
-#: ../../source/documentation/software_setup.rst:353
+#: ../../source/documentation/software_setup.rst:355
 msgid "\\>= 0"
 msgstr "\\>= 0"
 
-#: ../../source/documentation/software_setup.rst:353
+#: ../../source/documentation/software_setup.rst:355
 msgid "Zielwert für den Umdrehungszähler in Anzahl Umdrehungen"
 msgstr "Target value for the rotation counter in number of rotations"
 
-#: ../../source/documentation/software_setup.rst:360
+#: ../../source/documentation/software_setup.rst:362
 msgid "Automatische analoge Kalibrierung"
 msgstr "Automatic analog Calibration"
 
-#: ../../source/documentation/software_setup.rst:365
-msgid "``ferraris.start_analog_calibration``"
-msgstr "``ferraris.start_analog_calibration``"
-
-#: ../../source/documentation/software_setup.rst:365
+#: ../../source/documentation/software_setup.rst:372
 msgid ""
 "Startet die automatische Kalibrierung des analogen Ausgangssignals vom "
-"Infrarotsensor"
+"Infrarotsensor."
 msgstr ""
 "Starts the automatic calibration of the analog output signal from the "
 "infrared sensor"
 
-#: ../../source/documentation/software_setup.rst:372
+#: ../../source/documentation/software_setup.rst:374
+msgid ""
+"Wird die Mindestdifferenz zwischen niedrigstem und höchstem Analogwert "
+"nach Erfassen aller Werte nicht erreicht, gilt die Kalibrierung als "
+"fehlgeschlagen und ein neuer Durchlauf wird gestartet (bis die maximale "
+"Anzahl Durchläufe erreicht wurde)."
+msgstr ""
+"If the minimum difference between the lowest and highest analog values "
+"is not achieved after all values have been captured, the calibration is "
+"considered to have failed and a new run is started (until the maximum "
+"number of runs has been reached)."
+
+#: ../../source/documentation/software_setup.rst:379
 msgid "Alle Parameter sind optional und können weggelassen werden."
 msgstr "All parameters are optional and can be omitted."
 
-#: ../../source/documentation/software_setup.rst:377
+#: ../../source/documentation/software_setup.rst:384
 msgid "``uint32``"
 msgstr "``uint32``"
 
-#: ../../source/documentation/software_setup.rst:377
+#: ../../source/documentation/software_setup.rst:384
 msgid "100 |nbsp| ... |nbsp| 100000"
 msgstr "100 |nbsp| ... |nbsp| 100000"
 
-#: ../../source/documentation/software_setup.rst:381
+#: ../../source/documentation/software_setup.rst:388
 msgid "``uint16``"
 msgstr "``uint16``"
 
-#: ../../source/documentation/software_setup.rst:381
+#: ../../source/documentation/software_setup.rst:388
 msgid "1 |nbsp| ... |nbsp| 10000"
 msgstr "1 |nbsp| ... |nbsp| 10000"
-
-#~ msgid "Current power consumption"
-#~ msgstr ""

@@ -305,12 +305,13 @@ Die Ferraris-Plattform stellt verschiedene Aktionen zur Verfügung, um Werte zu 
 Zählerstand setzen
 ------------------
 
-+-------------------------------+----------------------------------------------+
-| Aktion                        | Beschreibung                                 |
-+===============================+==============================================+
-| ``ferraris.set_energy_meter`` | Setzt den Zählerstand auf den angegeben Wert |
-+-------------------------------+----------------------------------------------+
+.. code-block:: yaml
 
+    ferraris.set_energy_meter:
+      id: <ferraris_meter_id>
+      value: <meter_reading_value>
+
+Setzt den Zählerstand auf den angegeben Wert.
 
 Parameter
 ~~~~~~~~~
@@ -332,12 +333,13 @@ Anstelle eines festen Zahlenwerts kann auch ein Lambda-Ausdruck verwendet werden
 Umdrehungszähler setzen
 -----------------------
 
-+-----------------------------------+---------------------------------------------------+
-| Aktion                            | Beschreibung                                      |
-+===================================+===================================================+
-| ``ferraris.set_rotation_counter`` | Setzt den Umdrehungszähler auf den angegeben Wert |
-+-----------------------------------+---------------------------------------------------+
+.. code-block:: yaml
 
+    ferraris.set_rotation_counter:
+      id: <ferraris_meter_id>
+      value: <rotation_counter_value>
+
+Setzt den Umdrehungszähler auf den angegeben Wert.
 
 .. note::
 
@@ -359,12 +361,17 @@ Anstelle eines festen Zahlenwerts kann auch ein Lambda-Ausdruck verwendet werden
 Automatische analoge Kalibrierung
 ---------------------------------
 
-+---------------------------------------+---------------------------------------------------------------------------------------+
-| Aktion                                | Beschreibung                                                                          |
-+=======================================+=======================================================================================+
-| ``ferraris.start_analog_calibration`` | Startet die automatische Kalibrierung des analogen Ausgangssignals vom Infrarotsensor |
-+---------------------------------------+---------------------------------------------------------------------------------------+
+.. code-block:: yaml
 
+    ferraris.start_analog_calibration:
+      id: <ferraris_meter_id>
+      num_captured_values: <nof_values>
+      min_level_distance: <distance_value>
+      max_iterations: <nof_iterations>
+
+Startet die automatische Kalibrierung des analogen Ausgangssignals vom Infrarotsensor.
+
+Wird die Mindestdifferenz zwischen niedrigstem und höchstem Analogwert nach Erfassen aller Werte nicht erreicht, gilt die Kalibrierung als fehlgeschlagen und ein neuer Durchlauf wird gestartet (bis die maximale Anzahl Durchläufe erreicht wurde).
 
 Parameter
 ~~~~~~~~~

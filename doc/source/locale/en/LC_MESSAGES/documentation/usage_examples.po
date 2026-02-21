@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ESPHome Ferraris Meter \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-15 11:08+0100\n"
+"POT-Creation-Date: 2026-02-16 19:56+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jens-Uwe Rossbach <devel@jrossbach.de>\n"
 "Language: en\n"
@@ -404,9 +404,8 @@ msgstr ""
 " to the threshold value, it is considered not detected."
 
 #: ../../source/documentation/usage_examples.rst:202
-#: ../../source/documentation/usage_examples.rst:343
-msgid "Debounce Threshold"
-msgstr ""
+msgid "Analoger Schwellwert"
+msgstr "Debounce Threshold"
 
 #: ../../source/documentation/usage_examples.rst:209
 msgid ""
@@ -582,6 +581,10 @@ msgstr ""
 "between the two edges is above the configured value. This type of "
 "debouncing can be applied to both the variant using the digital as well "
 "as the analog input signal of the infrared sensor."
+
+#: ../../source/documentation/usage_examples.rst:343
+msgid "Debounce Threshold"
+msgstr ""
 
 #: ../../source/documentation/usage_examples.rst:350
 msgid ""
