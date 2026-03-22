@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024-2025 Jens-Uwe Rossbach
+ * Copyright (c) 2024-2026 Jens-Uwe Rossbach
  *
  * This code is licensed under the MIT License.
  *
@@ -41,7 +41,7 @@ namespace esphome::ferraris
         {
         }
 
-        void play(Ts... x) override
+        void play(const Ts&... x) override
         {
             m_ferraris_meter->set_energy_meter(m_energy_meter_value.value(x...));
         }
@@ -64,7 +64,7 @@ namespace esphome::ferraris
         {
         }
 
-        void play(Ts... x) override
+        void play(const Ts&... x) override
         {
             m_ferraris_meter->set_rotation_counter(m_rotation_counter_value.value(x...));
         }
@@ -94,7 +94,7 @@ namespace esphome::ferraris
         {
         }
 
-        void play(Ts... x) override
+        void play(const Ts&... x) override
         {
             m_ferraris_meter->start_analog_calibration(
                                     m_num_captured_values,
