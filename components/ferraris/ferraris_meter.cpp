@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024-2025 Jens-Uwe Rossbach
+ * Copyright (c) 2024-2026 Jens-Uwe Rossbach
  *
  * This code is licensed under the MIT License.
  *
@@ -253,8 +253,11 @@ namespace esphome::ferraris
         }
         else
         {
+            m_start_value_received = true;
             update_energy_counter();
         }
+#else
+        m_start_value_received = true;
 #endif
 
 #ifdef USE_SWITCH
@@ -470,7 +473,7 @@ namespace esphome::ferraris
     void FerrarisMeter::update_energy_counter()
     {
 #ifdef USE_SENSOR
-        if (m_energy_meter_sensor != nullptr)
+        if ((m_energy_meter_sensor != nullptr) && m_start_value_received)
         {
             float energy = static_cast<float>(m_rotation_counter) / m_rotations_per_kwh * WATTS_PER_KW;
 
