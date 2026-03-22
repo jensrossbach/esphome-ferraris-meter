@@ -1,4 +1,4 @@
-# Copyright (c) 2024-2025 Jens-Uwe Rossbach
+# Copyright (c) 2024-2026 Jens-Uwe Rossbach
 #
 # This code is licensed under the MIT License.
 #
@@ -144,7 +144,8 @@ async def to_code(config):
     {
         cv.Required(CONF_ID): cv.use_id(FerrarisMeter),
         cv.Required(CONF_VALUE): cv.templatable(cv.positive_float)
-    }))
+    }),
+    synchronous = True)
 async def set_energy_meter_action_to_code(config, action_id, template_arg, args):
     parent = await cg.get_variable(config[CONF_ID])
     act = cg.new_Pvariable(action_id, template_arg, parent)
@@ -161,7 +162,8 @@ async def set_energy_meter_action_to_code(config, action_id, template_arg, args)
     {
         cv.Required(CONF_ID): cv.use_id(FerrarisMeter),
         cv.Required(CONF_VALUE): cv.templatable(cv.uint64_t)
-    }))
+    }),
+    synchronous = True)
 async def set_rotation_counter_action_to_code(config, action_id, template_arg, args):
     parent = await cg.get_variable(config[CONF_ID])
     act = cg.new_Pvariable(action_id, template_arg, parent)
@@ -177,7 +179,8 @@ async def set_rotation_counter_action_to_code(config, action_id, template_arg, a
     cv.Schema(
     {
         cv.Required(CONF_ID): cv.use_id(FerrarisMeter)
-    }).extend(ANALOG_CALIBRATION_SCHEMA))
+    }).extend(ANALOG_CALIBRATION_SCHEMA),
+    synchronous = True)
 async def start_analog_calibration_action_to_code(config, action_id, template_arg, args):
     parent = await cg.get_variable(config[CONF_ID])
     act = cg.new_Pvariable(
