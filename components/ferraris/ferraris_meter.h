@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024-2025 Jens-Uwe Rossbach
+ * Copyright (c) 2024-2026 Jens-Uwe Rossbach
  *
  * This code is licensed under the MIT License.
  *
@@ -49,7 +49,7 @@ namespace esphome::ferraris
     class FerrarisMeter : public Component
     {
     public:
-        FerrarisMeter(uint32_t rpkwh);
+        FerrarisMeter(uint32_t rpkwh, uint16_t intIv);
         virtual ~FerrarisMeter() = default;
 
         void setup() override;
@@ -180,17 +180,17 @@ namespace esphome::ferraris
         void update_energy_counter();
         void set_analog_calibration_state(bool running, float range = 0, bool problem = false);
 
-        static inline uint32_t get_duration(uint32_t time1, uint32_t time2)
+        static inline uint32_t get_duration(uint32_t start, uint32_t end)
         {
             uint32_t ret = 0;
 
-            if (time2 < time1)  // overflow after ~50 days
+            if (end < start)  // overflow after ~50 days
             {
-                ret = std::numeric_limits<uint32_t>::max() - time1 + time2;
+                ret = std::numeric_limits<uint32_t>::max() - start + end;
             }
             else
             {
-                ret = time2 - time1;
+                ret = end - start;
             }
 
             return ret;
@@ -224,12 +224,16 @@ namespace esphome::ferraris
         float m_off_tolerance;
         float m_on_tolerance;
         uint32_t m_rotations_per_kwh;
+        uint32_t m_interpolation_interval;
         uint32_t m_debounce_threshold;
 
         bool m_last_state;
         int64_t m_last_time;
         int64_t m_last_rising_time;
+        int64_t m_interpolation_start;
         uint64_t m_rotation_counter;
+        uint32_t m_last_rotation_time;
+        uint32_t m_acc_rotation_time;
 
         float m_off_level;
         float m_on_level;

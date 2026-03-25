@@ -37,10 +37,11 @@ CODEOWNERS = ["@jensrossbach"]
 MULTI_CONF = True
 
 # common
-CONF_FERRARIS_ID         = "ferraris_id"
-CONF_ROTATIONS_PER_KWH   = "rotations_per_kwh"
-CONF_DEBOUNCE_THRESHOLD  = "debounce_threshold"
-CONF_ENERGY_START_VALUE  = "energy_start_value"
+CONF_FERRARIS_ID            = "ferraris_id"
+CONF_ROTATIONS_PER_KWH      = "rotations_per_kwh"
+CONF_INTERPOLATION_INTERVAL = "interpolation_interval"
+CONF_DEBOUNCE_THRESHOLD     = "debounce_threshold"
+CONF_ENERGY_START_VALUE     = "energy_start_value"
 
 # digital input
 CONF_DIGITAL_INPUT       = "digital_input"
@@ -82,6 +83,7 @@ CONFIG_SCHEMA = cv.All(
         cv.Optional(CONF_OFF_TOLERANCE, default = 0): cv.Any(cv.All(cv.positive_float, cv.Coerce(float)), cv.use_id(number.Number)),
         cv.Optional(CONF_ON_TOLERANCE, default = 0): cv.Any(cv.All(cv.positive_float, cv.Coerce(float)), cv.use_id(number.Number)),
         cv.Optional(CONF_ROTATIONS_PER_KWH, default = 75): cv.int_range(min = 1),
+        cv.Optional(CONF_INTERPOLATION_INTERVAL, default = 10): cv.int_range(min = 0, max = 60),
         cv.Optional(CONF_DEBOUNCE_THRESHOLD, default = 400): cv.Any(cv.int_range(min = 0), cv.use_id(number.Number)),
         cv.Optional(CONF_ENERGY_START_VALUE): cv.use_id(number.Number),
         cv.Optional(CONF_CALIBRATE_ON_BOOT): ANALOG_CALIBRATION_SCHEMA
@@ -92,7 +94,8 @@ CONFIG_SCHEMA = cv.All(
 async def to_code(config):
     cmp = cg.new_Pvariable(
                 config[CONF_ID],
-                config[CONF_ROTATIONS_PER_KWH])
+                config[CONF_ROTATIONS_PER_KWH],
+                config[CONF_INTERPOLATION_INTERVAL])
     await cg.register_component(cmp, config)
 
     if CONF_DIGITAL_INPUT in config:

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ESPHome Ferraris Meter \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-16 19:56+0100\n"
+"POT-Creation-Date: 2026-03-25 19:27+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jens-Uwe Rossbach <devel@jrossbach.de>\n"
 "Language: en\n"
@@ -405,7 +405,7 @@ msgstr ""
 
 #: ../../source/documentation/usage_examples.rst:202
 msgid "Analoger Schwellwert"
-msgstr "Debounce Threshold"
+msgstr "Analog Threshold"
 
 #: ../../source/documentation/usage_examples.rst:209
 msgid ""
@@ -691,11 +691,64 @@ msgstr ""
 "update interval. Also this type of debouncing only works when using the "
 "analog input signal of the infrared sensor."
 
-#: ../../source/documentation/usage_examples.rst:445
+#: ../../source/documentation/usage_examples.rst:447
+msgid "Interpolation bei fallenden Stromverbräuchen"
+msgstr "Interpolation at falling Power Consumption"
+
+#: ../../source/documentation/usage_examples.rst:449
+msgid ""
+"Niedrige Stromverbräuche äußern sich in einer langsamen Geschwindigkeit "
+"der Drehscheibe. Dies führt dazu, dass die Markierung auf der Drehscheibe"
+" nur selten am Sensor vorbei fährt und dadurch aktualisiert sich der "
+"Stromverbrauch ebensfalls nur in großen Zeitabständen. Besonders störend "
+"ist dies, wenn ein hoher Stromverbrauch vorliegt und dieser sich dann "
+"rasch absenkt. In diesem Fall dauert es sehr lang, bis der neue niedrige "
+"Stromverbrauch gemeldet wird, da es lange dauert, bis die Markierung "
+"wieder den Sensor passiert. In dieser Zeit wird dann weiterhin ein hoher "
+"Stromverbrauch angezeigt, obwohl der tatsächliche Stromverbrauch viel "
+"niedriger ist."
+msgstr ""
+"Low power consumption results in a slow rotation speed of the turntable. "
+"This means that the marker on the turntable rarely passes the sensor, so "
+"the power consumption is updated only at long intervals. This is "
+"particularly problematic when power consumption is high and then drops "
+"rapidly. In this case, it takes a very long time for the new low power "
+"consumption to be reported, since it takes a long time for the mark to "
+"pass the sensor again. During this time, high power consumption continues"
+" to be displayed, even though the actual power consumption is much lower."
+
+#: ../../source/documentation/usage_examples.rst:451
+msgid ""
+"Um diesem Effekt entgegenzuwirken, kann die Ferraris-Komponente bei "
+"Übergängen von hohen zu niedrigen Stromverbräuchen den tatsächlichen "
+"Verbrauchsverlauf interpolieren und sich somit dem tatsächlichen "
+"Stromverbrauch immer weiter annähern, bis der tatsächliche Stromverbrauch"
+" nach Detektierung der Markierung berechnet und gemeldet wird."
+msgstr ""
+"To counteract this effect, the Ferraris component can, during "
+"transitions from high to low power consumption, interpolate the actual "
+"consumption curve and thus progressively approximate the real power "
+"consumption until the actual power consumption is calculated and reported"
+" after the marker is detected. "
+
+#: ../../source/documentation/usage_examples.rst:453
+msgid ""
+"Die Interpolation kann über das Interpolationsintervall "
+"``interpolation_interval`` gesteuert werden. Ein Wert von ``0`` "
+"deaktiviert die Interpolation, ansonsten gibt der Wert die Dauer der "
+"Intervalle in Sekunden an, zu denen ein interpolierter Stromverbrauch "
+"berechnet wird."
+msgstr ""
+"Interpolation can be controlled via the interpolation interval value "
+"``interpolation_interval``. A value of ``0`` disables interpolation; "
+"otherwise, the value specifies the duration of the intervals in seconds "
+"for which an interpolated power consumption is calculated."
+
+#: ../../source/documentation/usage_examples.rst:456
 msgid "Manuelles Überschreiben des Zählerstands"
 msgstr "Explicit Meter Reading Replacement"
 
-#: ../../source/documentation/usage_examples.rst:447
+#: ../../source/documentation/usage_examples.rst:458
 msgid ""
 "Um den Zählerstand in der Ferraris-Komponente mit dem tatsächlichen "
 "Zählerstand des Ferraris-Stromzählers abzugleichen, kann der Wert des "
@@ -710,7 +763,7 @@ msgstr ""
 "``ferraris.set_energy_meter`` and ``ferraris.set_rotation_counter`` (see "
 ":ref:`Actions <actions>`) are provided for this purpose."
 
-#: ../../source/documentation/usage_examples.rst:451
+#: ../../source/documentation/usage_examples.rst:462
 msgid ""
 "Normalerweise ist nur eine der beiden Aktionen nötig, je nachdem, ob man "
 "den Zählerstand in Kilowattstunden oder lieber in Anzahl Umdrehungen "
@@ -720,7 +773,7 @@ msgstr ""
 "whether you want to set the meter reading in kilowatt hours or in number "
 "of rotations."
 
-#: ../../source/documentation/usage_examples.rst:454
+#: ../../source/documentation/usage_examples.rst:465
 msgid ""
 "Abhängig davon, ob das Setzen des Zählerstands händisch über das User-"
 "Interface oder automatisiert über Automationen und Skripte erfolgen soll,"
@@ -734,11 +787,11 @@ msgstr ""
 "are described below, but there are more possibilities existing which are "
 "not described here."
 
-#: ../../source/documentation/usage_examples.rst:457
+#: ../../source/documentation/usage_examples.rst:468
 msgid "Händisches Setzen des Zählerstands über das User-Interface"
 msgstr "Setting Energy Meter manually via the User Interface"
 
-#: ../../source/documentation/usage_examples.rst:459
+#: ../../source/documentation/usage_examples.rst:470
 msgid ""
 "Dafür führt man beispielsweise folgende Konfigurations-Schritte durch (in"
 " diesem Beispiel zum Setzen des Zählerstands als Kilowattstunden-Wert):"
@@ -746,7 +799,7 @@ msgstr ""
 "For instance, the following configuration steps are carried out (in this "
 "example to overwrite the energy meter with a kilowatt hours value):"
 
-#: ../../source/documentation/usage_examples.rst:461
+#: ../../source/documentation/usage_examples.rst:472
 msgid ""
 "In der YAML-Konfigurationsdatei wird eine `Template-Zahlen-Komponente "
 "<https://www.esphome.io/components/number/template.html>`_ angelegt und "
@@ -757,7 +810,7 @@ msgstr ""
 "the YAML configuration file and configured for a meter reading in the "
 "unit kilowatt hours."
 
-#: ../../source/documentation/usage_examples.rst:479
+#: ../../source/documentation/usage_examples.rst:490
 msgid ""
 "In der YAML-Konfigurationsdatei wird ein `Template-Button "
 "<https://www.esphome.io/components/button/template.html>`_ angelegt und "
@@ -772,15 +825,15 @@ msgstr ""
 " The target value to be set is retrieved from the created number "
 "component"
 
-#: ../../source/documentation/usage_examples.rst:496
+#: ../../source/documentation/usage_examples.rst:507
 msgid "Automatisiertes Setzen des Zählerstands"
 msgstr "Setting Energy Meter automatically"
 
-#: ../../source/documentation/usage_examples.rst:498
+#: ../../source/documentation/usage_examples.rst:509
 msgid "Dafür führt man beispielsweise folgende Konfigurations-Schritte durch:"
 msgstr "For instance, the following configuration steps are carried out:"
 
-#: ../../source/documentation/usage_examples.rst:500
+#: ../../source/documentation/usage_examples.rst:511
 msgid ""
 "In der YAML-Konfigurationsdatei wird eine `benutzerdefinierte Aktion "
 "<https://www.esphome.io/components/api.html#api-device-actions>`_ "
@@ -792,7 +845,7 @@ msgstr ""
 "one of the Ferraris actions (in the following example the action "
 "``ferraris.set_energy_meter`` is used)."
 
-#: ../../source/documentation/usage_examples.rst:518
+#: ../../source/documentation/usage_examples.rst:529
 msgid ""
 "In Home Assistant wird eine `Automation <https://www.home-"
 "assistant.io/docs/automation>`_ erstellt, die die benutzerdefinierte "
@@ -804,11 +857,11 @@ msgstr ""
 "the following example, the meter reading is reset at the beginning of "
 "each month)."
 
-#: ../../source/documentation/usage_examples.rst:537
+#: ../../source/documentation/usage_examples.rst:548
 msgid "Wiederherstellung des Zählerstands nach einem Neustart"
 msgstr "Meter Reading Recovery after Restart"
 
-#: ../../source/documentation/usage_examples.rst:539
+#: ../../source/documentation/usage_examples.rst:550
 msgid ""
 "Um die Lebensdauer des Flash-Speichers auf dem ESP-Mikrocontroller nicht "
 "zu verringern, speichert die Ferraris-Komponente keine Daten persistent "
@@ -831,13 +884,13 @@ msgstr ""
 " there is the option of persisting the last meter reading in Home "
 "Assistant and transferring it to the microcontroller when booting."
 
-#: ../../source/documentation/usage_examples.rst:541
+#: ../../source/documentation/usage_examples.rst:552
 msgid ""
 "Damit dies funktioniert, müssen beispielsweise folgende Konfigurations-"
 "Schritte durchgeführt werden:"
 msgstr "For this to work, the following configuration steps must be carried out:"
 
-#: ../../source/documentation/usage_examples.rst:544
+#: ../../source/documentation/usage_examples.rst:555
 msgid ""
 "In Home Assistant wird ein `Zahlenwert-Eingabehelfer <https://www.home-"
 "assistant.io/integrations/input_number>`_ angelegt (in diesem Beispiel "
@@ -856,7 +909,7 @@ msgstr ""
 "created in the YAML configuration file, which imports the created number "
 "input helper"
 
-#: ../../source/documentation/usage_examples.rst:553
+#: ../../source/documentation/usage_examples.rst:564
 msgid ""
 "Unter der Konfiguration der Ferraris-Komponente verweist der Eintrag "
 "``energy_start_value`` auf die angelegte Zahlen-Komponente."
@@ -864,7 +917,7 @@ msgstr ""
 "Under the configuration of the Ferraris component, the entry "
 "``energy_start_value`` refers to the created number component."
 
-#: ../../source/documentation/usage_examples.rst:561
+#: ../../source/documentation/usage_examples.rst:572
 msgid ""
 "In Home Assistant wird eine `Automation <https://www.home-"
 "assistant.io/docs/automation/basics>`_ erstellt, die bei Änderung des "
@@ -875,7 +928,7 @@ msgstr ""
 "is created in Home Assistant that copies the current sensor value to the "
 "created number input helper. when the energy meter sensor is changed."
 
-#: ../../source/documentation/usage_examples.rst:580
+#: ../../source/documentation/usage_examples.rst:591
 msgid ""
 "Alternativ kann auch eine `Sensor-Automation "
 "<https://www.esphome.io/components/sensor/#sensor-automation>`_ für den "
@@ -919,4 +972,25 @@ msgstr ""
 #~ msgstr ""
 
 #~ msgid "Analog Threshold"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Niedrige Stromverbräuche äußern sich in "
+#~ "einer langsamen Geschwindigkeit der "
+#~ "Drehscheibe. Dies führt dazu, dass die"
+#~ " Markierung auf der Drehscheibe nur "
+#~ "selten am Sensor vorbei fährt und "
+#~ "dadurch aktualisiert sich der Stromverbrauch"
+#~ " ebensfalls nur in großen Zeitabständen."
+#~ " Besonders störend ist dies, wenn ein"
+#~ " hoher Stromverbrauch vorliegt und dieser"
+#~ " sich dann rasch absenkt. In diesem"
+#~ " Fall dauert es sehr lang, bis "
+#~ "der neue niedrige Stromverbrauch gemeldet "
+#~ "wird, da es lange dauert, bis die"
+#~ " Markierung wieder den Sensor passiert. "
+#~ "In dieser Zeit wird dann weiterhin "
+#~ "ein hoher Stromverbrauch angezeigt, obwohl "
+#~ "der tatsächliche Stromverbrauch viel nidriger"
+#~ " ist."
 #~ msgstr ""
