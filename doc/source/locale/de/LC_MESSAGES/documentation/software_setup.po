@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ESPHome Ferraris Meter \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-16 19:56+0100\n"
+"POT-Creation-Date: 2026-03-24 19:28+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jens-Uwe Rossbach <devel@jrossbach.de>\n"
 "Language: de\n"
@@ -94,12 +94,12 @@ msgid ""
 msgstr ""
 
 #: ../../source/documentation/software_setup.rst:29
-#: ../../source/documentation/software_setup.rst:147
-#: ../../source/documentation/software_setup.rst:164
-#: ../../source/documentation/software_setup.rst:189
-#: ../../source/documentation/software_setup.rst:222
-#: ../../source/documentation/software_setup.rst:263
-#: ../../source/documentation/software_setup.rst:289
+#: ../../source/documentation/software_setup.rst:152
+#: ../../source/documentation/software_setup.rst:169
+#: ../../source/documentation/software_setup.rst:194
+#: ../../source/documentation/software_setup.rst:227
+#: ../../source/documentation/software_setup.rst:268
+#: ../../source/documentation/software_setup.rst:294
 msgid "Beispiel"
 msgstr ""
 
@@ -118,48 +118,48 @@ msgid "Die folgenden allgemeinen Einstellungen können konfiguriert werden:"
 msgstr ""
 
 #: ../../source/documentation/software_setup.rst:47
-#: ../../source/documentation/software_setup.rst:78
-#: ../../source/documentation/software_setup.rst:94
-#: ../../source/documentation/software_setup.rst:129
+#: ../../source/documentation/software_setup.rst:83
+#: ../../source/documentation/software_setup.rst:99
+#: ../../source/documentation/software_setup.rst:134
 msgid "Option"
 msgstr ""
 
 #: ../../source/documentation/software_setup.rst:48
-#: ../../source/documentation/software_setup.rst:79
-#: ../../source/documentation/software_setup.rst:95
-#: ../../source/documentation/software_setup.rst:129
-#: ../../source/documentation/software_setup.rst:210
-#: ../../source/documentation/software_setup.rst:244
-#: ../../source/documentation/software_setup.rst:320
-#: ../../source/documentation/software_setup.rst:353
-#: ../../source/documentation/software_setup.rst:382
+#: ../../source/documentation/software_setup.rst:84
+#: ../../source/documentation/software_setup.rst:100
+#: ../../source/documentation/software_setup.rst:134
+#: ../../source/documentation/software_setup.rst:215
+#: ../../source/documentation/software_setup.rst:249
+#: ../../source/documentation/software_setup.rst:325
+#: ../../source/documentation/software_setup.rst:358
+#: ../../source/documentation/software_setup.rst:387
 msgid "Typ"
 msgstr ""
 
 #: ../../source/documentation/software_setup.rst:49
-#: ../../source/documentation/software_setup.rst:80
-#: ../../source/documentation/software_setup.rst:96
-#: ../../source/documentation/software_setup.rst:129
+#: ../../source/documentation/software_setup.rst:85
+#: ../../source/documentation/software_setup.rst:101
+#: ../../source/documentation/software_setup.rst:134
 msgid "Benötigt"
 msgstr ""
 
 #: ../../source/documentation/software_setup.rst:50
-#: ../../source/documentation/software_setup.rst:81
-#: ../../source/documentation/software_setup.rst:97
-#: ../../source/documentation/software_setup.rst:129
-#: ../../source/documentation/software_setup.rst:382
+#: ../../source/documentation/software_setup.rst:86
+#: ../../source/documentation/software_setup.rst:102
+#: ../../source/documentation/software_setup.rst:134
+#: ../../source/documentation/software_setup.rst:387
 msgid "Standard"
 msgstr ""
 
 #: ../../source/documentation/software_setup.rst:51
-#: ../../source/documentation/software_setup.rst:82
-#: ../../source/documentation/software_setup.rst:98
-#: ../../source/documentation/software_setup.rst:129
-#: ../../source/documentation/software_setup.rst:210
-#: ../../source/documentation/software_setup.rst:245
-#: ../../source/documentation/software_setup.rst:320
-#: ../../source/documentation/software_setup.rst:353
-#: ../../source/documentation/software_setup.rst:382
+#: ../../source/documentation/software_setup.rst:87
+#: ../../source/documentation/software_setup.rst:103
+#: ../../source/documentation/software_setup.rst:134
+#: ../../source/documentation/software_setup.rst:215
+#: ../../source/documentation/software_setup.rst:250
+#: ../../source/documentation/software_setup.rst:325
+#: ../../source/documentation/software_setup.rst:358
+#: ../../source/documentation/software_setup.rst:387
 msgid "Beschreibung"
 msgstr ""
 
@@ -168,8 +168,8 @@ msgid "``id``"
 msgstr ""
 
 #: ../../source/documentation/software_setup.rst:53
-#: ../../source/documentation/software_setup.rst:68
-#: ../../source/documentation/software_setup.rst:100
+#: ../../source/documentation/software_setup.rst:73
+#: ../../source/documentation/software_setup.rst:105
 msgid "`ID <https://www.esphome.io/guides/configuration-types#config-id>`_"
 msgstr ""
 
@@ -178,10 +178,10 @@ msgid "nein [#fn1]_"
 msgstr ""
 
 #: ../../source/documentation/software_setup.rst:55
-#: ../../source/documentation/software_setup.rst:70
-#: ../../source/documentation/software_setup.rst:86
-#: ../../source/documentation/software_setup.rst:102
-#: ../../source/documentation/software_setup.rst:122
+#: ../../source/documentation/software_setup.rst:75
+#: ../../source/documentation/software_setup.rst:91
+#: ../../source/documentation/software_setup.rst:107
+#: ../../source/documentation/software_setup.rst:127
 msgid "\\-"
 msgstr ""
 
@@ -194,22 +194,24 @@ msgid "``rotations_per_kwh``"
 msgstr ""
 
 #: ../../source/documentation/software_setup.rst:58
-#: ../../source/documentation/software_setup.rst:131
-#: ../../source/documentation/software_setup.rst:133
+#: ../../source/documentation/software_setup.rst:63
 #: ../../source/documentation/software_setup.rst:136
+#: ../../source/documentation/software_setup.rst:138
+#: ../../source/documentation/software_setup.rst:141
 msgid "Zahl"
 msgstr ""
 
 #: ../../source/documentation/software_setup.rst:59
 #: ../../source/documentation/software_setup.rst:64
 #: ../../source/documentation/software_setup.rst:69
-#: ../../source/documentation/software_setup.rst:106
+#: ../../source/documentation/software_setup.rst:74
 #: ../../source/documentation/software_setup.rst:111
 #: ../../source/documentation/software_setup.rst:116
 #: ../../source/documentation/software_setup.rst:121
-#: ../../source/documentation/software_setup.rst:131
-#: ../../source/documentation/software_setup.rst:133
+#: ../../source/documentation/software_setup.rst:126
 #: ../../source/documentation/software_setup.rst:136
+#: ../../source/documentation/software_setup.rst:138
+#: ../../source/documentation/software_setup.rst:141
 msgid "nein"
 msgstr ""
 
@@ -224,132 +226,147 @@ msgid ""
 msgstr ""
 
 #: ../../source/documentation/software_setup.rst:62
-msgid "``debounce_threshold``"
-msgstr ""
-
-#: ../../source/documentation/software_setup.rst:63
-msgid ""
-"Zahl |nbsp| / |nbsp| `ID <https://www.esphome.io/guides/configuration-"
-"types#config-id>`_ |nbsp| [#fn3]_"
+msgid "``interpolation_interval``"
 msgstr ""
 
 #: ../../source/documentation/software_setup.rst:65
-msgid "400"
+msgid "10"
 msgstr ""
 
 #: ../../source/documentation/software_setup.rst:66
+msgid ""
+"Dauer des Interpolationsintervalls in Sekunden, ``0``, um die "
+"Interpolation auszuschalten; siehe Abschnitt :ref:`Interpolation bei "
+"fallenden Stromverbräuchen <power-interpolation>` für Details"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:67
+msgid "``debounce_threshold``"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:68
+msgid ""
+"Zahl |nbsp| / |nbsp| `ID <https://www.esphome.io/guides/configuration-"
+"types#config-id>`_ |nbsp| [#fn2]_"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:70
+msgid "400"
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:71
 msgid ""
 "Minimale Zeit in Millisekunden zwischen fallender und darauffolgender "
 "steigender Flanke, damit die Umdrehung berücksichtigt wird; siehe "
 "Abschnitt :ref:`Entprellungsschwellwert <debounce-threshold>` für Details"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:67
+#: ../../source/documentation/software_setup.rst:72
 msgid "``energy_start_value``"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:71
+#: ../../source/documentation/software_setup.rst:76
 msgid ""
 "`Zahlen-Komponente <https://www.esphome.io/components/number>`_, deren "
 "Wert beim Booten als Startwert für den Verbrauchszähler verwendet wird"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:73
+#: ../../source/documentation/software_setup.rst:78
 msgid ""
 "Die folgenden Einstellungen sind nur relevant, wenn der digitale Ausgang "
 "des Infrarotsensors verwendet wird:"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:83
+#: ../../source/documentation/software_setup.rst:88
 msgid "``digital_input``"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:84
+#: ../../source/documentation/software_setup.rst:89
 msgid "`Pin <https://www.esphome.io/guides/configuration-types#pin>`_"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:85
-#: ../../source/documentation/software_setup.rst:101
-msgid "ja [#fn2]_"
+#: ../../source/documentation/software_setup.rst:90
+#: ../../source/documentation/software_setup.rst:106
+msgid "ja [#fn3]_"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:87
+#: ../../source/documentation/software_setup.rst:92
 msgid "GPIO-Pin, mit dem der digitale Ausgang des TCRT5000-Moduls verbunden ist"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:89
+#: ../../source/documentation/software_setup.rst:94
 msgid ""
 "Die folgenden Einstellungen sind nur relevant, wenn der analoge Ausgang "
 "des Infrarotsensors verwendet wird:"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:99
+#: ../../source/documentation/software_setup.rst:104
 msgid "``analog_input``"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:103
+#: ../../source/documentation/software_setup.rst:108
 msgid ""
 "`ADC-Sensor <https://www.esphome.io/components/sensor/adc.html>`_, der "
 "den mit dem analogen Ausgang des TCRT5000-Moduls verbundenen Pin ausliest"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:104
+#: ../../source/documentation/software_setup.rst:109
 msgid "``analog_threshold``"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:105
 #: ../../source/documentation/software_setup.rst:110
 #: ../../source/documentation/software_setup.rst:115
+#: ../../source/documentation/software_setup.rst:120
 msgid ""
 "Zahl |nbsp| / |nbsp| `ID <https://www.esphome.io/guides/configuration-"
 "types#config-id>`_"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:107
+#: ../../source/documentation/software_setup.rst:112
 msgid "50.0"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:108
+#: ../../source/documentation/software_setup.rst:113
 msgid ""
 "Schwellwert für die Erkennung einer Umdrehung über den analogen Eingang, "
 "siehe Abschnitt :ref:`Kalibrierung des analogen Ausgangssignals <analog-"
 "calibration>` für Details"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:109
+#: ../../source/documentation/software_setup.rst:114
 msgid "``off_tolerance``"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:112
 #: ../../source/documentation/software_setup.rst:117
+#: ../../source/documentation/software_setup.rst:122
 msgid "0.0"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:113
+#: ../../source/documentation/software_setup.rst:118
 msgid ""
 "Negativer Versatz zum analogen Schwellwert für die fallende Flanke, siehe"
 " Abschnitt :ref:`Hysterese-Kennlinie <hysteresis-curve>` für Details"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:114
+#: ../../source/documentation/software_setup.rst:119
 msgid "``on_tolerance``"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:118
+#: ../../source/documentation/software_setup.rst:123
 msgid ""
 "Positiver Versatz zum analogen Schwellwert für die steigende Flanke, "
 "siehe Abschnitt :ref:`Hysterese-Kennlinie <hysteresis-curve>` für Details"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:119
+#: ../../source/documentation/software_setup.rst:124
 msgid "``calibrate_on_boot``"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:120
+#: ../../source/documentation/software_setup.rst:125
 msgid "Objekt"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:123
+#: ../../source/documentation/software_setup.rst:128
 msgid ""
 "Wenn vorhanden, wird die automatische Kalibrierung des analogen "
 "Ausgangssignals vom Infrarotsensor nach dem Aufstarten ausgeführt, siehe "
@@ -357,76 +374,69 @@ msgid ""
 "calibration>` für Details"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:126
+#: ../../source/documentation/software_setup.rst:131
 msgid ""
 "Die folgenden Einstellungen können für das Objekt ``calibrate_on_boot`` "
 "konfiguriert werden:"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:131
-#: ../../source/documentation/software_setup.rst:384
+#: ../../source/documentation/software_setup.rst:136
+#: ../../source/documentation/software_setup.rst:389
 msgid "``num_captured_values``"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:131
-#: ../../source/documentation/software_setup.rst:384
+#: ../../source/documentation/software_setup.rst:136
+#: ../../source/documentation/software_setup.rst:389
 msgid "6000"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:131
-#: ../../source/documentation/software_setup.rst:384
+#: ../../source/documentation/software_setup.rst:136
+#: ../../source/documentation/software_setup.rst:389
 msgid "Anzahl der zu erfassenden analogen Werte pro Kalibrierungsdurchlauf"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:133
-#: ../../source/documentation/software_setup.rst:386
+#: ../../source/documentation/software_setup.rst:138
+#: ../../source/documentation/software_setup.rst:391
 msgid "``min_level_distance``"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:133
-#: ../../source/documentation/software_setup.rst:386
+#: ../../source/documentation/software_setup.rst:138
+#: ../../source/documentation/software_setup.rst:391
 msgid "6.0"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:133
-#: ../../source/documentation/software_setup.rst:386
+#: ../../source/documentation/software_setup.rst:138
+#: ../../source/documentation/software_setup.rst:391
 msgid ""
 "Mindestdifferenz zwischen niedrigstem und höchstem Analogwert, damit die "
 "Kalibrierung als erfolgreich angesehen und der analoge Schwellwert "
 "gesetzt wird"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:136
-#: ../../source/documentation/software_setup.rst:388
+#: ../../source/documentation/software_setup.rst:141
+#: ../../source/documentation/software_setup.rst:393
 msgid "``max_iterations``"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:136
-#: ../../source/documentation/software_setup.rst:388
+#: ../../source/documentation/software_setup.rst:141
+#: ../../source/documentation/software_setup.rst:393
 msgid "3"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:136
-#: ../../source/documentation/software_setup.rst:388
+#: ../../source/documentation/software_setup.rst:141
+#: ../../source/documentation/software_setup.rst:393
 msgid ""
 "Maximale Anzahl fehlgeschlagener Kalibrierungsdurchläufe, bevor "
 "aufgegeben wird"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:140
+#: ../../source/documentation/software_setup.rst:145
 msgid ""
 "Bestimmte :ref:`Anwendungsfälle <usage-examples>` benötigen das "
 "Konfigurationselement ``id``."
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:142
-msgid ""
-"Nur eines der beiden Konfigurationselemente - ``digital_input`` oder "
-"``analog_input`` - wird benötigt, je nach :ref:`Hardware-Aufbauvariante "
-"<hardware-setup>`."
-msgstr ""
-
-#: ../../source/documentation/software_setup.rst:144
+#: ../../source/documentation/software_setup.rst:147
 msgid ""
 "Die Konfigurationselemente ``analog_threshold``\\ , ``off_tolerance``\\ ,"
 " ``on_tolerance`` und ``debounce_threshold`` erwarten entweder eine feste"
@@ -437,11 +447,18 @@ msgid ""
 "<https://www.esphome.io/components/number/template.html>`_\\ )."
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:159
+#: ../../source/documentation/software_setup.rst:149
+msgid ""
+"Nur eines der beiden Konfigurationselemente - ``digital_input`` oder "
+"``analog_input`` - wird benötigt, je nach :ref:`Hardware-Aufbauvariante "
+"<hardware-setup>`."
+msgstr ""
+
+#: ../../source/documentation/software_setup.rst:164
 msgid "API/MQTT-Komponente"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:161
+#: ../../source/documentation/software_setup.rst:166
 msgid ""
 "Eine `API-Komponente <https://www.esphome.io/components/api.html>`_ ist "
 "erforderlich, wenn der ESP in Home Assistant integriert werden soll. Für "
@@ -453,34 +470,34 @@ msgid ""
 " einem Neustart (siehe weiter unten für Details) u.U. nicht mehr."
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:166
+#: ../../source/documentation/software_setup.rst:171
 msgid ""
 "Nachfolgend ein Beispiel für die Integration mit Home Assistant (und "
 "verschlüsselter API):"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:174
+#: ../../source/documentation/software_setup.rst:179
 msgid ""
 "Und hier ein Beispiel für die Verwendung mit einer alternativen "
 "Hausautomatisierungs-Software mittels MQTT:"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:184
+#: ../../source/documentation/software_setup.rst:189
 msgid "WiFi-Komponente"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:186
+#: ../../source/documentation/software_setup.rst:191
 msgid ""
 "Eine `WiFi-Komponente <https://www.esphome.io/components/wifi.html>`_ "
 "sollte vorhanden sein, da die Sensor-Werte ansonsten nicht ohne weiteres "
 "an ein anderes Gerät übertragen werden können."
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:198
+#: ../../source/documentation/software_setup.rst:203
 msgid "Sensoren"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:200
+#: ../../source/documentation/software_setup.rst:205
 msgid ""
 "Die Ferraris-Plattform verfügt über primäre Sensoren, um die berechneten "
 "Verbrauchswerte auszugeben sowie über diagnostische Sensoren für den "
@@ -488,137 +505,137 @@ msgid ""
 "werden, wenn sie nicht benötigt werden."
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:205
+#: ../../source/documentation/software_setup.rst:210
 msgid "Primäre Sensoren"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:207
+#: ../../source/documentation/software_setup.rst:212
 msgid "Die folgenden primären Sensoren können konfiguriert werden:"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:210
-#: ../../source/documentation/software_setup.rst:243
+#: ../../source/documentation/software_setup.rst:215
+#: ../../source/documentation/software_setup.rst:248
 msgid "Sensor"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:210
+#: ../../source/documentation/software_setup.rst:215
 msgid "Geräteklasse"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:210
+#: ../../source/documentation/software_setup.rst:215
 msgid "Zustandsklasse"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:210
+#: ../../source/documentation/software_setup.rst:215
 msgid "Einheit"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:212
+#: ../../source/documentation/software_setup.rst:217
 msgid "``power_consumption``"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:212
-#: ../../source/documentation/software_setup.rst:214
-#: ../../source/documentation/software_setup.rst:256
+#: ../../source/documentation/software_setup.rst:217
+#: ../../source/documentation/software_setup.rst:219
+#: ../../source/documentation/software_setup.rst:261
 msgid "numerisch"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:212
+#: ../../source/documentation/software_setup.rst:217
 msgid "``power``"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:212
+#: ../../source/documentation/software_setup.rst:217
 msgid "``measurement``"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:212
+#: ../../source/documentation/software_setup.rst:217
 msgid "W"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:212
+#: ../../source/documentation/software_setup.rst:217
 msgid "Aktueller Stromverbrauch"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:214
+#: ../../source/documentation/software_setup.rst:219
 msgid "``energy_meter``"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:214
+#: ../../source/documentation/software_setup.rst:219
 msgid "``energy``"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:214
+#: ../../source/documentation/software_setup.rst:219
 msgid "``total_increasing``"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:214
+#: ../../source/documentation/software_setup.rst:219
 msgid "Wh"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:214
+#: ../../source/documentation/software_setup.rst:219
 msgid "Gesamtstromverbrauch (Stromzähler/Zählerstand)"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:219
+#: ../../source/documentation/software_setup.rst:224
 msgid ""
 "Detaillierte Informationen zu den Konfigurationsmöglichkeiten der "
 "einzelnen Elemente findest du in der Dokumentation der `ESPHome "
 "Sensorkomponenten <https://www.esphome.io/components/sensor>`_."
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:236
+#: ../../source/documentation/software_setup.rst:241
 msgid "Diagnostische Sensoren"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:238
+#: ../../source/documentation/software_setup.rst:243
 msgid "Die folgenden diagnostischen Sensoren können konfiguriert werden:"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:246
+#: ../../source/documentation/software_setup.rst:251
 msgid "``rotation_indicator``"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:247
-#: ../../source/documentation/software_setup.rst:250
-#: ../../source/documentation/software_setup.rst:253
+#: ../../source/documentation/software_setup.rst:252
+#: ../../source/documentation/software_setup.rst:255
+#: ../../source/documentation/software_setup.rst:258
 msgid "binär"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:248
+#: ../../source/documentation/software_setup.rst:253
 msgid ""
 "Zeigt an, ob die Markierung auf der Drehscheibe gerade vor dem "
 "Infrarotsensor ist (funktioniert nur im Kalibrierungsmodus)"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:249
+#: ../../source/documentation/software_setup.rst:254
 msgid "``analog_calibration_state``"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:251
+#: ../../source/documentation/software_setup.rst:256
 msgid "Status der automatischen analogen Kalibrierung (ob aktiv oder nicht)"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:252
+#: ../../source/documentation/software_setup.rst:257
 msgid "``analog_calibration_result``"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:254
+#: ../../source/documentation/software_setup.rst:259
 msgid ""
 "Ergebnis der letzten automatischen analogen Kalibrierung (ob erfolgreich "
 "oder nicht)"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:255
+#: ../../source/documentation/software_setup.rst:260
 msgid "``analog_value_spectrum``"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:257
+#: ../../source/documentation/software_setup.rst:262
 msgid ""
 "Bandbreite der analogen Werte (Differenz zwischen kleinstem und größtem "
 "analogen Wert)"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:260
+#: ../../source/documentation/software_setup.rst:265
 msgid ""
 "Detaillierte Informationen zu den Konfigurationsmöglichkeiten der "
 "einzelnen Elemente findest du in der Dokumentation der `ESPHome "
@@ -627,11 +644,11 @@ msgid ""
 "Sensorkomponenten <https://www.esphome.io/components/sensor>`_."
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:284
+#: ../../source/documentation/software_setup.rst:289
 msgid "Aktoren"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:286
+#: ../../source/documentation/software_setup.rst:291
 msgid ""
 "Zu diagnostischen Zwecken verfügt die Ferraris-Plattform über einen "
 "`Schalter <https://www.esphome.io/components/switch>`_. Dieser hat den "
@@ -640,66 +657,66 @@ msgid ""
 ":ref:`Kalibrierung <calibration>` für weitere Informationen)."
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:301
+#: ../../source/documentation/software_setup.rst:306
 msgid "Aktionen"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:303
+#: ../../source/documentation/software_setup.rst:308
 msgid ""
 "Die Ferraris-Plattform stellt verschiedene Aktionen zur Verfügung, um "
 "Werte zu setzen oder das Verhalten zu steuern."
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:306
+#: ../../source/documentation/software_setup.rst:311
 msgid "Zählerstand setzen"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:314
+#: ../../source/documentation/software_setup.rst:319
 msgid "Setzt den Zählerstand auf den angegeben Wert."
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:317
-#: ../../source/documentation/software_setup.rst:320
-#: ../../source/documentation/software_setup.rst:350
-#: ../../source/documentation/software_setup.rst:353
-#: ../../source/documentation/software_setup.rst:377
+#: ../../source/documentation/software_setup.rst:322
+#: ../../source/documentation/software_setup.rst:325
+#: ../../source/documentation/software_setup.rst:355
+#: ../../source/documentation/software_setup.rst:358
 #: ../../source/documentation/software_setup.rst:382
+#: ../../source/documentation/software_setup.rst:387
 msgid "Parameter"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:320
-#: ../../source/documentation/software_setup.rst:353
-#: ../../source/documentation/software_setup.rst:382
+#: ../../source/documentation/software_setup.rst:325
+#: ../../source/documentation/software_setup.rst:358
+#: ../../source/documentation/software_setup.rst:387
 msgid "Bereich"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:322
-#: ../../source/documentation/software_setup.rst:355
+#: ../../source/documentation/software_setup.rst:327
+#: ../../source/documentation/software_setup.rst:360
 msgid "``value``"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:322
-#: ../../source/documentation/software_setup.rst:386
+#: ../../source/documentation/software_setup.rst:327
+#: ../../source/documentation/software_setup.rst:391
 msgid "``float``"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:322
-#: ../../source/documentation/software_setup.rst:386
+#: ../../source/documentation/software_setup.rst:327
+#: ../../source/documentation/software_setup.rst:391
 msgid ">= 0"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:322
+#: ../../source/documentation/software_setup.rst:327
 msgid "Zielwert für den Zählerstand in Kilowattstunden (kWh)"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:326
-#: ../../source/documentation/software_setup.rst:359
+#: ../../source/documentation/software_setup.rst:331
+#: ../../source/documentation/software_setup.rst:364
 msgid ""
 "Anstelle eines festen Zahlenwerts kann auch ein Lambda-Ausdruck verwendet"
 " werden, der den zu übergebenden Wert zurückgibt."
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:330
+#: ../../source/documentation/software_setup.rst:335
 msgid ""
 "Obwohl der Sensor für den aktuellen Zählerstand die Einheit **Wh "
 "(Wattstunden)** hat, verwendet die Aktion zum Überschreiben des "
@@ -708,44 +725,44 @@ msgid ""
 " anzeigen."
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:334
+#: ../../source/documentation/software_setup.rst:339
 msgid "Umdrehungszähler setzen"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:342
+#: ../../source/documentation/software_setup.rst:347
 msgid "Setzt den Umdrehungszähler auf den angegeben Wert."
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:346
+#: ../../source/documentation/software_setup.rst:351
 msgid ""
 "Die Aktion zum Setzen des Zählerstands setzt indirekt auch den "
 "Umdrehungszähler, da die Ferraris-Komponente intern mit Umdrehungen und "
 "nicht mit Wattstunden oder Kilowattstunden arbeitet."
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:355
+#: ../../source/documentation/software_setup.rst:360
 msgid "``uint64``"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:355
+#: ../../source/documentation/software_setup.rst:360
 msgid "\\>= 0"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:355
+#: ../../source/documentation/software_setup.rst:360
 msgid "Zielwert für den Umdrehungszähler in Anzahl Umdrehungen"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:362
+#: ../../source/documentation/software_setup.rst:367
 msgid "Automatische analoge Kalibrierung"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:372
+#: ../../source/documentation/software_setup.rst:377
 msgid ""
 "Startet die automatische Kalibrierung des analogen Ausgangssignals vom "
 "Infrarotsensor."
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:374
+#: ../../source/documentation/software_setup.rst:379
 msgid ""
 "Wird die Mindestdifferenz zwischen niedrigstem und höchstem Analogwert "
 "nach Erfassen aller Werte nicht erreicht, gilt die Kalibrierung als "
@@ -753,23 +770,23 @@ msgid ""
 "Anzahl Durchläufe erreicht wurde)."
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:379
+#: ../../source/documentation/software_setup.rst:384
 msgid "Alle Parameter sind optional und können weggelassen werden."
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:384
+#: ../../source/documentation/software_setup.rst:389
 msgid "``uint32``"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:384
+#: ../../source/documentation/software_setup.rst:389
 msgid "100 |nbsp| ... |nbsp| 100000"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:388
+#: ../../source/documentation/software_setup.rst:393
 msgid "``uint16``"
 msgstr ""
 
-#: ../../source/documentation/software_setup.rst:388
+#: ../../source/documentation/software_setup.rst:393
 msgid "1 |nbsp| ... |nbsp| 10000"
 msgstr ""
 
@@ -794,5 +811,20 @@ msgstr ""
 #~ msgid ""
 #~ "Startet die automatische Kalibrierung des "
 #~ "analogen Ausgangssignals vom Infrarotsensor"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Zahl |nbsp| / |nbsp| `ID "
+#~ "<https://www.esphome.io/guides/configuration-types#config-"
+#~ "id>`_ |nbsp| [#fn3]_"
+#~ msgstr ""
+
+#~ msgid "ja [#fn2]_"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Dauer des Interpolationsintervalls in "
+#~ "Sekunden, ``0``, um die Interpolation "
+#~ "auszuschalten"
 #~ msgstr ""
 

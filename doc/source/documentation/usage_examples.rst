@@ -441,6 +441,17 @@ Glättung des analogen Signals
 
 Durch eine geschickte Konfiguration des Aktualisierungsintervalls ``update_interval`` und der Anzahl Abtastungen pro Aktualisierung (``samples``) für den analogen Sensor ``analog_input`` kann die Kurve des analogen Signals so weit geglättet werden, dass kurzfristige Schwankungen eliminiert werden. Es ist aber zu bedenken, dass zu große Aktualisierungsintervalle dazu führen können, dass einzelne Umdrehungen bei sehr hohen Drehgeschwindigkeiten nicht mehr erkannt werden, da dann die Zeit zwischen steigender und darauffolgender fallender Flanke kleiner als das eingestellte Aktualisierungsintervall ist. Auch diese Art der Entprellung funktioniert nur bei der Verwendung des analogen Eingangssignals des Infrarotsensors.
 
+.. _power-interpolation:
+
+Interpolation bei fallenden Stromverbräuchen
+============================================
+
+Niedrige Stromverbräuche äußern sich in einer langsamen Geschwindigkeit der Drehscheibe. Dies führt dazu, dass die Markierung auf der Drehscheibe nur selten am Sensor vorbei fährt und dadurch aktualisiert sich der Stromverbrauch ebensfalls nur in großen Zeitabständen. Besonders störend ist dies, wenn ein hoher Stromverbrauch vorliegt und dieser sich dann rasch absenkt. In diesem Fall dauert es sehr lang, bis der neue niedrige Stromverbrauch gemeldet wird, da es lange dauert, bis die Markierung wieder den Sensor passiert. In dieser Zeit wird dann weiterhin ein hoher Stromverbrauch angezeigt, obwohl der tatsächliche Stromverbrauch viel niedriger ist.
+
+Um diesem Effekt entgegenzuwirken, kann die Ferraris-Komponente bei Übergängen von hohen zu niedrigen Stromverbräuchen den tatsächlichen Verbrauchsverlauf interpolieren und sich somit dem tatsächlichen Stromverbrauch immer weiter annähern, bis der tatsächliche Stromverbrauch nach Detektierung der Markierung berechnet und gemeldet wird.
+
+Die Interpolation kann über das Interpolationsintervall ``interpolation_interval`` gesteuert werden. Ein Wert von ``0`` deaktiviert die Interpolation, ansonsten gibt der Wert die Dauer der Intervalle in Sekunden an, zu denen ein interpolierter Stromverbrauch berechnet wird.
+
 Manuelles Überschreiben des Zählerstands
 ========================================
 

@@ -59,8 +59,13 @@ Die folgenden allgemeinen Einstellungen können konfiguriert werden:
       - nein
       - 75
       - Anzahl der Umdrehungen der Drehscheibe pro kWh (der Wert ist i.d.R. auf dem Ferraris-Stromzähler vermerkt)
+    * - ``interpolation_interval``
+      - Zahl
+      - nein
+      - 10
+      - Dauer des Interpolationsintervalls in Sekunden, ``0``, um die Interpolation auszuschalten; siehe Abschnitt :ref:`Interpolation bei fallenden Stromverbräuchen <power-interpolation>` für Details
     * - ``debounce_threshold``
-      - Zahl |nbsp| / |nbsp| `ID <https://www.esphome.io/guides/configuration-types#config-id>`_ |nbsp| [#fn3]_
+      - Zahl |nbsp| / |nbsp| `ID <https://www.esphome.io/guides/configuration-types#config-id>`_ |nbsp| [#fn2]_
       - nein
       - 400
       - Minimale Zeit in Millisekunden zwischen fallender und darauffolgender steigender Flanke, damit die Umdrehung berücksichtigt wird; siehe Abschnitt :ref:`Entprellungsschwellwert <debounce-threshold>` für Details
@@ -82,7 +87,7 @@ Die folgenden Einstellungen sind nur relevant, wenn der digitale Ausgang des Inf
       - Beschreibung
     * - ``digital_input``
       - `Pin <https://www.esphome.io/guides/configuration-types#pin>`_
-      - ja [#fn2]_
+      - ja [#fn3]_
       - \-
       - GPIO-Pin, mit dem der digitale Ausgang des TCRT5000-Moduls verbunden ist
 
@@ -98,7 +103,7 @@ Die folgenden Einstellungen sind nur relevant, wenn der analoge Ausgang des Infr
       - Beschreibung
     * - ``analog_input``
       - `ID <https://www.esphome.io/guides/configuration-types#config-id>`_
-      - ja [#fn2]_
+      - ja [#fn3]_
       - \-
       - `ADC-Sensor <https://www.esphome.io/components/sensor/adc.html>`_, der den mit dem analogen Ausgang des TCRT5000-Moduls verbundenen Pin ausliest
     * - ``analog_threshold``
@@ -139,9 +144,9 @@ Die folgenden Einstellungen können für das Objekt ``calibrate_on_boot`` konfig
 
 .. [#fn1] Bestimmte :ref:`Anwendungsfälle <usage-examples>` benötigen das Konfigurationselement ``id``.
 
-.. [#fn2] Nur eines der beiden Konfigurationselemente - ``digital_input`` oder ``analog_input`` - wird benötigt, je nach :ref:`Hardware-Aufbauvariante <hardware-setup>`.
+.. [#fn2] Die Konfigurationselemente ``analog_threshold``\ , ``off_tolerance``\ , ``on_tolerance`` und ``debounce_threshold`` erwarten entweder eine feste Zahl oder die ID einer `Zahlen-Komponente <https://www.esphome.io/components/number>`_. Letzteres ermöglicht das Konfigurieren des Wertes über das User-Interface (z.B. durch die Verwendung einer `Template-Zahlen-Komponente <https://www.esphome.io/components/number/template.html>`_\ ).
 
-.. [#fn3] Die Konfigurationselemente ``analog_threshold``\ , ``off_tolerance``\ , ``on_tolerance`` und ``debounce_threshold`` erwarten entweder eine feste Zahl oder die ID einer `Zahlen-Komponente <https://www.esphome.io/components/number>`_. Letzteres ermöglicht das Konfigurieren des Wertes über das User-Interface (z.B. durch die Verwendung einer `Template-Zahlen-Komponente <https://www.esphome.io/components/number/template.html>`_\ ).
+.. [#fn3] Nur eines der beiden Konfigurationselemente - ``digital_input`` oder ``analog_input`` - wird benötigt, je nach :ref:`Hardware-Aufbauvariante <hardware-setup>`.
 
 Beispiel
 --------

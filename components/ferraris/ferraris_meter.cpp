@@ -31,13 +31,14 @@
 
 namespace esphome::ferraris
 {
-    static constexpr const uint32_t WATTS_PER_KW = 1000;
-    static constexpr const uint32_t MS_PER_HOUR  = 60 * 60 * 1000;
-    static constexpr const uint32_t KWH_TO_WMS   = WATTS_PER_KW * MS_PER_HOUR;
+    static constexpr uint32_t WATTS_PER_KW  = 1000u;
+    static constexpr uint32_t MS_PER_SECOND = 1000u;
+    static constexpr uint32_t MS_PER_HOUR   = 60u * 60u * 1000u;
+    static constexpr uint32_t KWH_TO_WMS    = WATTS_PER_KW * MS_PER_HOUR;
 
     static constexpr const char *const TAG = "ferraris";
 
-    FerrarisMeter::FerrarisMeter(uint32_t rpkwh)
+    FerrarisMeter::FerrarisMeter(uint32_t rpkwh, uint16_t intIv)
         : Component()
         , m_digital_input_pin(nullptr)
 #ifdef USE_SENSOR
@@ -65,17 +66,21 @@ namespace esphome::ferraris
         , m_off_tolerance(0.0f)
         , m_on_tolerance(0.0f)
         , m_rotations_per_kwh(rpkwh)
+        , m_interpolation_interval(intIv * MS_PER_SECOND)
         , m_debounce_threshold(0)
         , m_last_state(false)
         , m_last_time(-1)
         , m_last_rising_time(-1)
-        , m_rotation_counter(0)
-        , m_off_level(0.0)
-        , m_on_level(0.0)
-        , m_num_captured_values(6000)
-        , m_min_level_distance(6.0)
-        , m_max_iterations(3)
-        , m_iteration_counter(0)
+        , m_interpolation_start(-1)
+        , m_rotation_counter(0u)
+        , m_last_rotation_time(std::numeric_limits<uint32_t>::max())
+        , m_acc_rotation_time(0u)
+        , m_off_level(0.0f)
+        , m_on_level(0.0f)
+        , m_num_captured_values(6000u)
+        , m_min_level_distance(6.0f)
+        , m_max_iterations(3u)
+        , m_iteration_counter(0u)
         , m_level_value_counter(m_num_captured_values)
         , m_calibration_mode(false)
         , m_start_value_received(false)
@@ -286,6 +291,24 @@ namespace esphome::ferraris
         {
             handle_state(m_digital_input_pin->digital_read());
         }
+
+        if ((m_interpolation_interval > 0u) && (m_interpolation_start >= 0u))
+        {
+            uint32_t now = millis();
+
+            if (get_duration(m_interpolation_start, now) >= m_interpolation_interval)
+            {
+                m_acc_rotation_time += m_interpolation_interval;
+                ESP_LOGD(TAG, "Accumulated rotation time:  %u ms", m_acc_rotation_time);
+
+                if (m_acc_rotation_time > m_last_rotation_time)
+                {
+                    update_power_consumption(m_acc_rotation_time);
+                }
+
+                m_interpolation_start = now;
+            }
+        }
     }
 
     void FerrarisMeter::dump_config()
@@ -321,7 +344,8 @@ namespace esphome::ferraris
         }
 #endif
 #endif
-        ESP_LOGCONFIG(TAG, "  Rotations per kWh: %d", m_rotations_per_kwh);
+        ESP_LOGCONFIG(TAG, "  Rotations per kWh: %u", m_rotations_per_kwh);
+        ESP_LOGCONFIG(TAG, "  Interpolation interval: %u", m_interpolation_interval);
 #ifdef USE_NUMBER
         if (m_debounce_threshold_number == nullptr)
         {
@@ -349,7 +373,7 @@ namespace esphome::ferraris
     {
         if (state != m_last_state)
         {
-            ESP_LOGD(TAG, "State change:  %d -> %d", m_last_state, state);
+            ESP_LOGD(TAG, "State change:  %u -> %u", m_last_state, state);
 
             if (m_calibration_mode)
             {
@@ -384,13 +408,16 @@ namespace esphome::ferraris
 
                             ESP_LOGD(TAG, "Rotation time:  %u ms", rotation_time);
 
-                            m_rotation_counter++;
+                            ++m_rotation_counter;
                             ESP_LOGD(TAG, "Updated rotation counter:  %llu rotations", m_rotation_counter);
 
                             update_power_consumption(rotation_time);
                             update_energy_counter();
 
                             m_last_rising_time = now;
+                            m_last_rotation_time = rotation_time;
+                            m_acc_rotation_time = 0;
+                            m_interpolation_start = now;
                         }
                     }
                 }
