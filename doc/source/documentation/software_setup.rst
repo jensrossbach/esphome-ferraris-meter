@@ -63,7 +63,7 @@ Die folgenden allgemeinen Einstellungen können konfiguriert werden:
       - Zahl
       - nein
       - 10
-      - Dauer des Interpolationsintervalls in Sekunden, ``0``, um die Interpolation auszuschalten; siehe Abschnitt :ref:`Interpolation bei fallenden Stromverbräuchen <power-interpolation>` für Details
+      - Dauer des Interpolationsintervalls in Sekunden oder ``0``, um die Interpolation auszuschalten; siehe Abschnitt :ref:`Interpolation bei fallenden Stromverbräuchen <power-interpolation>` für Details
     * - ``debounce_threshold``
       - Zahl |nbsp| / |nbsp| `ID <https://www.esphome.io/guides/configuration-types#config-id>`_ |nbsp| [#fn2]_
       - nein
@@ -223,6 +223,22 @@ Die folgenden primären Sensoren können konfiguriert werden:
 
 Detaillierte Informationen zu den Konfigurationsmöglichkeiten der einzelnen Elemente findest du in der Dokumentation der `ESPHome Sensorkomponenten <https://www.esphome.io/components/sensor>`_.
 
+Zusätzlich zu der Standardkonfiguration für Sensorkomponenten unterstützt der Sensor ``power_consumption`` noch folgende Konfiguration:
+
+.. list-table::
+    :header-rows: 1
+
+    * - Option
+      - Typ
+      - Benötigt
+      - Standard
+      - Beschreibung
+    * - ``optimistic``
+      - Wahrheitswert
+      - nein
+      - ``false``
+      - Wenn ``true``, wird der Sensor beim Aufstarten des Mikrocontrollers mit 0 Watt initialisiert; andernfalls bleibt der Sensor ``unavailable`` bis der erste tatsächliche Verbrauchswert berechnet werden konnte
+
 Beispiel
 ~~~~~~~~
 
@@ -232,6 +248,7 @@ Beispiel
       - platform: ferraris
         power_consumption:
           name: Power consumption
+          optimistic: true
         energy_meter:
           name: Meter reading
 
