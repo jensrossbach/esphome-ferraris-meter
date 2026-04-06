@@ -437,11 +437,14 @@ namespace esphome::ferraris
         {
             m_last_time = -1;
             m_last_rising_time = -1;
+            m_last_rotation_time = std::numeric_limits<uint32_t>::max();
+            m_acc_rotation_time = 0u;
+            m_interpolation_start = -1;
 
 #ifdef USE_SENSOR
             if (m_power_consumption_sensor != nullptr)
             {
-                m_power_consumption_sensor->publish_state(0.0);
+                m_power_consumption_sensor->publish_state(0.0f);
             }
 #endif
         }
