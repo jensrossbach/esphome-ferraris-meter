@@ -87,9 +87,10 @@ namespace esphome::ferraris
             m_analog_input_sensor = sensor;
         }
 
-        void set_power_consumption_sensor(sensor::Sensor *sensor)
+        void set_power_consumption_sensor(sensor::Sensor *sensor, bool optimistic)
         {
             m_power_consumption_sensor = sensor;
+            m_power_consumption_optimistic = optimistic;
         }
 
         void set_energy_meter_sensor(sensor::Sensor *sensor)
@@ -226,6 +227,9 @@ namespace esphome::ferraris
         uint32_t m_rotations_per_kwh;
         uint32_t m_interpolation_interval;
         uint32_t m_debounce_threshold;
+#ifdef USE_SENSOR
+        bool m_power_consumption_optimistic;
+#endif
 
         bool m_last_state;
         int64_t m_last_time;

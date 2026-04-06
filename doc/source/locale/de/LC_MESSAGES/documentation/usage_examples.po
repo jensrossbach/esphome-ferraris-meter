@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ESPHome Ferraris Meter \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-25 19:27+0100\n"
+"POT-Creation-Date: 2026-04-06 10:55+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jens-Uwe Rossbach <devel@jrossbach.de>\n"
 "Language: de\n"
@@ -290,7 +290,7 @@ msgid ""
 msgstr ""
 
 #: ../../source/documentation/usage_examples.rst:202
-msgid "Analoger Schwellwert"
+msgid "Analog Threshold"
 msgstr ""
 
 #: ../../source/documentation/usage_examples.rst:209

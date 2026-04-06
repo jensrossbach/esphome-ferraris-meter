@@ -68,6 +68,9 @@ namespace esphome::ferraris
         , m_rotations_per_kwh(rpkwh)
         , m_interpolation_interval(intIv * MS_PER_SECOND)
         , m_debounce_threshold(0)
+#ifdef USE_SENSOR
+        , m_power_consumption_optimistic(false)
+#endif
         , m_last_state(false)
         , m_last_time(-1)
         , m_last_rising_time(-1)
@@ -174,6 +177,11 @@ namespace esphome::ferraris
                     }
                 }
             });
+        }
+
+        if (m_power_consumption_optimistic && (m_power_consumption_sensor != nullptr))
+        {
+            m_power_consumption_sensor->publish_state(0.0f);
         }
 #endif
 

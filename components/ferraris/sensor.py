@@ -1,4 +1,4 @@
-# Copyright (c) 2024 Jens-Uwe Rossbach
+# Copyright (c) 2024-2026 Jens-Uwe Rossbach
 #
 # This code is licensed under the MIT License.
 #
@@ -32,7 +32,8 @@ from esphome.const      import (
     DEVICE_CLASS_ENERGY,
     ENTITY_CATEGORY_DIAGNOSTIC,
     UNIT_WATT,
-    UNIT_WATT_HOURS
+    UNIT_WATT_HOURS,
+    CONF_OPTIMISTIC
 )
 from .                  import (
     FerrarisMeter,
@@ -46,6 +47,9 @@ CONF_POWER_CONSUMPTION     = "power_consumption"
 CONF_ENERGY_METER          = "energy_meter"
 CONF_ANALOG_VALUE_SPECTRUM = "analog_value_spectrum"
 
+POWER_CONSUMPTION_EXT_SCHEMA = cv.Schema({
+    cv.Optional(CONF_OPTIMISTIC, default = False): cv.boolean})
+
 CONFIG_SCHEMA = cv.Schema(
 {
     cv.GenerateID(CONF_FERRARIS_ID): cv.use_id(FerrarisMeter),
@@ -55,7 +59,7 @@ CONFIG_SCHEMA = cv.Schema(
         state_class=STATE_CLASS_MEASUREMENT,
         unit_of_measurement=UNIT_WATT,
         accuracy_decimals=1
-    ),
+    ).extend(POWER_CONSUMPTION_EXT_SCHEMA),
     cv.Optional(CONF_ENERGY_METER): sensor.sensor_schema(
         icon="mdi:transmission-tower",
         device_class=DEVICE_CLASS_ENERGY,
@@ -76,7 +80,9 @@ async def to_code(config):
 
     if CONF_POWER_CONSUMPTION in config:
         sens = await sensor.new_sensor(config[CONF_POWER_CONSUMPTION])
-        cg.add(cmp.set_power_consumption_sensor(sens))
+        cg.add(cmp.set_power_consumption_sensor(
+                    sens,
+                    config[CONF_POWER_CONSUMPTION][CONF_OPTIMISTIC]))
 
     if CONF_ENERGY_METER in config:
         sens = await sensor.new_sensor(config[CONF_ENERGY_METER])
