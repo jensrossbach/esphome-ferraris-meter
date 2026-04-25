@@ -42,6 +42,7 @@ CONF_ROTATIONS_PER_KWH      = "rotations_per_kwh"
 CONF_INTERPOLATION_INTERVAL = "interpolation_interval"
 CONF_DEBOUNCE_THRESHOLD     = "debounce_threshold"
 CONF_ENERGY_START_VALUE     = "energy_start_value"
+CONF_START_VALUE_TIMEOUT    = "start_value_timeout"
 
 # digital input
 CONF_DIGITAL_INPUT       = "digital_input"
@@ -86,6 +87,7 @@ CONFIG_SCHEMA = cv.All(
         cv.Optional(CONF_INTERPOLATION_INTERVAL, default = 10): cv.int_range(min = 0, max = 60),
         cv.Optional(CONF_DEBOUNCE_THRESHOLD, default = 400): cv.Any(cv.int_range(min = 0), cv.use_id(number.Number)),
         cv.Optional(CONF_ENERGY_START_VALUE): cv.use_id(number.Number),
+        cv.Optional(CONF_START_VALUE_TIMEOUT, default = 60): cv.int_range(min = 10, max = 600),
         cv.Optional(CONF_CALIBRATE_ON_BOOT): ANALOG_CALIBRATION_SCHEMA
     }).extend(cv.COMPONENT_SCHEMA),
     ensure_gpio_or_adc)
@@ -138,7 +140,7 @@ async def to_code(config):
 
     if CONF_ENERGY_START_VALUE in config:
         num = await cg.get_variable(config[CONF_ENERGY_START_VALUE])
-        cg.add(cmp.set_energy_start_value_number(num))
+        cg.add(cmp.set_energy_start_value_number(num, config[CONF_START_VALUE_TIMEOUT]))
 
 @automation.register_action(
     "ferraris.set_energy_meter",
