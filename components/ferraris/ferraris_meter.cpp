@@ -32,7 +32,6 @@
 namespace esphome::ferraris
 {
     static constexpr uint32_t WATTS_PER_KW  = 1000u;
-    static constexpr uint32_t MS_PER_SECOND = 1000u;
     static constexpr uint32_t MS_PER_HOUR   = 60u * 60u * 1000u;
     static constexpr uint32_t KWH_TO_WMS    = WATTS_PER_KW * MS_PER_HOUR;
 
@@ -66,8 +65,10 @@ namespace esphome::ferraris
         , m_off_tolerance(0.0f)
         , m_on_tolerance(0.0f)
         , m_rotations_per_kwh(rpkwh)
-        , m_interpolation_interval(intIv * MS_PER_SECOND)
-        , m_debounce_threshold(0)
+        , m_interpolation_interval(static_cast<uint32_t>(intIv) * MS_PER_SECOND)
+        , m_debounce_threshold(0u)
+        , m_start_value_timeout(0u)
+        , m_setup_time(0u)
 #ifdef USE_SENSOR
         , m_power_consumption_optimistic(false)
 #endif
@@ -258,6 +259,7 @@ namespace esphome::ferraris
             }
             else
             {
+                m_setup_time = millis();
                 m_energy_start_value_number->add_on_state_callback([this](float value)
                 {
                     restore_energy_meter(value);
@@ -271,6 +273,7 @@ namespace esphome::ferraris
         }
 #else
         m_start_value_received = true;
+        update_energy_counter();
 #endif
 
 #ifdef USE_SWITCH
@@ -280,7 +283,7 @@ namespace esphome::ferraris
 
             if (initial_state.has_value())
             {
-                if (initial_state.value())
+                if (*initial_state)
                 {
                     m_calibration_mode_switch->turn_on();
                 }
@@ -315,6 +318,19 @@ namespace esphome::ferraris
                 }
 
                 m_interpolation_start = now;
+            }
+        }
+
+        if (!m_start_value_received)
+        {
+            uint32_t now = millis();
+
+            if (get_duration(m_setup_time, now) >= m_start_value_timeout)
+            {
+                ESP_LOGW(TAG, "No energy start value received within %u seconds", m_start_value_timeout / MS_PER_SECOND);
+
+                m_start_value_received = true;
+                update_energy_counter();
             }
         }
     }

@@ -74,6 +74,11 @@ Die folgenden allgemeinen Einstellungen können konfiguriert werden:
       - nein
       - \-
       - `Zahlen-Komponente <https://www.esphome.io/components/number>`_, deren Wert beim Booten als Startwert für den Verbrauchszähler verwendet wird
+    * - ``start_value_timeout``
+      - Zahl
+      - nein
+      - 60
+      - Maximale Zeit in Sekunden, die nach dem Aufstarten auf den Startwert gewartet wird, bevor der Sensor für den Verbrauchszähler den ersten Wert liefert.
 
 Die folgenden Einstellungen sind nur relevant, wenn der digitale Ausgang des Infrarotsensors verwendet wird:
 

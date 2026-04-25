@@ -48,6 +48,9 @@ namespace esphome::ferraris
 {
     class FerrarisMeter : public Component
     {
+    private:
+        static constexpr uint32_t MS_PER_SECOND = 1000u;
+
     public:
         FerrarisMeter(uint32_t rpkwh, uint16_t intIv);
         virtual ~FerrarisMeter() = default;
@@ -149,9 +152,10 @@ namespace esphome::ferraris
             m_debounce_threshold_number = threshold_number;
         }
 
-        void set_energy_start_value_number(number::Number* energy_start_value_number)
+        void set_energy_start_value_number(number::Number* energy_start_value_number, uint16_t timeout)
         {
             m_energy_start_value_number = energy_start_value_number;
+            m_start_value_timeout = static_cast<uint32_t>(timeout) * MS_PER_SECOND;
         }
 #endif
 
@@ -227,6 +231,8 @@ namespace esphome::ferraris
         uint32_t m_rotations_per_kwh;
         uint32_t m_interpolation_interval;
         uint32_t m_debounce_threshold;
+        uint32_t m_start_value_timeout;
+        uint32_t m_setup_time;
 #ifdef USE_SENSOR
         bool m_power_consumption_optimistic;
 #endif
