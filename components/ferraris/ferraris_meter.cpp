@@ -31,10 +31,6 @@
 
 namespace esphome::ferraris
 {
-    static constexpr uint32_t WATTS_PER_KW  = 1000u;
-    static constexpr uint32_t MS_PER_HOUR   = 60u * 60u * 1000u;
-    static constexpr uint32_t KWH_TO_WMS    = WATTS_PER_KW * MS_PER_HOUR;
-
     static constexpr const char *const TAG = "ferraris";
 
     FerrarisMeter::FerrarisMeter(uint32_t rpkwh, uint16_t intIv)
@@ -85,7 +81,8 @@ namespace esphome::ferraris
         , m_min_level_distance(6.0f)
         , m_max_iterations(3u)
         , m_iteration_counter(0u)
-        , m_level_value_counter(m_num_captured_values)
+        , m_level_value_counter(std::numeric_limits<uint32_t>::max())
+        , m_stall_timeout(0u)
         , m_calibration_mode(false)
         , m_start_value_received(false)
     {
@@ -115,11 +112,11 @@ namespace esphome::ferraris
 
                 if (m_level_value_counter < m_num_captured_values)
                 {
-                    if (m_level_value_counter == 0)
+                    if (m_level_value_counter == 0u)
                     {
                         ++m_iteration_counter;
 
-                        ESP_LOGD(
+                        ESP_LOGI(
                             TAG, "Starting automatic analog calibration:  CAPT %u  DIST %.1f  ITER %u/%u",
                             m_num_captured_values, m_min_level_distance, m_iteration_counter, m_max_iterations);
                         set_analog_calibration_state(true);
@@ -162,13 +159,13 @@ namespace esphome::ferraris
                                 m_analog_input_threshold = threshold;
                             }
 
-                            ESP_LOGD(TAG, "Automatic analog calibration finished:  OFF %.1f  ON %.1f  TRSH %.1f", m_off_level, m_on_level, threshold);
+                            ESP_LOGI(TAG, "Automatic analog calibration finished:  OFF %.1f  ON %.1f  TRSH %.1f", m_off_level, m_on_level, threshold);
                             set_analog_calibration_state(false, m_on_level - m_off_level);
                         }
                         else if (m_iteration_counter < m_max_iterations)
                         {
                             ESP_LOGW(TAG, "Insufficient data for analog calibration, starting over");
-                            m_level_value_counter = 0;
+                            m_level_value_counter = 0u;
                         }
                         else
                         {
@@ -333,6 +330,17 @@ namespace esphome::ferraris
                 update_energy_counter();
             }
         }
+
+        if (m_stall_timeout > 0u)
+        {
+            uint32_t now = millis();
+
+            if (get_duration(m_last_rising_time, now) >= m_stall_timeout)
+            {
+                ESP_LOGW(TAG, "No rotation indicator detected since %u minutes", m_stall_timeout / MS_PER_MINUTE);
+                start_analog_calibration();
+            }
+        }
     }
 
     void FerrarisMeter::dump_config()
@@ -370,6 +378,10 @@ namespace esphome::ferraris
 #endif
         ESP_LOGCONFIG(TAG, "  Rotations per kWh: %u", m_rotations_per_kwh);
         ESP_LOGCONFIG(TAG, "  Interpolation interval: %u", m_interpolation_interval);
+        ESP_LOGCONFIG(TAG, "  Number of captured values for calibration: %u", m_num_captured_values);
+        ESP_LOGCONFIG(TAG, "  Minimal level distance for calibration: %.1f", m_min_level_distance);
+        ESP_LOGCONFIG(TAG, "  Maximum number of iterations for calibration: %u", m_max_iterations);
+        ESP_LOGCONFIG(TAG, "  Stall timeout for automatic calibration: %u min", m_stall_timeout / MS_PER_MINUTE);
 #ifdef USE_NUMBER
         if (m_debounce_threshold_number == nullptr)
         {
@@ -440,7 +452,7 @@ namespace esphome::ferraris
 
                             m_last_rising_time = now;
                             m_last_rotation_time = rotation_time;
-                            m_acc_rotation_time = 0;
+                            m_acc_rotation_time = 0u;
                             m_interpolation_start = now;
                         }
                     }

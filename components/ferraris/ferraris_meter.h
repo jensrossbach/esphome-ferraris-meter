@@ -50,6 +50,10 @@ namespace esphome::ferraris
     {
     private:
         static constexpr uint32_t MS_PER_SECOND = 1000u;
+        static constexpr uint32_t MS_PER_MINUTE = 60u * MS_PER_SECOND;
+        static constexpr uint32_t MS_PER_HOUR   = 60u * MS_PER_MINUTE;
+        static constexpr uint32_t WATTS_PER_KW  = 1000u;
+        static constexpr uint32_t KWH_TO_WMS    = WATTS_PER_KW * MS_PER_HOUR;
 
     public:
         FerrarisMeter(uint32_t rpkwh, uint16_t intIv);
@@ -66,7 +70,25 @@ namespace esphome::ferraris
         void set_energy_meter(float value);
         void set_rotation_counter(uint64_t value);
 
+        void start_analog_calibration()
+        {
+            m_level_value_counter = 0u;
+            m_iteration_counter = 0u;
+        }
+
         void start_analog_calibration(
+                uint32_t num_captured_values,
+                float min_level_dist,
+                uint16_t max_iterations)
+        {
+            configure_analog_calibration(
+                num_captured_values,
+                min_level_dist,
+                max_iterations);
+            start_analog_calibration();
+        }
+
+        void configure_analog_calibration(
                 uint32_t num_captured_values,
                 float min_level_dist,
                 uint16_t max_iterations)
@@ -74,9 +96,6 @@ namespace esphome::ferraris
             m_num_captured_values = num_captured_values;
             m_min_level_distance = min_level_dist;
             m_max_iterations = max_iterations;
-
-            m_level_value_counter = 0;
-            m_iteration_counter = 0;
         }
 
 #ifdef USE_SENSOR
@@ -179,6 +198,10 @@ namespace esphome::ferraris
             m_debounce_threshold = threshold;
         }
 
+        void set_stall_timeout(uint16_t timeout)
+        {
+            m_stall_timeout = static_cast<uint32_t>(timeout) * MS_PER_MINUTE;
+        }
 
     private:
         void update_power_consumption(uint32_t rotation_time);
@@ -187,7 +210,7 @@ namespace esphome::ferraris
 
         static inline uint32_t get_duration(uint32_t start, uint32_t end)
         {
-            uint32_t ret = 0;
+            uint32_t ret = 0u;
 
             if (end < start)  // overflow after ~50 days
             {
@@ -252,6 +275,7 @@ namespace esphome::ferraris
         uint16_t m_max_iterations;
         uint16_t m_iteration_counter;
         uint32_t m_level_value_counter;
+        uint32_t m_stall_timeout;
 
         bool m_calibration_mode;
         bool m_start_value_received;
