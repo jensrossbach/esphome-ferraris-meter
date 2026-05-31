@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ESPHome Ferraris Meter \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-06 10:55+0200\n"
+"POT-Creation-Date: 2026-05-31 18:32+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jens-Uwe Rossbach <devel@jrossbach.de>\n"
 "Language: en\n"
@@ -404,8 +404,8 @@ msgstr ""
 " to the threshold value, it is considered not detected."
 
 #: ../../source/documentation/usage_examples.rst:202
-msgid "Analog Threshold"
-msgstr ""
+msgid "Analoger Schwellwert"
+msgstr "Analog Threshold"
 
 #: ../../source/documentation/usage_examples.rst:209
 msgid ""
@@ -495,7 +495,22 @@ msgstr ""
 "started, the following entry can be added to the configuration of the "
 "Ferraris component:"
 
-#: ../../source/documentation/usage_examples.rst:290
+#: ../../source/documentation/usage_examples.rst:287
+msgid ""
+"Um die automatische Kalibrierung zu starten, wenn über einen gewissen "
+"Zeitraum hinweg kein Rotationsindikator mehr erkannt wurde, kann "
+"folgender Eintrag zur Konfiguration der Ferraris-Komponente hinzugefügt "
+"werden (im folgenden Beispiel wird die automatische Kalibrierung "
+"gestartet, sobald seit einer Stunde kein Rotationsindikator mehr "
+"detektiert wurde):"
+msgstr ""
+"To start automatic calibration if no rotation indicator has been detected "
+"for a certain period of time, the following entry can be added to the "
+"Ferraris component configuration (in the following example, automatic "
+"calibration starts as soon as no rotation indicator has been detected "
+"for one hour):"
+
+#: ../../source/documentation/usage_examples.rst:296
 msgid ""
 "Eine weitere Möglichkeit ist, die Kalibrierung über eine Automation in "
 "Home Assistant in regelmäßigen Intervallen oder unter bestimmten "
@@ -506,7 +521,7 @@ msgstr ""
 " Assistant in regular intervals or under certain conditions. For example,"
 " the following configuration steps can be carried out:"
 
-#: ../../source/documentation/usage_examples.rst:292
+#: ../../source/documentation/usage_examples.rst:298
 msgid ""
 "In der YAML-Konfigurationsdatei wird die Aktion für die Kalibrierung über"
 " die API für Home Assistant zugänglich gemacht."
@@ -514,21 +529,21 @@ msgstr ""
 "In the YAML configuration file, the action for the calibration is made "
 "accessible via the API for Home Assistant."
 
-#: ../../source/documentation/usage_examples.rst:311
+#: ../../source/documentation/usage_examples.rst:317
 msgid ""
 "In Home Assistant wird eine `Automation <https://www.home-"
 "assistant.io/docs/automation>`_ erstellt, die die benutzerdefinierte "
 "ESPHome-Aktion aufruft (im folgenden Beispiel wird die Kalibrierung "
-"gestartet, sobald seit mehr als einer Stunde keine Aktualisierung mehr "
-"vom Sensor übertragen wurde)."
+"gestartet, sobald seit einer Stunde keine Aktualisierung mehr vom "
+"Verbrauchszähler-Sensor übertragen wurde)."
 msgstr ""
 "In Home Assistant, an `automation <https://www.home-"
 "assistant.io/docs/automation>`_ is created that calls the user-defined "
 "ESPHome action (in the following example, the calibration is started as "
-"soon as no update has been transmitted from the sensor for more than one "
-"hour)."
+"soon as no update has been transmitted from the energy meter sensor for "
+"more than one hour)."
 
-#: ../../source/documentation/usage_examples.rst:329
+#: ../../source/documentation/usage_examples.rst:335
 msgid ""
 "Alternativ kann in der Automation auch einfach ein Button-Druck des oben "
 "beschriebenen Buttons ausgelöst werden, sofern dieser konfiguriert wurde "
@@ -540,11 +555,11 @@ msgstr ""
 " is not required to set the calibration parameters from Home Assistant. "
 "In this case, the creation of the action can be omitted."
 
-#: ../../source/documentation/usage_examples.rst:332
+#: ../../source/documentation/usage_examples.rst:338
 msgid "Entprellung"
 msgstr "Debouncing"
 
-#: ../../source/documentation/usage_examples.rst:334
+#: ../../source/documentation/usage_examples.rst:340
 msgid ""
 "Der Übergang von nicht markiertem zu markiertem Bereich und umgekehrt auf"
 " der Drehscheibe kann zu einem schnellen Hin-und Herspringen "
@@ -561,11 +576,11 @@ msgstr ""
 "bouncing of the state leads to falsified measured values and to avoid "
 "this, the following settings can be applied."
 
-#: ../../source/documentation/usage_examples.rst:339
+#: ../../source/documentation/usage_examples.rst:345
 msgid "Entprellungsschwellwert"
 msgstr "Debounce Threshold"
 
-#: ../../source/documentation/usage_examples.rst:341
+#: ../../source/documentation/usage_examples.rst:347
 msgid ""
 "Der Entprellungsschwellwert ``debounce_threshold`` spezifiziert die "
 "minimale Zeit in Millisekunden zwischen fallender und darauffolgender "
@@ -582,11 +597,11 @@ msgstr ""
 "debouncing can be applied to both the variant using the digital as well "
 "as the analog input signal of the infrared sensor."
 
-#: ../../source/documentation/usage_examples.rst:343
+#: ../../source/documentation/usage_examples.rst:349
 msgid "Debounce Threshold"
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:350
+#: ../../source/documentation/usage_examples.rst:356
 msgid ""
 "Um eine Entprellung über den Schwellwert zu aktivieren, muss der "
 "entsprechende Wert in der Konfiguration der Ferraris-Komponente gesetzt "
@@ -595,7 +610,7 @@ msgstr ""
 "To activate debouncing via the threshold value, the corresponding item "
 "must be set in the configuration of the Ferraris component:"
 
-#: ../../source/documentation/usage_examples.rst:359
+#: ../../source/documentation/usage_examples.rst:365
 msgid ""
 "Wenn der Wert dynamisch über das User-Interface einstellbar sein soll, "
 "kann anstelle eines festen Zahlenwerts eine `Template-Zahlen-Komponente "
@@ -611,11 +626,11 @@ msgstr ""
 "<https://www.esphome.io/components/number/homeassistant.html>`_) can be "
 "entered instead of a fixed numerical value:"
 
-#: ../../source/documentation/usage_examples.rst:384
+#: ../../source/documentation/usage_examples.rst:390
 msgid "Hysterese-Kennlinie"
 msgstr "Hysteresis Curve"
 
-#: ../../source/documentation/usage_examples.rst:386
+#: ../../source/documentation/usage_examples.rst:392
 msgid ""
 "Die beiden Versatzwerte ``off_tolerance`` (Ausschalttoleranz) und "
 "``on_tolerance`` (Einschalttoleranz) können konfiguriert werden, um eine "
@@ -634,11 +649,11 @@ msgstr ""
 "marked area on the turntable. This type of debouncing only works when "
 "using the analog input signal of the infrared sensor."
 
-#: ../../source/documentation/usage_examples.rst:388
+#: ../../source/documentation/usage_examples.rst:394
 msgid "Hysteresis Curve"
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:395
+#: ../../source/documentation/usage_examples.rst:401
 msgid ""
 "Um eine Entprellung über die Hysterese-Kennlinie zu aktivieren, müssen "
 "die entsprechenden Werte in der Konfiguration der Ferraris-Komponente "
@@ -647,7 +662,7 @@ msgstr ""
 "To activate debouncing via the hysteresis curve, the corresponding items "
 "must be set in the configuration of the Ferraris component:"
 
-#: ../../source/documentation/usage_examples.rst:405
+#: ../../source/documentation/usage_examples.rst:411
 msgid ""
 "Wenn die Werte dynamisch über das User-Interface einstellbar sein sollen,"
 " können anstelle der festen Zahlenwerte `Template-Zahlen-Komponenten "
@@ -663,11 +678,11 @@ msgstr ""
 "<https://www.esphome.io/components/number/homeassistant.html>`_) can be "
 "entered instead of fixed numerical values:"
 
-#: ../../source/documentation/usage_examples.rst:440
+#: ../../source/documentation/usage_examples.rst:446
 msgid "Glättung des analogen Signals"
 msgstr "Smoothing of the analog Signal"
 
-#: ../../source/documentation/usage_examples.rst:442
+#: ../../source/documentation/usage_examples.rst:448
 msgid ""
 "Durch eine geschickte Konfiguration des Aktualisierungsintervalls "
 "``update_interval`` und der Anzahl Abtastungen pro Aktualisierung "
@@ -691,11 +706,11 @@ msgstr ""
 "update interval. Also this type of debouncing only works when using the "
 "analog input signal of the infrared sensor."
 
-#: ../../source/documentation/usage_examples.rst:447
+#: ../../source/documentation/usage_examples.rst:453
 msgid "Interpolation bei fallenden Stromverbräuchen"
 msgstr "Interpolation at falling Power Consumption"
 
-#: ../../source/documentation/usage_examples.rst:449
+#: ../../source/documentation/usage_examples.rst:455
 msgid ""
 "Niedrige Stromverbräuche äußern sich in einer langsamen Geschwindigkeit "
 "der Drehscheibe. Dies führt dazu, dass die Markierung auf der Drehscheibe"
@@ -717,7 +732,7 @@ msgstr ""
 "pass the sensor again. During this time, high power consumption continues"
 " to be displayed, even though the actual power consumption is much lower."
 
-#: ../../source/documentation/usage_examples.rst:451
+#: ../../source/documentation/usage_examples.rst:457
 msgid ""
 "Um diesem Effekt entgegenzuwirken, kann die Ferraris-Komponente bei "
 "Übergängen von hohen zu niedrigen Stromverbräuchen den tatsächlichen "
@@ -731,7 +746,7 @@ msgstr ""
 " the actual power consumption is calculated and reported after the marker"
 " is detected. "
 
-#: ../../source/documentation/usage_examples.rst:453
+#: ../../source/documentation/usage_examples.rst:459
 msgid ""
 "Die Interpolation kann über das Interpolationsintervall "
 "``interpolation_interval`` gesteuert werden. Ein Wert von ``0`` "
@@ -744,11 +759,11 @@ msgstr ""
 "otherwise, the value specifies the duration of the intervals in seconds "
 "for which an interpolated power consumption is calculated."
 
-#: ../../source/documentation/usage_examples.rst:456
+#: ../../source/documentation/usage_examples.rst:462
 msgid "Manuelles Überschreiben des Zählerstands"
 msgstr "Explicit Meter Reading Replacement"
 
-#: ../../source/documentation/usage_examples.rst:458
+#: ../../source/documentation/usage_examples.rst:464
 msgid ""
 "Um den Zählerstand in der Ferraris-Komponente mit dem tatsächlichen "
 "Zählerstand des Ferraris-Stromzählers abzugleichen, kann der Wert des "
@@ -763,7 +778,7 @@ msgstr ""
 "``ferraris.set_energy_meter`` and ``ferraris.set_rotation_counter`` (see "
 ":ref:`Actions <actions>`) are provided for this purpose."
 
-#: ../../source/documentation/usage_examples.rst:462
+#: ../../source/documentation/usage_examples.rst:468
 msgid ""
 "Normalerweise ist nur eine der beiden Aktionen nötig, je nachdem, ob man "
 "den Zählerstand in Kilowattstunden oder lieber in Anzahl Umdrehungen "
@@ -773,7 +788,7 @@ msgstr ""
 "whether you want to set the meter reading in kilowatt hours or in number "
 "of rotations."
 
-#: ../../source/documentation/usage_examples.rst:465
+#: ../../source/documentation/usage_examples.rst:471
 msgid ""
 "Abhängig davon, ob das Setzen des Zählerstands händisch über das User-"
 "Interface oder automatisiert über Automationen und Skripte erfolgen soll,"
@@ -787,11 +802,11 @@ msgstr ""
 "are described below, but there are more possibilities existing which are "
 "not described here."
 
-#: ../../source/documentation/usage_examples.rst:468
+#: ../../source/documentation/usage_examples.rst:474
 msgid "Händisches Setzen des Zählerstands über das User-Interface"
 msgstr "Setting Energy Meter manually via the User Interface"
 
-#: ../../source/documentation/usage_examples.rst:470
+#: ../../source/documentation/usage_examples.rst:476
 msgid ""
 "Dafür führt man beispielsweise folgende Konfigurations-Schritte durch (in"
 " diesem Beispiel zum Setzen des Zählerstands als Kilowattstunden-Wert):"
@@ -799,7 +814,7 @@ msgstr ""
 "For instance, the following configuration steps are carried out (in this "
 "example to overwrite the energy meter with a kilowatt hours value):"
 
-#: ../../source/documentation/usage_examples.rst:472
+#: ../../source/documentation/usage_examples.rst:478
 msgid ""
 "In der YAML-Konfigurationsdatei wird eine `Template-Zahlen-Komponente "
 "<https://www.esphome.io/components/number/template.html>`_ angelegt und "
@@ -810,7 +825,7 @@ msgstr ""
 "the YAML configuration file and configured for a meter reading in the "
 "unit kilowatt hours."
 
-#: ../../source/documentation/usage_examples.rst:490
+#: ../../source/documentation/usage_examples.rst:496
 msgid ""
 "In der YAML-Konfigurationsdatei wird ein `Template-Button "
 "<https://www.esphome.io/components/button/template.html>`_ angelegt und "
@@ -825,15 +840,15 @@ msgstr ""
 " The target value to be set is retrieved from the created number "
 "component"
 
-#: ../../source/documentation/usage_examples.rst:507
+#: ../../source/documentation/usage_examples.rst:513
 msgid "Automatisiertes Setzen des Zählerstands"
 msgstr "Setting Energy Meter automatically"
 
-#: ../../source/documentation/usage_examples.rst:509
+#: ../../source/documentation/usage_examples.rst:515
 msgid "Dafür führt man beispielsweise folgende Konfigurations-Schritte durch:"
 msgstr "For instance, the following configuration steps are carried out:"
 
-#: ../../source/documentation/usage_examples.rst:511
+#: ../../source/documentation/usage_examples.rst:517
 msgid ""
 "In der YAML-Konfigurationsdatei wird eine `benutzerdefinierte Aktion "
 "<https://www.esphome.io/components/api.html#api-device-actions>`_ "
@@ -845,7 +860,7 @@ msgstr ""
 "one of the Ferraris actions (in the following example the action "
 "``ferraris.set_energy_meter`` is used)."
 
-#: ../../source/documentation/usage_examples.rst:529
+#: ../../source/documentation/usage_examples.rst:535
 msgid ""
 "In Home Assistant wird eine `Automation <https://www.home-"
 "assistant.io/docs/automation>`_ erstellt, die die benutzerdefinierte "
@@ -857,11 +872,11 @@ msgstr ""
 "the following example, the meter reading is reset at the beginning of "
 "each month)."
 
-#: ../../source/documentation/usage_examples.rst:548
+#: ../../source/documentation/usage_examples.rst:554
 msgid "Wiederherstellung des Zählerstands nach einem Neustart"
 msgstr "Meter Reading Recovery after Restart"
 
-#: ../../source/documentation/usage_examples.rst:550
+#: ../../source/documentation/usage_examples.rst:556
 msgid ""
 "Um die Lebensdauer des Flash-Speichers auf dem ESP-Mikrocontroller nicht "
 "zu verringern, speichert die Ferraris-Komponente keine Daten persistent "
@@ -884,13 +899,13 @@ msgstr ""
 " there is the option of persisting the last meter reading in Home "
 "Assistant and transferring it to the microcontroller when booting."
 
-#: ../../source/documentation/usage_examples.rst:552
+#: ../../source/documentation/usage_examples.rst:558
 msgid ""
 "Damit dies funktioniert, müssen beispielsweise folgende Konfigurations-"
 "Schritte durchgeführt werden:"
 msgstr "For this to work, the following configuration steps must be carried out:"
 
-#: ../../source/documentation/usage_examples.rst:555
+#: ../../source/documentation/usage_examples.rst:561
 msgid ""
 "In Home Assistant wird ein `Zahlenwert-Eingabehelfer <https://www.home-"
 "assistant.io/integrations/input_number>`_ angelegt (in diesem Beispiel "
@@ -909,7 +924,7 @@ msgstr ""
 "created in the YAML configuration file, which imports the created number "
 "input helper"
 
-#: ../../source/documentation/usage_examples.rst:564
+#: ../../source/documentation/usage_examples.rst:570
 msgid ""
 "Unter der Konfiguration der Ferraris-Komponente verweist der Eintrag "
 "``energy_start_value`` auf die angelegte Zahlen-Komponente."
@@ -917,7 +932,7 @@ msgstr ""
 "Under the configuration of the Ferraris component, the entry "
 "``energy_start_value`` refers to the created number component."
 
-#: ../../source/documentation/usage_examples.rst:572
+#: ../../source/documentation/usage_examples.rst:578
 msgid ""
 "In Home Assistant wird eine `Automation <https://www.home-"
 "assistant.io/docs/automation/basics>`_ erstellt, die bei Änderung des "
@@ -928,7 +943,7 @@ msgstr ""
 "is created in Home Assistant that copies the current sensor value to the "
 "created number input helper. when the energy meter sensor is changed."
 
-#: ../../source/documentation/usage_examples.rst:591
+#: ../../source/documentation/usage_examples.rst:597
 msgid ""
 "Alternativ kann auch eine `Sensor-Automation "
 "<https://www.esphome.io/components/sensor/#sensor-automation>`_ für den "

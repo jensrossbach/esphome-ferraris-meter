@@ -53,6 +53,8 @@ CONF_ANALOG_THRESHOLD    = "analog_threshold"
 CONF_OFF_TOLERANCE       = "off_tolerance"
 CONF_ON_TOLERANCE        = "on_tolerance"
 CONF_CALIBRATE_ON_BOOT   = "calibrate_on_boot"
+CONF_CALIBRATE_ON_STALL  = "calibrate_on_stall"
+CONF_AUTO_CALIBRATION    = "auto_calibration"
 CONF_NUM_CAPTURED_VALUES = "num_captured_values"
 CONF_MIN_LEVEL_DISTANCE  = "min_level_distance"
 CONF_MAX_ITERATIONS      = "max_iterations"
@@ -88,7 +90,9 @@ CONFIG_SCHEMA = cv.All(
         cv.Optional(CONF_DEBOUNCE_THRESHOLD, default = 400): cv.Any(cv.int_range(min = 0), cv.use_id(number.Number)),
         cv.Optional(CONF_ENERGY_START_VALUE): cv.use_id(number.Number),
         cv.Optional(CONF_START_VALUE_TIMEOUT, default = 60): cv.int_range(min = 10, max = 600),
-        cv.Optional(CONF_CALIBRATE_ON_BOOT): ANALOG_CALIBRATION_SCHEMA
+        cv.Optional(CONF_CALIBRATE_ON_BOOT): cv.boolean,
+        cv.Optional(CONF_CALIBRATE_ON_STALL): cv.int_range(min = 10, max = 1440),
+        cv.Optional(CONF_AUTO_CALIBRATION): ANALOG_CALIBRATION_SCHEMA
     }).extend(cv.COMPONENT_SCHEMA),
     ensure_gpio_or_adc)
 
@@ -125,12 +129,18 @@ async def to_code(config):
             num = await cg.get_variable(config[CONF_ON_TOLERANCE])
             cg.add(cmp.set_on_tolerance_number(num))
 
-        if CONF_CALIBRATE_ON_BOOT in config:
-            calib_conf = config[CONF_CALIBRATE_ON_BOOT]
-            cg.add(cmp.start_analog_calibration(
+        if CONF_AUTO_CALIBRATION in config:
+            calib_conf = config[CONF_AUTO_CALIBRATION]
+            cg.add(cmp.configure_analog_calibration(
                             calib_conf[CONF_NUM_CAPTURED_VALUES],
                             calib_conf[CONF_MIN_LEVEL_DISTANCE],
                             calib_conf[CONF_MAX_ITERATIONS]))
+
+        if CONF_CALIBRATE_ON_BOOT in config and config[CONF_CALIBRATE_ON_BOOT] == True:
+            cg.add(cmp.start_analog_calibration())
+
+        if CONF_CALIBRATE_ON_STALL in config:
+            cg.add(cmp.set_stall_timeout(config[CONF_CALIBRATE_ON_STALL]))
 
     if isinstance(config[CONF_DEBOUNCE_THRESHOLD], int):
         cg.add(cmp.set_debounce_threshold(config[CONF_DEBOUNCE_THRESHOLD]))

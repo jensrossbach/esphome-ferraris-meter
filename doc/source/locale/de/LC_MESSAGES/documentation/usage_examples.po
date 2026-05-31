@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ESPHome Ferraris Meter \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-06 10:55+0200\n"
+"POT-Creation-Date: 2026-05-31 18:32+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jens-Uwe Rossbach <devel@jrossbach.de>\n"
 "Language: de\n"
@@ -290,7 +290,7 @@ msgid ""
 msgstr ""
 
 #: ../../source/documentation/usage_examples.rst:202
-msgid "Analog Threshold"
+msgid "Analoger Schwellwert"
 msgstr ""
 
 #: ../../source/documentation/usage_examples.rst:209
@@ -352,7 +352,17 @@ msgid ""
 " Ferraris-Komponente hinzugefügt werden:"
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:290
+#: ../../source/documentation/usage_examples.rst:287
+msgid ""
+"Um die automatische Kalibrierung zu starten, wenn über einen gewissen "
+"Zeitraum hinweg kein Rotationsindikator mehr erkannt wurde, kann "
+"folgender Eintrag zur Konfiguration der Ferraris-Komponente hinzugefügt "
+"werden (im folgenden Beispiel wird die automatische Kalibrierung "
+"gestartet, sobald seit einer Stunde kein Rotationsindikator mehr "
+"detektiert wurde):"
+msgstr ""
+
+#: ../../source/documentation/usage_examples.rst:296
 msgid ""
 "Eine weitere Möglichkeit ist, die Kalibrierung über eine Automation in "
 "Home Assistant in regelmäßigen Intervallen oder unter bestimmten "
@@ -360,22 +370,22 @@ msgid ""
 "Konfigurations-Schritte durch:"
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:292
+#: ../../source/documentation/usage_examples.rst:298
 msgid ""
 "In der YAML-Konfigurationsdatei wird die Aktion für die Kalibrierung über"
 " die API für Home Assistant zugänglich gemacht."
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:311
+#: ../../source/documentation/usage_examples.rst:317
 msgid ""
 "In Home Assistant wird eine `Automation <https://www.home-"
 "assistant.io/docs/automation>`_ erstellt, die die benutzerdefinierte "
 "ESPHome-Aktion aufruft (im folgenden Beispiel wird die Kalibrierung "
-"gestartet, sobald seit mehr als einer Stunde keine Aktualisierung mehr "
-"vom Sensor übertragen wurde)."
+"gestartet, sobald seit einer Stunde keine Aktualisierung mehr vom "
+"Verbrauchszähler-Sensor übertragen wurde)."
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:329
+#: ../../source/documentation/usage_examples.rst:335
 msgid ""
 "Alternativ kann in der Automation auch einfach ein Button-Druck des oben "
 "beschriebenen Buttons ausgelöst werden, sofern dieser konfiguriert wurde "
@@ -383,11 +393,11 @@ msgid ""
 "nötig ist. In diesem Fall kann das Anlegen der Aktion entfallen."
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:332
+#: ../../source/documentation/usage_examples.rst:338
 msgid "Entprellung"
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:334
+#: ../../source/documentation/usage_examples.rst:340
 msgid ""
 "Der Übergang von nicht markiertem zu markiertem Bereich und umgekehrt auf"
 " der Drehscheibe kann zu einem schnellen Hin-und Herspringen "
@@ -398,11 +408,11 @@ msgid ""
 "Einstellungensmöglichkeiten."
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:339
+#: ../../source/documentation/usage_examples.rst:345
 msgid "Entprellungsschwellwert"
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:341
+#: ../../source/documentation/usage_examples.rst:347
 msgid ""
 "Der Entprellungsschwellwert ``debounce_threshold`` spezifiziert die "
 "minimale Zeit in Millisekunden zwischen fallender und darauffolgender "
@@ -413,18 +423,18 @@ msgid ""
 "Infrarotsensors."
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:343
+#: ../../source/documentation/usage_examples.rst:349
 msgid "Debounce Threshold"
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:350
+#: ../../source/documentation/usage_examples.rst:356
 msgid ""
 "Um eine Entprellung über den Schwellwert zu aktivieren, muss der "
 "entsprechende Wert in der Konfiguration der Ferraris-Komponente gesetzt "
 "werden:"
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:359
+#: ../../source/documentation/usage_examples.rst:365
 msgid ""
 "Wenn der Wert dynamisch über das User-Interface einstellbar sein soll, "
 "kann anstelle eines festen Zahlenwerts eine `Template-Zahlen-Komponente "
@@ -434,11 +444,11 @@ msgid ""
 "eingetragen werden:"
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:384
+#: ../../source/documentation/usage_examples.rst:390
 msgid "Hysterese-Kennlinie"
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:386
+#: ../../source/documentation/usage_examples.rst:392
 msgid ""
 "Die beiden Versatzwerte ``off_tolerance`` (Ausschalttoleranz) und "
 "``on_tolerance`` (Einschalttoleranz) können konfiguriert werden, um eine "
@@ -450,18 +460,18 @@ msgid ""
 " Verwendung des analogen Eingangssignals des Infrarotsensors."
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:388
+#: ../../source/documentation/usage_examples.rst:394
 msgid "Hysteresis Curve"
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:395
+#: ../../source/documentation/usage_examples.rst:401
 msgid ""
 "Um eine Entprellung über die Hysterese-Kennlinie zu aktivieren, müssen "
 "die entsprechenden Werte in der Konfiguration der Ferraris-Komponente "
 "gesetzt werden:"
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:405
+#: ../../source/documentation/usage_examples.rst:411
 msgid ""
 "Wenn die Werte dynamisch über das User-Interface einstellbar sein sollen,"
 " können anstelle der festen Zahlenwerte `Template-Zahlen-Komponenten "
@@ -471,11 +481,11 @@ msgid ""
 "eingetragen werden:"
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:440
+#: ../../source/documentation/usage_examples.rst:446
 msgid "Glättung des analogen Signals"
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:442
+#: ../../source/documentation/usage_examples.rst:448
 msgid ""
 "Durch eine geschickte Konfiguration des Aktualisierungsintervalls "
 "``update_interval`` und der Anzahl Abtastungen pro Aktualisierung "
@@ -490,11 +500,11 @@ msgid ""
 "Eingangssignals des Infrarotsensors."
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:447
+#: ../../source/documentation/usage_examples.rst:453
 msgid "Interpolation bei fallenden Stromverbräuchen"
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:449
+#: ../../source/documentation/usage_examples.rst:455
 msgid ""
 "Niedrige Stromverbräuche äußern sich in einer langsamen Geschwindigkeit "
 "der Drehscheibe. Dies führt dazu, dass die Markierung auf der Drehscheibe"
@@ -508,7 +518,7 @@ msgid ""
 "niedriger ist."
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:451
+#: ../../source/documentation/usage_examples.rst:457
 msgid ""
 "Um diesem Effekt entgegenzuwirken, kann die Ferraris-Komponente bei "
 "Übergängen von hohen zu niedrigen Stromverbräuchen den tatsächlichen "
@@ -517,7 +527,7 @@ msgid ""
 " nach Detektierung der Markierung berechnet und gemeldet wird."
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:453
+#: ../../source/documentation/usage_examples.rst:459
 msgid ""
 "Die Interpolation kann über das Interpolationsintervall "
 "``interpolation_interval`` gesteuert werden. Ein Wert von ``0`` "
@@ -526,11 +536,11 @@ msgid ""
 "berechnet wird."
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:456
+#: ../../source/documentation/usage_examples.rst:462
 msgid "Manuelles Überschreiben des Zählerstands"
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:458
+#: ../../source/documentation/usage_examples.rst:464
 msgid ""
 "Um den Zählerstand in der Ferraris-Komponente mit dem tatsächlichen "
 "Zählerstand des Ferraris-Stromzählers abzugleichen, kann der Wert des "
@@ -540,14 +550,14 @@ msgid ""
 "Verfügung gestellt."
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:462
+#: ../../source/documentation/usage_examples.rst:468
 msgid ""
 "Normalerweise ist nur eine der beiden Aktionen nötig, je nachdem, ob man "
 "den Zählerstand in Kilowattstunden oder lieber in Anzahl Umdrehungen "
 "setzen möchte."
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:465
+#: ../../source/documentation/usage_examples.rst:471
 msgid ""
 "Abhängig davon, ob das Setzen des Zählerstands händisch über das User-"
 "Interface oder automatisiert über Automationen und Skripte erfolgen soll,"
@@ -556,24 +566,24 @@ msgid ""
 "aber noch weitere, hier nicht beschriebene Möglichkeiten."
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:468
+#: ../../source/documentation/usage_examples.rst:474
 msgid "Händisches Setzen des Zählerstands über das User-Interface"
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:470
+#: ../../source/documentation/usage_examples.rst:476
 msgid ""
 "Dafür führt man beispielsweise folgende Konfigurations-Schritte durch (in"
 " diesem Beispiel zum Setzen des Zählerstands als Kilowattstunden-Wert):"
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:472
+#: ../../source/documentation/usage_examples.rst:478
 msgid ""
 "In der YAML-Konfigurationsdatei wird eine `Template-Zahlen-Komponente "
 "<https://www.esphome.io/components/number/template.html>`_ angelegt und "
 "für einen Zählerstand in der Einheit Kilowattstunden konfiguriert."
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:490
+#: ../../source/documentation/usage_examples.rst:496
 msgid ""
 "In der YAML-Konfigurationsdatei wird ein `Template-Button "
 "<https://www.esphome.io/components/button/template.html>`_ angelegt und "
@@ -582,15 +592,15 @@ msgid ""
 "angelegten Zahlen-Komponente gelesen."
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:507
+#: ../../source/documentation/usage_examples.rst:513
 msgid "Automatisiertes Setzen des Zählerstands"
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:509
+#: ../../source/documentation/usage_examples.rst:515
 msgid "Dafür führt man beispielsweise folgende Konfigurations-Schritte durch:"
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:511
+#: ../../source/documentation/usage_examples.rst:517
 msgid ""
 "In der YAML-Konfigurationsdatei wird eine `benutzerdefinierte Aktion "
 "<https://www.esphome.io/components/api.html#api-device-actions>`_ "
@@ -598,7 +608,7 @@ msgid ""
 "Aktion ``ferraris.set_energy_meter``) aufruft."
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:529
+#: ../../source/documentation/usage_examples.rst:535
 msgid ""
 "In Home Assistant wird eine `Automation <https://www.home-"
 "assistant.io/docs/automation>`_ erstellt, die die benutzerdefinierte "
@@ -606,11 +616,11 @@ msgid ""
 "Anfang eines jeden Monats zurückgesetzt)."
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:548
+#: ../../source/documentation/usage_examples.rst:554
 msgid "Wiederherstellung des Zählerstands nach einem Neustart"
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:550
+#: ../../source/documentation/usage_examples.rst:556
 msgid ""
 "Um die Lebensdauer des Flash-Speichers auf dem ESP-Mikrocontroller nicht "
 "zu verringern, speichert die Ferraris-Komponente keine Daten persistent "
@@ -624,13 +634,13 @@ msgid ""
 " diesen zu übertragen."
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:552
+#: ../../source/documentation/usage_examples.rst:558
 msgid ""
 "Damit dies funktioniert, müssen beispielsweise folgende Konfigurations-"
 "Schritte durchgeführt werden:"
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:555
+#: ../../source/documentation/usage_examples.rst:561
 msgid ""
 "In Home Assistant wird ein `Zahlenwert-Eingabehelfer <https://www.home-"
 "assistant.io/integrations/input_number>`_ angelegt (in diesem Beispiel "
@@ -641,13 +651,13 @@ msgid ""
 " die den angelegten Zahlenwert-Eingabehelfer importiert."
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:564
+#: ../../source/documentation/usage_examples.rst:570
 msgid ""
 "Unter der Konfiguration der Ferraris-Komponente verweist der Eintrag "
 "``energy_start_value`` auf die angelegte Zahlen-Komponente."
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:572
+#: ../../source/documentation/usage_examples.rst:578
 msgid ""
 "In Home Assistant wird eine `Automation <https://www.home-"
 "assistant.io/docs/automation/basics>`_ erstellt, die bei Änderung des "
@@ -655,7 +665,7 @@ msgid ""
 "Zahlenwert-Eingabehelfer kopiert."
 msgstr ""
 
-#: ../../source/documentation/usage_examples.rst:591
+#: ../../source/documentation/usage_examples.rst:597
 msgid ""
 "Alternativ kann auch eine `Sensor-Automation "
 "<https://www.esphome.io/components/sensor/#sensor-automation>`_ für den "
@@ -667,177 +677,3 @@ msgid ""
 "Umläufe der Drehscheibe nicht erfasst werden. Daher empfehle ich die "
 "Variante mit der Automation in Home Assistant."
 msgstr ""
-
-#~ msgid "Steckplatinen-Schaltplan (digitaler Pin)"
-#~ msgstr ""
-
-#~ msgid "Steckplatinen-Schaltplan (analoger Pin)"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Unter der Konfiguration der Ferraris-"
-#~ "Komponente verweist der Eintrag "
-#~ "``analog_input`` auf den unter 1. "
-#~ "angelegten ADC-Sensor und der Eintrag"
-#~ " ``analog_threshold`` gibt den analogen "
-#~ "Schwellwert an (siehe Abschnitt "
-#~ ":ref:`Kalibrierung des analogen Ausgangssignals "
-#~ "<analog-calibration>` für weitere "
-#~ "Informationen zum analogen Schwellwert). Zudem"
-#~ " können optional die Versatzwerte "
-#~ "``off_tolerance`` und ``on_tolerance`` konfiguriert"
-#~ " werden (siehe Abschnitt :ref:`Hysterese-"
-#~ "Kennlinie <hysteresis-curve>` für weitere "
-#~ "Details)."
-#~ msgstr ""
-
-#~ msgid "Steckplatinen-Schaltplan (2 TCRT5000-Module)"
-#~ msgstr ""
-
-#~ msgid "Analoger Schwellwert"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Alternativ kann in der Automation auch"
-#~ " einfach ein Button-Druck des oben"
-#~ " beschriebenen Buttons ausgelöst werden, "
-#~ "sofern dieser konfiguriert wurde und ein"
-#~ " Setzen der Kalibrierungsparameter von Home"
-#~ " Assistant aus nicht nötig ist. In"
-#~ " diesem Fall kann Schritt 1 "
-#~ "entfallen."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "In der YAML-Konfigurationsdatei wird ein"
-#~ " `Template-Button "
-#~ "<https://www.esphome.io/components/button/template.html>`_ "
-#~ "angelegt und so konfiguriert, dass beim"
-#~ " Drücken die Aktion zum Setzen des"
-#~ " Zählerstands ausgeführt wird. Der zu "
-#~ "übergebende Zielwert wird dabei aus der"
-#~ " unter 1. angelegten Zahlen-Komponente "
-#~ "gelesen."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "In Home Assistant wird ein "
-#~ "`Zahlenwert-Eingabehelfer <https://www.home-"
-#~ "assistant.io/integrations/input_number>`_ angelegt (in "
-#~ "diesem Beispiel mit der Entitäts-ID "
-#~ "``input_number.stromzaehler_letzter_wert``). Anschließend "
-#~ "wird in der YAML-Konfigurationsdatei "
-#~ "eine `Home Assistant Zahlen-Komponente "
-#~ "<https://www.esphome.io/components/number/homeassistant.html>`_ "
-#~ "angelegt, die den unter 1. angelegten"
-#~ " Zahlenwert-Eingabehelfer importiert."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Unter der Konfiguration der Ferraris-"
-#~ "Komponente verweist der Eintrag "
-#~ "``energy_start_value`` auf die unter 2. "
-#~ "angelegte Zahlen-Komponente."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "In Home Assistant wird eine `Automation"
-#~ " <https://www.home-assistant.io/docs/automation/basics>`_ "
-#~ "erstellt, die bei Änderung des "
-#~ "Verbrauchszähler-Sensors den aktuellen Sensorwert"
-#~ " in den unter 1. angelegten "
-#~ "Zahlenwert-Eingabehelfer kopiert."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Alternativ kann auch eine `Sensor-"
-#~ "Automation <https://www.esphome.io/components/sensor/#sensor-"
-#~ "automation>`_ für den Sensor ``energy_meter``"
-#~ " in der YAML-Konfigurationsdatei angelegt"
-#~ " werden, die die unter 2. angelegte"
-#~ " Zahlen-Komponente direkt von ESPHome "
-#~ "aus aktualisiert. Allerdings verlängert dies"
-#~ " die Verarbeitungszeit pro Umdrehung im "
-#~ "Mikrocontroller und kann u.U. dazu "
-#~ "führen, dass bei sehr hohen "
-#~ "Stromverbräuchen (und damit sehr hohen "
-#~ "Drehgeschwindigkeiten) einzelne Umläufe der "
-#~ "Drehscheibe nicht erfasst werden. Daher "
-#~ "empfehle ich die Variante mit der "
-#~ "Automation in Home Assistant."
-#~ msgstr ""
-
-#~ msgid "Breadboard Schematic (digital Pin)"
-#~ msgstr ""
-
-#~ msgid "Breadboard Schematic (analog Pin)"
-#~ msgstr ""
-
-#~ msgid "Breadboard Schematic (two TCRT5000 modules)"
-#~ msgstr ""
-
-#~ msgid "Analog Threshold"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Die beiden Versatzwerte ``off_tolerance`` und"
-#~ " ``on_tolerance`` können konfiguriert werden, "
-#~ "um eine Hysterese-Kennlinie für die "
-#~ "Erkennung des markiertes Bereichs auf "
-#~ "der Drehscheibe über das analoge Signal"
-#~ " zu verwenden. Dadurch wird ein "
-#~ "\"Zittern\" des analogen Signals kompensiert"
-#~ " und damit ein mögliches Prellen des"
-#~ " Erkennungszustands für den markierten "
-#~ "Bereich auf der Drehscheibe minimiert. "
-#~ "Diese Art der Entprellung funktioniert "
-#~ "nur bei der Verwendung des analogen "
-#~ "Eingangssignals des Infrarotsensors."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "In Home Assistant wird ein "
-#~ "`Zahlenwert-Eingabehelfer <https://www.home-"
-#~ "assistant.io/integrations/input_number>`_ angelegt (in "
-#~ "diesem Beispiel mit der Entitäts-ID "
-#~ "``input_number.stromzaehler_letzter_wert``). Anschließend "
-#~ "wird in der YAML-Konfigurationsdatei "
-#~ "eine `Home Assistant Zahlen-Komponente "
-#~ "<https://www.esphome.io/components/number/homeassistant.html>`_ "
-#~ "angelegt, die den angelegten Zahlenwert-"
-#~ "Eingabehelfer importiert."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Niedrige Stromverbräuche äußern sich in "
-#~ "einer langsamen Geschwindigkeit der "
-#~ "Drehscheibe. Dies führt dazu, dass die"
-#~ " Markierung auf der Drehscheibe nur "
-#~ "selten am Sensor vorbei fährt und "
-#~ "dadurch aktualisiert sich der Stromverbrauch"
-#~ " ebensfalls nur in großen Zeitabständen."
-#~ " Besonders störend ist dies, wenn ein"
-#~ " hoher Stromverbrauch vorliegt und dieser"
-#~ " sich dann rasch absenkt. In diesem"
-#~ " Fall dauert es sehr lang, bis "
-#~ "der neue niedrige Stromverbrauch gemeldet "
-#~ "wird, da es lange dauert, bis die"
-#~ " Markierung wieder den Sensor passiert. "
-#~ "In dieser Zeit wird dann weiterhin "
-#~ "ein hoher Stromverbrauch angezeigt, obwohl "
-#~ "der tatsächliche Stromverbrauch viel nidriger"
-#~ " ist."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Um diesem Effekt entgegenzuwirken, kann "
-#~ "die Ferraris Meter Komponente bei "
-#~ "Übergängen von hohen zu niedrigen "
-#~ "Stromverbräuchen den tatsächlichen Verbrauchsverlauf"
-#~ " interpolieren und sich somit dem "
-#~ "tatsächlichen Stromverbrauch immer weiter "
-#~ "annähern, bis der tatsächliche Stromverbrauch"
-#~ " nach Detektierung der Markierung berechnet"
-#~ " und gemeldet wird."
-#~ msgstr ""
-

@@ -281,10 +281,16 @@ Um die automatische Kalibrierung bei jedem Aufstarten des Mikrocontrollers zu st
 
     ferraris:
       # ...
-      calibrate_on_boot:
-        num_captured_values: 6000
-        min_level_distance: 6.0
-        max_iterations: 3
+      calibrate_on_boot: true
+      # ...
+
+Um die automatische Kalibrierung zu starten, wenn über einen gewissen Zeitraum hinweg kein Rotationsindikator mehr erkannt wurde, kann folgender Eintrag zur Konfiguration der Ferraris-Komponente hinzugefügt werden (im folgenden Beispiel wird die automatische Kalibrierung gestartet, sobald seit einer Stunde kein Rotationsindikator mehr detektiert wurde):
+
+.. code-block:: yaml
+
+    ferraris:
+      # ...
+      calibrate_on_stall: 60
       # ...
 
 Eine weitere Möglichkeit ist, die Kalibrierung über eine Automation in Home Assistant in regelmäßigen Intervallen oder unter bestimmten Bedingungen zu starten. Dafür führt man beispielsweise folgende Konfigurations-Schritte durch:
@@ -308,7 +314,7 @@ In der YAML-Konfigurationsdatei wird die Aktion für die Kalibrierung über die 
                 min_level_distance: !lambda "return min_level_distance;"
                 max_iterations: !lambda "return max_iterations;"
 
-In Home Assistant wird eine `Automation <https://www.home-assistant.io/docs/automation>`_ erstellt, die die benutzerdefinierte ESPHome-Aktion aufruft (im folgenden Beispiel wird die Kalibrierung gestartet, sobald seit mehr als einer Stunde keine Aktualisierung mehr vom Sensor übertragen wurde).
+In Home Assistant wird eine `Automation <https://www.home-assistant.io/docs/automation>`_ erstellt, die die benutzerdefinierte ESPHome-Aktion aufruft (im folgenden Beispiel wird die Kalibrierung gestartet, sobald seit einer Stunde keine Aktualisierung mehr vom Verbrauchszähler-Sensor übertragen wurde).
 
 .. code-block:: yaml
 
@@ -316,7 +322,7 @@ In Home Assistant wird eine `Automation <https://www.home-assistant.io/docs/auto
       alias: Re-calibrate electricity meter
       triggers:
           trigger: template
-          value_template: '{{ now() - states.sensor.ferraris_meter_power_consumption.last_updated >= timedelta(hours=1) }}'
+          value_template: '{{ now() - states.sensor.ferraris_meter_energy_meter.last_updated >= timedelta(hours=1) }}'
       conditions: []
       actions:
         - action: esphome.ferraris_meter_start_analog_calibration

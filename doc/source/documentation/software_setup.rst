@@ -127,13 +127,23 @@ Die folgenden Einstellungen sind nur relevant, wenn der analoge Ausgang des Infr
       - 0.0
       - Positiver Versatz zum analogen Schwellwert für die steigende Flanke, siehe Abschnitt :ref:`Hysterese-Kennlinie <hysteresis-curve>` für Details
     * - ``calibrate_on_boot``
-      - Objekt
+      - Wahrheitswert
+      - nein
+      - ``false``
+      - Gibt an, ob die automatische Kalibrierung des analogen Ausgangssignals vom Infrarotsensor beim Aufstarten des Mikrocontrollers ausgeführt werden soll, siehe Abschnitt :ref:`Kalibrierung des analogen Ausgangssignals <analog-calibration>` für Details
+    * - ``calibrate_on_stall``
+      - Zahl
       - nein
       - \-
-      - Wenn vorhanden, wird die automatische Kalibrierung des analogen Ausgangssignals vom Infrarotsensor nach dem Aufstarten ausgeführt, siehe Abschnitt :ref:`Kalibrierung des analogen Ausgangssignals <analog-calibration>` für Details
+      - Maximale Zeit in Minuten, die seit der letzten Detektierung des Rotationsindikators vergangen ist, bevor eine erneute Kalibrierung des analogen Ausgangssignals vom Infrarotsensor gestartet wird, siehe Abschnitt :ref:`Kalibrierung des analogen Ausgangssignals <analog-calibration>` für Details
+    * - ``auto_calibration``
+      - Objekt
+      - nein
+      - siehe unten
+      - Kalibrations-Standardwerte, die für ``calibrate_on_boot``, ``calibrate_on_stall`` und für den parameterlosen Aufruf von ``ferraris.start_analog_calibration`` gelten.
 
 
-Die folgenden Einstellungen können für das Objekt ``calibrate_on_boot`` konfiguriert werden:
+Die folgenden Einstellungen können für das Objekt ``auto_calibration`` konfiguriert werden:
 
 +------------------------+-------+----------+-----------+---------------------------------------------------------------------------------------+
 | Option                 | Typ   | Benötigt | Standard  | Beschreibung                                                                          |
