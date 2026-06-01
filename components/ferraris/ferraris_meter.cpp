@@ -331,7 +331,7 @@ namespace esphome::ferraris
             }
         }
 
-        if (m_stall_timeout > 0u)
+        if ((m_stall_timeout > 0u) && (m_last_rising_time >= 0u))
         {
             uint32_t now = millis();
 
@@ -471,11 +471,7 @@ namespace esphome::ferraris
 
         if (m_calibration_mode)
         {
-            m_last_time = -1;
-            m_last_rising_time = -1;
-            m_last_rotation_time = std::numeric_limits<uint32_t>::max();
-            m_acc_rotation_time = 0u;
-            m_interpolation_start = -1;
+            reset();
 
 #ifdef USE_SENSOR
             if (m_power_consumption_sensor != nullptr)
@@ -568,5 +564,44 @@ namespace esphome::ferraris
             m_analog_value_spectrum_sensor->publish_state(range);
         }
 #endif
+    }
+
+    void FerrarisMeter::start_analog_calibration()
+    {
+        reset();
+
+        m_level_value_counter = 0u;
+        m_iteration_counter = 0u;
+    }
+
+    void FerrarisMeter::start_analog_calibration(
+            uint32_t num_captured_values,
+            float min_level_dist,
+            uint16_t max_iterations)
+    {
+        configure_analog_calibration(
+            num_captured_values,
+            min_level_dist,
+            max_iterations);
+        start_analog_calibration();
+    }
+
+    void FerrarisMeter::configure_analog_calibration(
+            uint32_t num_captured_values,
+            float min_level_dist,
+            uint16_t max_iterations)
+    {
+        m_num_captured_values = num_captured_values;
+        m_min_level_distance = min_level_dist;
+        m_max_iterations = max_iterations;
+    }
+
+    void FerrarisMeter::reset()
+    {
+        m_last_time = -1;
+        m_last_rising_time = -1;
+        m_last_rotation_time = std::numeric_limits<uint32_t>::max();
+        m_acc_rotation_time = 0u;
+        m_interpolation_start = -1;
     }
 }  // namespace esphome::ferraris
