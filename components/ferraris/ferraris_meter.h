@@ -70,33 +70,17 @@ namespace esphome::ferraris
         void set_energy_meter(float value);
         void set_rotation_counter(uint64_t value);
 
-        void start_analog_calibration()
-        {
-            m_level_value_counter = 0u;
-            m_iteration_counter = 0u;
-        }
+        void start_analog_calibration();
 
         void start_analog_calibration(
                 uint32_t num_captured_values,
                 float min_level_dist,
-                uint16_t max_iterations)
-        {
-            configure_analog_calibration(
-                num_captured_values,
-                min_level_dist,
-                max_iterations);
-            start_analog_calibration();
-        }
+                uint16_t max_iterations);
 
         void configure_analog_calibration(
                 uint32_t num_captured_values,
                 float min_level_dist,
-                uint16_t max_iterations)
-        {
-            m_num_captured_values = num_captured_values;
-            m_min_level_distance = min_level_dist;
-            m_max_iterations = max_iterations;
-        }
+                uint16_t max_iterations);
 
 #ifdef USE_SENSOR
         void set_digital_input_pin(InternalGPIOPin *pin)
@@ -207,6 +191,7 @@ namespace esphome::ferraris
         void update_power_consumption(uint32_t rotation_time);
         void update_energy_counter();
         void set_analog_calibration_state(bool running, float range = 0, bool problem = false);
+        void reset();
 
         static inline uint32_t get_duration(uint32_t start, uint32_t end)
         {
