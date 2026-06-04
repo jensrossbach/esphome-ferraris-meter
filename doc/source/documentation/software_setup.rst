@@ -140,7 +140,7 @@ Die folgenden Einstellungen sind nur relevant, wenn der analoge Ausgang des Infr
       - Objekt
       - nein
       - siehe unten
-      - Kalibrations-Standardwerte, die für ``calibrate_on_boot``, ``calibrate_on_stall`` und für den parameterlosen Aufruf von ``ferraris.start_analog_calibration`` gelten.
+      - Kalibrationsparameter, die für ``calibrate_on_boot`` und ``calibrate_on_stall`` verwendet werden.
 
 
 Die folgenden Einstellungen können für das Objekt ``auto_calibration`` konfiguriert werden:

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ESPHome Ferraris Meter \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-31 18:32+0200\n"
+"POT-Creation-Date: 2026-06-04 10:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jens-Uwe Rossbach <devel@jrossbach.de>\n"
 "Language: de\n"
@@ -433,9 +433,8 @@ msgstr ""
 
 #: ../../source/documentation/software_setup.rst:143
 msgid ""
-"Kalibrations-Standardwerte, die für ``calibrate_on_boot``, "
-"``calibrate_on_stall`` und für den parameterlosen Aufruf von "
-"``ferraris.start_analog_calibration`` gelten."
+"Kalibrationsparameter, die für ``calibrate_on_boot`` und "
+"``calibrate_on_stall`` verwendet werden."
 msgstr ""
 
 #: ../../source/documentation/software_setup.rst:146
